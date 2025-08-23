@@ -1,12 +1,14 @@
 import './index.css'
-import React from 'react'
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react'
+import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom'
 import { Mail, Github, Linkedin, FileDown, ArrowRight } from 'lucide-react'
 
 // =====================================================
 // ROUTED PORTFOLIO — MINIMAL HOME HERO + ABOUT PAGE
 // Home: giant heading, short subhead, huge photo area.
 // About: details (interests, schooling, links) + photo.
+// + Responsive: mobile hamburger menu, better tap targets,
+//   safe areas, and small‑screen spacing.
 // =====================================================
 
 const PROFILE = {
@@ -33,7 +35,7 @@ const PRODUCTS = [
 const PROJECTS = [
   { id: 'power-meter', title: 'ESP32 Smart Power Meter', subtitle: 'Live voltage, current, energy in browser.', image: '/images/power-meter.png', href: '#' },
   { id: 'oscilloscope', title: 'Arduino Oscilloscope', subtitle: 'Triggering, capture, waveform rendering.', image: '/images/oscilloscope.png', href: '#' },
-  { id: 'ble-mesh', title: 'BLE Mesh Data Relay', subtitle: 'Low-power sensor network with hop routing.', image: '/images/ble-mesh.png', href: '#' },
+  { id: 'ble-mesh', title: 'BLE Mesh Data Relay', subtitle: 'Low‑power sensor network with hop routing.', image: '/images/ble-mesh.png', href: '#' },
   { id: 'placeholder3', title: 'Project Placeholder One', subtitle: 'This is a placeholder engineering project.', image: '/images/placeholder3.png', href: '#' },
   { id: 'placeholder4', title: 'Project Placeholder Two', subtitle: 'Another placeholder project with engineering focus.', image: '/images/placeholder4.png', href: '#' },
 ]
@@ -67,18 +69,18 @@ const ImageTile = ({ src, alt='', className='' }) => (
 const TileCard = ({ item }) => (
   <a
     href={item.href}
-    className="group rounded-[32px] overflow-hidden border bg-white text-black border-black/10 hover:shadow-sm transition-shadow"
+    className="group rounded-[32px] overflow-hidden border bg-white text-black border-black/10 hover:shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-emerald-500"
   >
-    <div className="p-8 sm:p-10">
-      <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight">{item.title}</h3>
-      <p className="mt-2 text-zinc-700">{item.subtitle}</p>
+    <div className="p-6 sm:p-8">
+      <h3 className="text-xl sm:text-2xl font-semibold tracking-tight">{item.title}</h3>
+      <p className="mt-2 text-zinc-700 text-sm sm:text-base">{item.subtitle}</p>
     </div>
     <ImageTile src={item.image} className="aspect-[16/10]" />
   </a>
 )
 
 const TileGrid = ({ items }) => (
-  <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+  <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
     {items.map((p) => (
       <TileCard key={p.id} item={p} />
     ))}
@@ -87,12 +89,12 @@ const TileGrid = ({ items }) => (
 
 const Footer = () => (
   <footer className="border-t border-black/10 bg-white">
-    <Container className="py-10 grid sm:grid-cols-2 gap-6 text-sm text-zinc-600">
-      <div>
+    <Container className="py-8 sm:py-10 grid sm:grid-cols-2 gap-6 text-sm text-zinc-600">
+      <div className="space-y-1">
         <p>© {new Date().getFullYear()} {PROFILE.name}</p>
         <p>Built with React + Tailwind. Deployed on Vercel.</p>
       </div>
-      <div className="flex items-center gap-3 sm:justify-end">
+      <div className="flex flex-wrap items-center gap-3 sm:justify-end">
         <a href={`mailto:${PROFILE.email}`} className="hover:text-emerald-700 inline-flex items-center gap-2"><Mail className="w-4 h-4"/>Email</a>
         <a href={PROFILE.github} className="hover:text-emerald-700 inline-flex items-center gap-2"><Github className="w-4 h-4"/>GitHub</a>
         <a href={PROFILE.linkedin} className="hover:text-emerald-700 inline-flex items-center gap-2"><Linkedin className="w-4 h-4"/>LinkedIn</a>
@@ -105,7 +107,7 @@ const Footer = () => (
 const CTAButton = ({ href, children }) => (
   <a
     href={href}
-    className="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-5 py-2.5 font-medium hover:bg-emerald-700 transition-colors"
+    className="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-5 py-3 text-sm sm:text-base font-medium hover:bg-emerald-700 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
   >
     {children} <ArrowRight className="w-4 h-4" />
   </a>
@@ -114,52 +116,135 @@ const CTAButton = ({ href, children }) => (
 const GhostButton = ({ href, children }) => (
   <a
     href={href}
-    className="inline-flex items-center gap-2 rounded-full border border-emerald-300 px-5 py-2.5 hover:border-emerald-500 text-emerald-700 hover:text-emerald-800 transition-colors"
+    className="inline-flex items-center gap-2 rounded-full border border-emerald-300 px-5 py-3 text-sm sm:text-base hover:border-emerald-500 text-emerald-700 hover:text-emerald-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
   >
     {children}
   </a>
 )
 
-// ---------- Nav ----------
-const Nav = () => (
-  <div className="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-black/10">
-    <Container className="h-14 flex items-center justify-between text-black">
-      <NavLink to="/" className="font-semibold tracking-tight text-emerald-700">
-        Michael Dang
-      </NavLink>
-      <div className="hidden sm:flex items-center gap-6 text-sm">
-        <NavLink to="/about" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>About</NavLink>
-        <NavLink to="/products" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Products</NavLink>
-        <NavLink to="/projects" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Projects</NavLink>
-        <NavLink to="/readings" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Readings</NavLink>
-        <NavLink to="/contact" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Contact</NavLink>
-        <a href={PROFILE.resumeUrl} className="rounded-full border border-emerald-300 px-3 py-1.5 hover:border-emerald-500 text-emerald-700">Resume</a>
-      </div>
-    </Container>
-  </div>
+// ---------- Nav (Desktop + Mobile) ----------
+const NavLinks = ({ onNavigate }) => (
+  <>
+    <NavLink to="/about" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>About</NavLink>
+    <NavLink to="/products" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Products</NavLink>
+    <NavLink to="/projects" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Projects</NavLink>
+    <NavLink to="/readings" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Readings</NavLink>
+    <NavLink to="/contact" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Contact</NavLink>
+  </>
 )
+
+const MobileMenu = ({ open, setOpen }) => {
+  const ref = useRef(null)
+  const location = useLocation()
+
+  // Close on route change
+  useEffect(() => { setOpen(false) }, [location.pathname, setOpen])
+
+  // Close on click outside
+  useEffect(() => {
+    function onClick(e) {
+      if (open && ref.current && !ref.current.contains(e.target)) setOpen(false)
+    }
+    function onEsc(e) { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('mousedown', onClick)
+    document.addEventListener('keydown', onEsc)
+    return () => {
+      document.removeEventListener('mousedown', onClick)
+      document.removeEventListener('keydown', onEsc)
+    }
+  }, [open, setOpen])
+
+  if (!open) return null
+  return (
+    <div className="fixed inset-0 z-50 sm:hidden" aria-modal="true" role="dialog">
+      <div className="absolute inset-0 bg-black/20" />
+      <div
+        ref={ref}
+        className="absolute top-2 right-2 left-2 rounded-2xl border border-black/10 bg-white p-4 shadow-lg"
+      >
+        <div className="flex items-center justify-between">
+          <span className="font-semibold text-emerald-700">Menu</span>
+          <button
+            onClick={()=>setOpen(false)}
+            className="rounded-full px-3 py-1.5 text-sm border border-black/10 hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            aria-label="Close menu"
+          >
+            Close
+          </button>
+        </div>
+        <nav className="mt-3 grid gap-2 text-base">
+          <NavLinks onNavigate={()=>setOpen(false)} />
+          <a href={PROFILE.resumeUrl} className="mt-2 inline-flex items-center justify-center rounded-full border border-emerald-300 px-4 py-2.5 hover:border-emerald-500 text-emerald-700">
+            Resume
+          </a>
+        </nav>
+      </div>
+    </div>
+  )
+}
+
+const Nav = () => {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-black/10 supports-[padding:max(0px)] pt-safe">
+      {/* Skip link for accessibility */}
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:ring-2 focus:ring-emerald-600">
+        Skip to content
+      </a>
+      <Container className="h-14 flex items-center justify-between text-black">
+        <NavLink to="/" className="font-semibold tracking-tight text-emerald-700">
+          Michael Dang
+        </NavLink>
+
+        {/* Desktop links */}
+        <div className="hidden sm:flex items-center gap-6 text-sm">
+          <NavLinks />
+          <a
+            href={PROFILE.resumeUrl}
+            className="rounded-full border border-emerald-300 px-3 py-1.5 hover:border-emerald-500 text-emerald-700"
+          >
+            Resume
+          </a>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="sm:hidden rounded-full border border-black/10 px-3 py-2 text-sm hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          onClick={()=>setOpen((v)=>!v)}
+          aria-label="Open menu"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+        >
+          Menu
+        </button>
+      </Container>
+
+      <MobileMenu open={open} setOpen={setOpen} />
+    </div>
+  )
+}
 
 // ---------- Pages ----------
 // Minimal Home (giant heading, short desc, huge photo)
 const HomePage = () => (
-  <main className="bg-white text-black">
-    <section className="pt-16 sm:pt-24">
+  <main id="main" className="bg-white text-black">
+    <section className="pt-12 sm:pt-24">
       <Container>
         <div className="text-left">
-          <h1 className="text-[44px] sm:text-[76px] leading-[1.05] font-semibold tracking-tight">
+          <h1 className="text-[36px] sm:text-[76px] leading-[1.08] sm:leading-[1.05] font-semibold tracking-tight">
             Hey, I'm Michael.<br/>I build software and hardware.
           </h1>
-          <p className="mt-4 text-xl sm:text-2xl text-zinc-700 max-w-3xl">
+          <p className="mt-3 sm:mt-4 text-lg sm:text-2xl text-zinc-700 max-w-3xl">
             {PROFILE.tagline}
           </p>
         </div>
       </Container>
     </section>
 
-    <section className="py-10 sm:py-14">
+    <section className="py-6 sm:py-14">
       <Container>
         {/* Huge photo area */}
-        <ImageTile src={PROFILE.headshot} className="aspect-[16/7]" />
+        <ImageTile src={PROFILE.headshot} className="aspect-[16/10] sm:aspect-[16/7]" />
       </Container>
     </section>
   </main>
@@ -168,25 +253,25 @@ const HomePage = () => (
 // About page with details + photo (contacts removed, added Bio section)
 const AboutPage = () => (
   <main className="bg-white text-black">
-    <section className="pt-12 sm:pt-16">
+    <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="grid md:grid-cols-[1.15fr_.85fr] gap-10 items-start">
+        <div className="grid md:grid-cols-[1.15fr_.85fr] gap-6 sm:gap-10 items-start">
           <div>
-            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">About me</h1>
+            <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">About me</h1>
             <p className="mt-3 text-zinc-700 max-w-2xl">{PROFILE.subhead}</p>
 
-            {/* Bio section replaces contact buttons */}
-            <div className="mt-6 rounded-2xl border border-emerald-200 p-5 sm:p-6 bg-emerald-50/40">
+            {/* Bio section */}
+            <div className="mt-5 sm:mt-6 rounded-2xl border border-emerald-200 p-4 sm:p-6 bg-emerald-50/40">
               <h3 className="font-medium mb-2 text-emerald-800">Bio</h3>
-              <p className="text-zinc-700">
-                I’m an engineer who likes building measurable, real-world things. My focus is embedded systems, energy
+              <p className="text-zinc-700 text-sm sm:text-base">
+                I’m an engineer who likes building measurable, real‑world things. My focus is embedded systems, energy
                 monitoring, and clean user interfaces that make hardware approachable. Recently, I’ve shipped an ESP32
-                smart power meter, an Arduino-based oscilloscope, and a BLE mesh data relay. I care about translating
+                smart power meter, an Arduino‑based oscilloscope, and a BLE mesh data relay. I care about translating
                 ideas into reliable hardware and software with simple controls, sensible defaults, and clear metrics.
               </p>
             </div>
 
-            <div className="mt-6 grid sm:grid-cols-2 gap-4">
+            <div className="mt-5 sm:mt-6 grid sm:grid-cols-2 gap-4">
               <div className="rounded-2xl border border-emerald-200 p-4 bg-emerald-50/40">
                 <h3 className="font-medium mb-2 text-emerald-800">Interests</h3>
                 <ul className="text-zinc-700 text-sm space-y-1">
@@ -204,10 +289,10 @@ const AboutPage = () => (
               </div>
             </div>
 
-            {/* Contact buttons removed here on purpose since there's a dedicated Contact page */}
+            {/* Contact buttons intentionally removed (use Contact page). */}
           </div>
 
-          <div>
+          <div className="order-first md:order-none">
             <ImageTile src={PROFILE.aboutPhoto || PROFILE.headshot} className="aspect-[4/5]" />
           </div>
         </div>
@@ -218,11 +303,11 @@ const AboutPage = () => (
 
 const ProductsPage = () => (
   <main className="bg-white text-black">
-    <section className="pt-12 sm:pt-16">
+    <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="mb-6">
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Products</h1>
-          <p className="mt-2 text-zinc-700">PM-style side projects that highlight problem framing, metrics, and outcomes.</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Products</h1>
+          <p className="mt-2 text-zinc-700 text-sm sm:text-base">PM‑style side projects that highlight problem framing, metrics, and outcomes.</p>
         </div>
         <TileGrid items={PRODUCTS} />
       </Container>
@@ -232,11 +317,11 @@ const ProductsPage = () => (
 
 const ProjectsPage = () => (
   <main className="bg-white text-black">
-    <section className="pt-12 sm:pt-16">
+    <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="mb-6">
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Projects</h1>
-          <p className="mt-2 text-zinc-700">Engineering builds aimed at rigor, performance, and reliability.</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Projects</h1>
+          <p className="mt-2 text-zinc-700 text-sm sm:text-base">Engineering builds aimed at rigor, performance, and reliability.</p>
         </div>
         <TileGrid items={PROJECTS} />
       </Container>
@@ -246,11 +331,11 @@ const ProjectsPage = () => (
 
 const ReadingsPage = () => (
   <main className="bg-white text-black">
-    <section className="pt-12 sm:pt-16">
+    <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="mb-6">
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Readings</h1>
-          <p className="mt-2 text-zinc-700">Books, articles, and media reviews related to engineering, PM, and entrepreneurship.</p>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Readings</h1>
+          <p className="mt-2 text-zinc-700 text-sm sm:text-base">Books, articles, and media reviews related to engineering, PM, and entrepreneurship.</p>
         </div>
         <TileGrid items={READINGS} />
       </Container>
@@ -260,12 +345,12 @@ const ReadingsPage = () => (
 
 const ContactPage = () => (
   <main className="bg-white text-black">
-    <section className="pt-12 sm:pt-16">
+    <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="rounded-[32px] border border-emerald-200 p-8 sm:p-12 text-center bg-white">
-          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Contact</h1>
-          <p className="mt-2 text-zinc-700">Open to internships, research, and collaborations.</p>
-          <div className="mt-6 flex items-center justify-center gap-3">
+        <div className="rounded-[32px] border border-emerald-200 p-6 sm:p-12 text-center bg-white">
+          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Contact</h1>
+          <p className="mt-2 text-zinc-700 text-sm sm:text-base">Open to internships, research, and collaborations.</p>
+          <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-3">
             <CTAButton href={`mailto:${PROFILE.email}`}>Email Michael</CTAButton>
             <GhostButton href={PROFILE.github}>GitHub</GhostButton>
             <GhostButton href={PROFILE.linkedin}>LinkedIn</GhostButton>
