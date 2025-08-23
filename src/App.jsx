@@ -1,401 +1,298 @@
 import './index.css'
-import React, { useMemo, useState } from "react";
-import { motion } from "framer-motion";
-import { Filter } from "lucide-react";
-import {
-  Mail,
-  Github,
-  Linkedin,
-  FileDown,
-  MapPin,
-  Moon,
-  Sun,
-  ExternalLink,
-  Cpu,
-  Wrench,
-  BookOpen,
-  GraduationCap,
-  Briefcase,
-} from "lucide-react";
+import React from 'react'
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
+import { Mail, Github, Linkedin, FileDown, ArrowRight } from 'lucide-react'
 
-// =============================
-// QUICK-EDIT PROFILE DETAILS
-// =============================
+// =====================================================
+// ROUTED PORTFOLIO — MINIMAL HOME HERO + ABOUT PAGE
+// Home: giant heading, short subhead, huge photo area.
+// About: details (interests, schooling, links) + photo.
+// =====================================================
+
 const PROFILE = {
-  name: "Michael Dang",
-  title: "Electrical Engineering & Physics @ Dartmouth | Product‑minded builder",
-  summary:
-    "I design and build useful hardware + software: embedded systems, power/energy monitors, and 3D‑IC research. I care about clean UX, measurable impact, and shipping things.",
-  email: "Michael.Dang3000@gmail.com", // ← update me
-  location: "Toronto, ON • Hanover, NH",
-  linkedin: "https://www.linkedin.com/in/michaeldang1/", // ← update me
-  github: "https://github.com/therealMichaelD", // ← update me
-  resumeUrl: "/Michael_Dang_Resume.pdf", // put your PDF in the same folder
-};
+  name: 'Michael Dang',
+  tagline: 'Engineering Management and Electrical Engineering @ Dartmouth',
+  headline: 'I build software and hardware.',
+  subhead: 'Embedded systems, energy monitors, and clean UX. I ship real things.',
+  email: 'your.email@dartmouth.edu',
+  github: 'https://github.com/your-handle',
+  linkedin: 'https://www.linkedin.com/in/your-handle/',
+  resumeUrl: '/Michael_Dang_Resume.pdf',
+  headshot: '/images/headshot.jpg',          // Home hero photo (big)
+  aboutPhoto: '/images/about-headshot.jpg',  // Optional different photo for About
+}
 
-// =============================
-// PROJECTS
-// category: "Hardware" | "Software" | "Research"
-// =============================
+// ---------- Data ----------
+const PRODUCTS = [
+  { id: 'resume-insights', title: 'Resume Insights', subtitle: 'Upload a PDF → get impact bullets, metrics, ATS tips.', image: '/images/resume-insights.png', href: '#' },
+  { id: 'habit-metrics', title: 'Habit Metrics Dashboard', subtitle: 'North-star + input metrics, retention, alerts.', image: '/images/habit-metrics.png', href: '#' },
+  { id: 'placeholder1', title: 'Product Placeholder One', subtitle: 'This is a placeholder description for a future product.', image: '/images/placeholder1.png', href: '#' },
+  { id: 'placeholder2', title: 'Product Placeholder Two', subtitle: 'Another placeholder product idea for PM impact.', image: '/images/placeholder2.png', href: '#' },
+]
+
 const PROJECTS = [
-  {
-    title: "ESP32 Smart Power Meter",
-    category: "Hardware",
-    period: "2025",
-    blurb:
-      "Wi‑Fi energy monitor using INA219 for real‑time voltage/current, on‑device dashboard, and CSV export.",
-    highlights: ["ESP32", "INA219", "UI dashboard", "OTA updates"],
-    links: {
-      github: "#",
-      demo: "#",
-    },
-  },
-  {
-    title: "Arduino Oscilloscope",
-    category: "Hardware",
-    period: "2025",
-    blurb:
-      "Low‑cost scope with signal capture, trigger, and waveform rendering in a web UI.",
-    highlights: ["Arduino", "ADC", "Signal processing", "WebSerial"],
-    links: { github: "#", demo: "#" },
-  },
-  {
-    title: "BLE Mesh Data Relay",
-    category: "Hardware",
-    period: "2025",
-    blurb:
-      "Sensor nodes hop temperature/humidity data across a mesh to a central hub.",
-    highlights: ["ESP32", "BLE Mesh", "Routing", "Low power"],
-    links: { github: "#", demo: "#" },
-  },
-  {
-    title: "CAN Bus Data Logger",
-    category: "Hardware",
-    period: "2025",
-    blurb:
-      "MCP2515‑based logger captures speed/RPM to SD and optional OLED visualization.",
-    highlights: ["Arduino", "CAN", "SD logging", "Automotive"],
-    links: { github: "#", demo: "#" },
-  },
-  {
-    title: "3D‑IC Research Glossary",
-    category: "Research",
-    period: "2025",
-    blurb:
-      "Alphabetized 3D IC terms/acronyms with concise, citation‑ready definitions.",
-    highlights: ["3D‑IC", "Through‑silicon vias", "Packaging", "DVFS"],
-    links: { github: "#", demo: "#" },
-  },
-  {
-    title: "E‑Motorcycle Conversion",
-    category: "Hardware",
-    period: "2023",
-    blurb:
-      "Converted a Suzuki motorcycle to 100% electric: battery pack, motor controller, BMS.",
-    highlights: ["Battery design", "Motor control", "PCB", "Safety"],
-    links: { github: "#", demo: "#" },
-  },
-];
+  { id: 'power-meter', title: 'ESP32 Smart Power Meter', subtitle: 'Live voltage, current, energy in browser.', image: '/images/power-meter.png', href: '#' },
+  { id: 'oscilloscope', title: 'Arduino Oscilloscope', subtitle: 'Triggering, capture, waveform rendering.', image: '/images/oscilloscope.png', href: '#' },
+  { id: 'ble-mesh', title: 'BLE Mesh Data Relay', subtitle: 'Low-power sensor network with hop routing.', image: '/images/ble-mesh.png', href: '#' },
+  { id: 'placeholder3', title: 'Project Placeholder One', subtitle: 'This is a placeholder engineering project.', image: '/images/placeholder3.png', href: '#' },
+  { id: 'placeholder4', title: 'Project Placeholder Two', subtitle: 'Another placeholder project with engineering focus.', image: '/images/placeholder4.png', href: '#' },
+]
 
-// =============================
-// EXPERIENCE & EDUCATION
-// =============================
-const EXPERIENCE = [
-  {
-    role: "Research Assistant, SENSE Lab (Prof. Scheideler)",
-    org: "Dartmouth College",
-    period: "Summer 2024",
-    bullets: [
-      "Built remote GUIs for instrumentation and automated data collection",
-      "Collaborated on hardware characterization + analysis",
-    ],
-  },
-  {
-    role: "Founder & Lead Builder",
-    org: "Bard College E‑Motorcycle Club",
-    period: "2022–2023",
-    bullets: [
-      "Designed and assembled battery, motor, and controllers for full electric conversion",
-      "Owned safety testing, documentation, and demos",
-    ],
-  },
-  {
-    role: "Co‑founder",
-    org: "Student Landscaping Business",
-    period: "2021–2022",
-    bullets: [
-      "Led client communication, quoting, and scheduling; delivered end‑to‑end services",
-    ],
-  },
-];
+const READINGS = [
+  { id: 'book1', title: 'The Innovator’s Dilemma', subtitle: 'Clayton Christensen — reflections on disruptive innovation.', image: '/images/book1.png', href: '#' },
+  { id: 'book2', title: 'Inspired', subtitle: 'Marty Cagan — lessons on building tech products.', image: '/images/book2.png', href: '#' },
+  { id: 'placeholder-reading1', title: 'Reading Placeholder One', subtitle: 'Placeholder for a future reading review.', image: '/images/placeholder-reading1.png', href: '#' },
+  { id: 'placeholder-reading2', title: 'Reading Placeholder Two', subtitle: 'Another placeholder entry for reading/media review.', image: '/images/placeholder-reading2.png', href: '#' },
+]
 
-const EDUCATION = [
-  {
-    school: "Dartmouth College",
-    program: "B.E. Electrical Engineering & B.A. Physics (’27) • M.E.M. in progress",
-  },
-  {
-    school: "Bard College at Simon’s Rock",
-    program: "Early college coursework prior to transfer",
-  },
-];
+// ---------- UI helpers ----------
+const Container = ({ children, className='' }) => (
+  <div className={`max-w-[1100px] mx-auto px-4 sm:px-6 ${className}`}>{children}</div>
+)
 
-// =============================
-// UI HELPERS
-// =============================
-const Section = ({ id, icon: Icon, title, children }) => (
-  <section id={id} className="scroll-mt-24 py-16">
-    <div className="flex items-center gap-3 mb-6">
-      {Icon && (
-        <span className="p-2 rounded-xl bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 border border-white/10">
-          <Icon className="w-5 h-5" />
-        </span>
-      )}
-      <h2 className="text-2xl md:text-3xl font-semibold tracking-tight">{title}</h2>
+const ImageTile = ({ src, alt='', className='' }) => (
+  <div className={`rounded-[28px] overflow-hidden ${className} bg-gradient-to-br from-emerald-50 via-zinc-100 to-zinc-200`}>
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      onLoad={(e) => e.currentTarget.classList.remove('opacity-0')}
+      onError={(e) => e.currentTarget.remove()}
+      className="w-full h-full object-cover opacity-0 transition-opacity duration-300"
+    />
+  </div>
+)
+
+const TileCard = ({ item }) => (
+  <a
+    href={item.href}
+    className="group rounded-[32px] overflow-hidden border bg-white text-black border-black/10 hover:shadow-sm transition-shadow"
+  >
+    <div className="p-8 sm:p-10">
+      <h3 className="text-2xl sm:text-3xl font-semibold tracking-tight">{item.title}</h3>
+      <p className="mt-2 text-zinc-700">{item.subtitle}</p>
     </div>
-    {children}
-  </section>
-);
+    <ImageTile src={item.image} className="aspect-[16/10]" />
+  </a>
+)
 
-const Badge = ({ children }) => (
-  <span className="inline-flex items-center rounded-full border border-white/10 px-3 py-1 text-xs md:text-sm">
-    {children}
-  </span>
-);
+const TileGrid = ({ items }) => (
+  <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+    {items.map((p) => (
+      <TileCard key={p.id} item={p} />
+    ))}
+  </div>
+)
 
-const LinkIcon = ({ href, icon: Icon, label }) => (
+const Footer = () => (
+  <footer className="border-t border-black/10 bg-white">
+    <Container className="py-10 grid sm:grid-cols-2 gap-6 text-sm text-zinc-600">
+      <div>
+        <p>© {new Date().getFullYear()} {PROFILE.name}</p>
+        <p>Built with React + Tailwind. Deployed on Vercel.</p>
+      </div>
+      <div className="flex items-center gap-3 sm:justify-end">
+        <a href={`mailto:${PROFILE.email}`} className="hover:text-emerald-700 inline-flex items-center gap-2"><Mail className="w-4 h-4"/>Email</a>
+        <a href={PROFILE.github} className="hover:text-emerald-700 inline-flex items-center gap-2"><Github className="w-4 h-4"/>GitHub</a>
+        <a href={PROFILE.linkedin} className="hover:text-emerald-700 inline-flex items-center gap-2"><Linkedin className="w-4 h-4"/>LinkedIn</a>
+        <a href={PROFILE.resumeUrl} className="hover:text-emerald-700 inline-flex items-center gap-2"><FileDown className="w-4 h-4"/>Resume</a>
+      </div>
+    </Container>
+  </footer>
+)
+
+const CTAButton = ({ href, children }) => (
   <a
     href={href}
-    target="_blank"
-    rel="noreferrer"
-    className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-3 py-2 hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    className="inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-5 py-2.5 font-medium hover:bg-emerald-700 transition-colors"
   >
-    <Icon className="w-4 h-4" /> <span className="text-sm">{label}</span>
+    {children} <ArrowRight className="w-4 h-4" />
   </a>
-);
+)
 
-// =============================
-// MAIN APP
-// =============================
-export default function Portfolio() {
-  const [dark, setDark] = useState(true);
-  const [filter, setFilter] = useState("All");
+const GhostButton = ({ href, children }) => (
+  <a
+    href={href}
+    className="inline-flex items-center gap-2 rounded-full border border-emerald-300 px-5 py-2.5 hover:border-emerald-500 text-emerald-700 hover:text-emerald-800 transition-colors"
+  >
+    {children}
+  </a>
+)
 
-  const categories = useMemo(
-    () => ["All", "Hardware", "Software", "Research"],
-    []
-  );
-
-  const filtered = useMemo(
-    () => (filter === "All" ? PROJECTS : PROJECTS.filter((p) => p.category === filter)),
-    [filter]
-  );
-
-  return (
-    <div className={dark ? "dark" : ""}>
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-slate-100 selection:bg-indigo-500/30">
-        {/* NAV */}
-        <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60 border-b border-white/10">
-          <nav className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
-            <a href="#home" className="font-semibold tracking-tight">Michael Dang</a>
-            <div className="flex items-center gap-2 md:gap-3">
-              <a href="#projects" className="text-sm hover:opacity-80">Projects</a>
-              <a href="#experience" className="text-sm hover:opacity-80">Experience</a>
-              <a href="#contact" className="text-sm hover:opacity-80">Contact</a>
-              <button
-                aria-label="Toggle theme"
-                onClick={() => setDark((d) => !d)}
-                className="ml-2 rounded-xl border border-white/10 p-2 hover:border-white/20 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
-            </div>
-          </nav>
-        </header>
-
-        {/* HERO */}
-        <main id="home" className="max-w-6xl mx-auto px-4 md:px-6">
-          <motion.section
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="pt-14 md:pt-20"
-          >
-            <div className="grid md:grid-cols-[1.3fr_.7fr] gap-8 items-center">
-              <div>
-                <h1 className="text-3xl md:text-5xl font-semibold leading-tight tracking-tight">
-                  {PROFILE.name}
-                </h1>
-                <p className="mt-3 text-base md:text-lg text-slate-300">
-                  {PROFILE.title}
-                </p>
-                <p className="mt-4 max-w-2xl text-slate-300/90">{PROFILE.summary}</p>
-
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <a
-                    href={`mailto:${PROFILE.email}`}
-                    className="inline-flex items-center gap-2 rounded-2xl border border-indigo-500/40 bg-indigo-500/10 px-4 py-2 hover:bg-indigo-500/20 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  >
-                    <Mail className="w-4 h-4" /> Email
-                  </a>
-                  <LinkIcon href={PROFILE.github} icon={Github} label="GitHub" />
-                  <LinkIcon href={PROFILE.linkedin} icon={Linkedin} label="LinkedIn" />
-                  <LinkIcon href={PROFILE.resumeUrl} icon={FileDown} label="Resume" />
-                </div>
-
-                <div className="mt-6 flex flex-wrap gap-2 text-slate-300/90">
-                  <Badge><Cpu className="w-3.5 h-3.5 mr-2" /> Embedded</Badge>
-                  <Badge><Wrench className="w-3.5 h-3.5 mr-2" /> Prototyping</Badge>
-                  <Badge><BookOpen className="w-3.5 h-3.5 mr-2" /> Research</Badge>
-                  <Badge><GraduationCap className="w-3.5 h-3.5 mr-2" /> Dartmouth ’27</Badge>
-                </div>
-              </div>
-
-              {/* Profile Card */}
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/30 to-cyan-500/30 border border-white/10 text-lg font-semibold">
-                    MD
-                  </span>
-                  <div>
-                    <p className="font-medium">{PROFILE.name}</p>
-                    <p className="text-sm text-slate-400 flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5" /> {PROFILE.location}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                  <div className="rounded-2xl border border-white/10 p-3">
-                    <p className="text-xl font-semibold">10+</p>
-                    <p className="text-xs text-slate-400">Projects</p>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 p-3">
-                    <p className="text-xl font-semibold">4</p>
-                    <p className="text-xs text-slate-400">Domains</p>
-                  </div>
-                  <div className="rounded-2xl border border-white/10 p-3">
-                    <p className="text-xl font-semibold">∞</p>
-                    <p className="text-xs text-slate-400">Curiosity</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* PROJECTS */}
-          <Section id="projects" icon={Briefcase} title="Selected Projects">
-            <div className="mb-4 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-2 text-sm text-slate-400"><Filter className="w-4 h-4"/>Filter:</span>
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setFilter(cat)}
-                  className={`rounded-xl border px-3 py-1.5 text-sm transition ${
-                    filter === cat
-                      ? "border-indigo-500/50 bg-indigo-500/10"
-                      : "border-white/10 hover:border-white/20"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filtered.map((p, i) => (
-                <motion.article
-                  key={p.title}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.03 }}
-                  className="group rounded-3xl border border-white/10 bg-white/5 p-5 hover:border-white/20"
-                >
-                  <div className="aspect-[16/9] rounded-2xl bg-gradient-to-br from-slate-800 to-slate-700 mb-4 flex items-center justify-center text-slate-300">
-                    <span className="text-xs">Image / diagram placeholder</span>
-                  </div>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="text-lg font-semibold leading-snug">{p.title}</h3>
-                      <p className="text-xs text-slate-400">{p.category} • {p.period}</p>
-                    </div>
-                  </div>
-                  <p className="mt-2 text-sm text-slate-300/90">{p.blurb}</p>
-
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {p.highlights.map((h) => (
-                      <Badge key={h}>{h}</Badge>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 flex items-center gap-3">
-                    <a
-                      href={p.links.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-sm hover:underline"
-                    >
-                      <Github className="w-4 h-4" /> Code
-                    </a>
-                    <a
-                      href={p.links.demo}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 text-sm hover:underline"
-                    >
-                      <ExternalLink className="w-4 h-4" /> Demo
-                    </a>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-          </Section>
-
-          {/* EXPERIENCE */}
-          <Section id="experience" icon={Briefcase} title="Experience">
-            <div className="space-y-5">
-              {EXPERIENCE.map((e) => (
-                <div key={e.role} className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <p className="font-medium">{e.role}</p>
-                    <p className="text-sm text-slate-400">{e.org} • {e.period}</p>
-                  </div>
-                  <ul className="mt-2 list-disc pl-5 text-sm text-slate-300/90 space-y-1">
-                    {e.bullets.map((b, i) => (
-                      <li key={i}>{b}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
-              <h3 className="font-medium mb-2 flex items-center gap-2"><GraduationCap className="w-4 h-4"/> Education</h3>
-              <ul className="space-y-1 text-sm text-slate-300/90">
-                {EDUCATION.map((ed) => (
-                  <li key={ed.school}><span className="font-medium">{ed.school}</span> — {ed.program}</li>
-                ))}
-              </ul>
-            </div>
-          </Section>
-
-          {/* CONTACT */}
-          <Section id="contact" icon={Mail} title="Get in touch">
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-              <p className="text-slate-300/90">For opportunities, collaborations, or questions:</p>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <LinkIcon href={`mailto:${PROFILE.email}`} icon={Mail} label={PROFILE.email} />
-                <LinkIcon href={PROFILE.linkedin} icon={Linkedin} label="LinkedIn" />
-                <LinkIcon href={PROFILE.github} icon={Github} label="GitHub" />
-              </div>
-            </div>
-          </Section>
-
-          <footer className="py-10 text-center text-xs text-slate-500">
-            <p>© {new Date().getFullYear()} {PROFILE.name}. Built with React + Tailwind. Last updated {new Date().toLocaleDateString()}.</p>
-          </footer>
-        </main>
+// ---------- Nav ----------
+const Nav = () => (
+  <div className="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-black/10">
+    <Container className="h-14 flex items-center justify-between text-black">
+      <NavLink to="/" className="font-semibold tracking-tight text-emerald-700">
+        Michael Dang
+      </NavLink>
+      <div className="hidden sm:flex items-center gap-6 text-sm">
+        <NavLink to="/about" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>About</NavLink>
+        <NavLink to="/products" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Products</NavLink>
+        <NavLink to="/projects" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Projects</NavLink>
+        <NavLink to="/readings" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Readings</NavLink>
+        <NavLink to="/contact" className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Contact</NavLink>
+        <a href={PROFILE.resumeUrl} className="rounded-full border border-emerald-300 px-3 py-1.5 hover:border-emerald-500 text-emerald-700">Resume</a>
       </div>
-    </div>
-  );
+    </Container>
+  </div>
+)
+
+// ---------- Pages ----------
+// Minimal Home (giant heading, short desc, huge photo)
+const HomePage = () => (
+  <main className="bg-white text-black">
+    <section className="pt-16 sm:pt-24">
+      <Container>
+        <div className="text-left">
+          <h1 className="text-[44px] sm:text-[76px] leading-[1.05] font-semibold tracking-tight">
+            Hey, I'm Michael.<br/>I build software and hardware.
+          </h1>
+          <p className="mt-4 text-xl sm:text-2xl text-zinc-700 max-w-3xl">
+            {PROFILE.tagline}
+          </p>
+        </div>
+      </Container>
+    </section>
+
+    <section className="py-10 sm:py-14">
+      <Container>
+        {/* Huge photo area */}
+        <ImageTile src={PROFILE.headshot} className="aspect-[16/7]" />
+      </Container>
+    </section>
+  </main>
+)
+
+// About page with details + photo (contacts removed, added Bio section)
+const AboutPage = () => (
+  <main className="bg-white text-black">
+    <section className="pt-12 sm:pt-16">
+      <Container>
+        <div className="grid md:grid-cols-[1.15fr_.85fr] gap-10 items-start">
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">About me</h1>
+            <p className="mt-3 text-zinc-700 max-w-2xl">{PROFILE.subhead}</p>
+
+            {/* Bio section replaces contact buttons */}
+            <div className="mt-6 rounded-2xl border border-emerald-200 p-5 sm:p-6 bg-emerald-50/40">
+              <h3 className="font-medium mb-2 text-emerald-800">Bio</h3>
+              <p className="text-zinc-700">
+                I’m an engineer who likes building measurable, real-world things. My focus is embedded systems, energy
+                monitoring, and clean user interfaces that make hardware approachable. Recently, I’ve shipped an ESP32
+                smart power meter, an Arduino-based oscilloscope, and a BLE mesh data relay. I care about translating
+                ideas into reliable hardware and software with simple controls, sensible defaults, and clear metrics.
+              </p>
+            </div>
+
+            <div className="mt-6 grid sm:grid-cols-2 gap-4">
+              <div className="rounded-2xl border border-emerald-200 p-4 bg-emerald-50/40">
+                <h3 className="font-medium mb-2 text-emerald-800">Interests</h3>
+                <ul className="text-zinc-700 text-sm space-y-1">
+                  <li>• Embedded systems & energy.</li>
+                  <li>• 3D‑ICs & semiconductor packaging.</li>
+                  <li>• Product UX for hardware tools.</li>
+                </ul>
+              </div>
+              <div className="rounded-2xl border border-emerald-200 p-4 bg-emerald-50/40">
+                <h3 className="font-medium mb-2 text-emerald-800">Schooling</h3>
+                <ul className="text-zinc-700 text-sm space-y-1">
+                  <li>• Dartmouth College — Engineering Management & Electrical Engineering ’27.</li>
+                  <li>• Bard College at Simon’s Rock (early college).</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Contact buttons removed here on purpose since there's a dedicated Contact page */}
+          </div>
+
+          <div>
+            <ImageTile src={PROFILE.aboutPhoto || PROFILE.headshot} className="aspect-[4/5]" />
+          </div>
+        </div>
+      </Container>
+    </section>
+  </main>
+)
+
+const ProductsPage = () => (
+  <main className="bg-white text-black">
+    <section className="pt-12 sm:pt-16">
+      <Container>
+        <div className="mb-6">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Products</h1>
+          <p className="mt-2 text-zinc-700">PM-style side projects that highlight problem framing, metrics, and outcomes.</p>
+        </div>
+        <TileGrid items={PRODUCTS} />
+      </Container>
+    </section>
+  </main>
+)
+
+const ProjectsPage = () => (
+  <main className="bg-white text-black">
+    <section className="pt-12 sm:pt-16">
+      <Container>
+        <div className="mb-6">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Projects</h1>
+          <p className="mt-2 text-zinc-700">Engineering builds aimed at rigor, performance, and reliability.</p>
+        </div>
+        <TileGrid items={PROJECTS} />
+      </Container>
+    </section>
+  </main>
+)
+
+const ReadingsPage = () => (
+  <main className="bg-white text-black">
+    <section className="pt-12 sm:pt-16">
+      <Container>
+        <div className="mb-6">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Readings</h1>
+          <p className="mt-2 text-zinc-700">Books, articles, and media reviews related to engineering, PM, and entrepreneurship.</p>
+        </div>
+        <TileGrid items={READINGS} />
+      </Container>
+    </section>
+  </main>
+)
+
+const ContactPage = () => (
+  <main className="bg-white text-black">
+    <section className="pt-12 sm:pt-16">
+      <Container>
+        <div className="rounded-[32px] border border-emerald-200 p-8 sm:p-12 text-center bg-white">
+          <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">Contact</h1>
+          <p className="mt-2 text-zinc-700">Open to internships, research, and collaborations.</p>
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <CTAButton href={`mailto:${PROFILE.email}`}>Email Michael</CTAButton>
+            <GhostButton href={PROFILE.github}>GitHub</GhostButton>
+            <GhostButton href={PROFILE.linkedin}>LinkedIn</GhostButton>
+            <GhostButton href={PROFILE.resumeUrl}>Resume</GhostButton>
+          </div>
+        </div>
+      </Container>
+    </section>
+  </main>
+)
+
+// ---------- Root App ----------
+export default function App() {
+  return (
+    <BrowserRouter>
+      <div className="bg-white text-black min-h-screen">
+        <Nav />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/readings" element={<ReadingsPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+        <Footer />
+      </div>
+    </BrowserRouter>
+  )
 }
