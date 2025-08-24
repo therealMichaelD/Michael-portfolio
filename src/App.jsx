@@ -1,14 +1,13 @@
 import './index.css'
 import React, { useEffect, useRef, useState } from 'react'
-import { BrowserRouter, Routes, Route, NavLink, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, NavLink, useLocation, useParams, Link } from 'react-router-dom'
 import { Mail, Github, Linkedin, FileDown, ArrowRight } from 'lucide-react'
 
 // =====================================================
-// ROUTED PORTFOLIO — MINIMAL HOME HERO + ABOUT PAGE
-// Home: giant heading, short subhead, huge photo area.
-// About: details (interests, schooling, links) + photo.
-// + Responsive: mobile hamburger menu, better tap targets,
-//   safe areas, and small‑screen spacing.
+// PORTFOLIO — Minimal, responsive, emerald-accented
+// - Mobile hamburger menu
+// - Green accents (headings, dividers, hover states)
+// - Detail pages for products/projects/readings
 // =====================================================
 
 const PROFILE = {
@@ -26,30 +25,47 @@ const PROFILE = {
 
 // ---------- Data ----------
 const PRODUCTS = [
-  { id: 'resume-insights', title: 'Resume Insights', subtitle: 'Upload a PDF → get impact bullets, metrics, ATS tips.', image: '/images/resume-insights.png', href: '#' },
-  { id: 'habit-metrics', title: 'Habit Metrics Dashboard', subtitle: 'North-star + input metrics, retention, alerts.', image: '/images/habit-metrics.png', href: '#' },
-  { id: 'placeholder1', title: 'Product Placeholder One', subtitle: 'This is a placeholder description for a future product.', image: '/images/placeholder1.png', href: '#' },
-  { id: 'placeholder2', title: 'Product Placeholder Two', subtitle: 'Another placeholder product idea for PM impact.', image: '/images/placeholder2.png', href: '#' },
+  { id: 'resume-insights', title: 'Resume Insights', subtitle: 'Upload a PDF → get impact bullets, metrics, ATS tips.', image: '/images/resume-insights.png', href: '/products/resume-insights', tags: ['ATS', 'NLP', 'Metrics'] },
+  { id: 'habit-metrics', title: 'Habit Metrics Dashboard', subtitle: 'North-star + input metrics, retention, alerts.', image: '/images/habit-metrics.png', href: '/products/habit-metrics', tags: ['Analytics', 'Dashboards'] },
+  { id: 'placeholder1', title: 'Product Placeholder One', subtitle: 'This is a placeholder description for a future product.', image: '/images/placeholder1.png', href: '/products/placeholder1', tags: ['Ideation'] },
+  { id: 'placeholder2', title: 'Product Placeholder Two', subtitle: 'Another placeholder product idea for PM impact.', image: '/images/placeholder2.png', href: '/products/placeholder2', tags: ['Prototype'] },
 ]
 
 const PROJECTS = [
-  { id: 'power-meter', title: 'ESP32 Smart Power Meter', subtitle: 'Live voltage, current, energy in browser.', image: '/images/power-meter.png', href: '#' },
-  { id: 'oscilloscope', title: 'Arduino Oscilloscope', subtitle: 'Triggering, capture, waveform rendering.', image: '/images/oscilloscope.png', href: '#' },
-  { id: 'ble-mesh', title: 'BLE Mesh Data Relay', subtitle: 'Low‑power sensor network with hop routing.', image: '/images/ble-mesh.png', href: '#' },
-  { id: 'placeholder3', title: 'Project Placeholder One', subtitle: 'This is a placeholder engineering project.', image: '/images/placeholder3.png', href: '#' },
-  { id: 'placeholder4', title: 'Project Placeholder Two', subtitle: 'Another placeholder project with engineering focus.', image: '/images/placeholder4.png', href: '#' },
+  { id: 'power-meter', title: 'ESP32 Smart Power Meter', subtitle: 'Live voltage, current, energy in browser.', image: '/images/power-meter.png', href: '/projects/power-meter', tags: ['ESP32', 'INA219', 'WebSerial'] },
+  { id: 'oscilloscope', title: 'Arduino Oscilloscope', subtitle: 'Triggering, capture, waveform rendering.', image: '/images/oscilloscope.png', href: '/projects/oscilloscope', tags: ['Arduino', 'Signal'] },
+  { id: 'ble-mesh', title: 'BLE Mesh Data Relay', subtitle: 'Low‑power sensor network with hop routing.', image: '/images/ble-mesh.png', href: '/projects/ble-mesh', tags: ['BLE', 'Networking'] },
+  { id: 'placeholder3', title: 'Project Placeholder One', subtitle: 'This is a placeholder engineering project.', image: '/images/placeholder3.png', href: '/projects/placeholder3', tags: ['WIP'] },
+  { id: 'placeholder4', title: 'Project Placeholder Two', subtitle: 'Another placeholder project with engineering focus.', image: '/images/placeholder4.png', href: '/projects/placeholder4', tags: ['WIP'] },
 ]
 
 const READINGS = [
-  { id: 'book1', title: 'The Innovator’s Dilemma', subtitle: 'Clayton Christensen — reflections on disruptive innovation.', image: '/images/book1.png', href: '#' },
-  { id: 'book2', title: 'Inspired', subtitle: 'Marty Cagan — lessons on building tech products.', image: '/images/book2.png', href: '#' },
-  { id: 'placeholder-reading1', title: 'Reading Placeholder One', subtitle: 'Placeholder for a future reading review.', image: '/images/placeholder-reading1.png', href: '#' },
-  { id: 'placeholder-reading2', title: 'Reading Placeholder Two', subtitle: 'Another placeholder entry for reading/media review.', image: '/images/placeholder-reading2.png', href: '#' },
+  { id: 'book1', title: 'The Innovator’s Dilemma', subtitle: 'Clayton Christensen — reflections on disruptive innovation.', image: '/images/book1.png', href: '/readings/book1', tags: ['Strategy'] },
+  { id: 'book2', title: 'Inspired', subtitle: 'Marty Cagan — lessons on building tech products.', image: '/images/book2.png', href: '/readings/book2', tags: ['PM'] },
+  { id: 'placeholder-reading1', title: 'Reading Placeholder One', subtitle: 'Placeholder for a future reading review.', image: '/images/placeholder-reading1.png', href: '/readings/placeholder-reading1', tags: ['Notes'] },
+  { id: 'placeholder-reading2', title: 'Reading Placeholder Two', subtitle: 'Another placeholder entry for reading/media review.', image: '/images/placeholder-reading2.png', href: '/readings/placeholder-reading2', tags: ['Notes'] },
 ]
 
 // ---------- UI helpers ----------
 const Container = ({ children, className='' }) => (
   <div className={`max-w-[1100px] mx-auto px-4 sm:px-6 ${className}`}>{children}</div>
+)
+
+const SectionHeading = ({ children }) => (
+  <div>
+    <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-black">{children}</h1>
+    <div className="mt-2 h-1 w-16 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" />
+  </div>
+)
+
+const AccentBar = () => (
+  <div className="h-px w-full bg-gradient-to-r from-emerald-300/60 via-emerald-500/40 to-emerald-300/60" />
+)
+
+const Badge = ({ children }) => (
+  <span className="inline-flex items-center rounded-full border border-emerald-300/70 bg-emerald-50 px-2.5 py-1 text-xs text-emerald-800">
+    {children}
+  </span>
 )
 
 const ImageTile = ({ src, alt='', className='' }) => (
@@ -67,16 +83,26 @@ const ImageTile = ({ src, alt='', className='' }) => (
 )
 
 const TileCard = ({ item }) => (
-  <a
-    href={item.href}
-    className="group rounded-[32px] overflow-hidden border bg-white text-black border-black/10 hover:shadow-sm transition-shadow focus:outline-none focus:ring-2 focus:ring-emerald-500"
+  <Link
+    to={item.href}
+    className="group rounded-[32px] overflow-hidden border bg-white text-black border-black/10 hover:border-emerald-400/70 hover:shadow-[0_8px_24px_rgba(16,185,129,0.15)] transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500"
   >
     <div className="p-6 sm:p-8">
-      <h3 className="text-xl sm:text-2xl font-semibold tracking-tight">{item.title}</h3>
+      <div className="flex items-center justify-between gap-3">
+        <h3 className="text-xl sm:text-2xl font-semibold tracking-tight">{item.title}</h3>
+        {item.tags?.length ? (
+          <div className="hidden sm:flex gap-2">{item.tags.slice(0,2).map((t)=> <Badge key={t}>{t}</Badge>)}</div>
+        ) : null}
+      </div>
       <p className="mt-2 text-zinc-700 text-sm sm:text-base">{item.subtitle}</p>
     </div>
     <ImageTile src={item.image} className="aspect-[16/10]" />
-  </a>
+    <div className="p-4 sm:p-5">
+      <span className="inline-flex items-center gap-2 text-emerald-700 group-hover:text-emerald-800">
+        View details <ArrowRight className="w-4 h-4" />
+      </span>
+    </div>
+  </Link>
 )
 
 const TileGrid = ({ items }) => (
@@ -125,11 +151,11 @@ const GhostButton = ({ href, children }) => (
 // ---------- Nav (Desktop + Mobile) ----------
 const NavLinks = ({ onNavigate }) => (
   <>
-    <NavLink to="/about" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>About</NavLink>
-    <NavLink to="/products" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Products</NavLink>
-    <NavLink to="/projects" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Projects</NavLink>
-    <NavLink to="/readings" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Readings</NavLink>
-    <NavLink to="/contact" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline':''}`}>Contact</NavLink>
+    <NavLink to="/about" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>About</NavLink>
+    <NavLink to="/products" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Products</NavLink>
+    <NavLink to="/projects" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Projects</NavLink>
+    <NavLink to="/readings" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Readings</NavLink>
+    <NavLink to="/contact" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Contact</NavLink>
   </>
 )
 
@@ -140,7 +166,7 @@ const MobileMenu = ({ open, setOpen }) => {
   // Close on route change
   useEffect(() => { setOpen(false) }, [location.pathname, setOpen])
 
-  // Close on click outside
+  // Close on click outside + ESC
   useEffect(() => {
     function onClick(e) {
       if (open && ref.current && !ref.current.contains(e.target)) setOpen(false)
@@ -160,7 +186,7 @@ const MobileMenu = ({ open, setOpen }) => {
       <div className="absolute inset-0 bg-black/20" />
       <div
         ref={ref}
-        className="absolute top-2 right-2 left-2 rounded-2xl border border-black/10 bg-white p-4 shadow-lg"
+        className="absolute top-2 right-2 left-2 rounded-2xl border border-emerald-300/60 bg-white p-4 shadow-lg"
       >
         <div className="flex items-center justify-between">
           <span className="font-semibold text-emerald-700">Menu</span>
@@ -187,7 +213,9 @@ const Nav = () => {
   const [open, setOpen] = useState(false)
   return (
     <div className="sticky top-0 z-40 backdrop-blur bg-white/70 border-b border-black/10 supports-[padding:max(0px)] pt-safe">
-      {/* Skip link for accessibility */}
+      {/* Top emerald hairline */}
+      <div className="h-0.5 w-full bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-400" />
+      {/* Skip link */}
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:m-2 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:ring-2 focus:ring-emerald-600">
         Skip to content
       </a>
@@ -209,7 +237,7 @@ const Nav = () => {
 
         {/* Mobile hamburger */}
         <button
-          className="sm:hidden rounded-full border border-black/10 px-3 py-2 text-sm hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="sm:hidden rounded-full border border-emerald-300 px-3 py-2 text-sm hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           onClick={()=>setOpen((v)=>!v)}
           aria-label="Open menu"
           aria-expanded={open}
@@ -234,7 +262,7 @@ const HomePage = () => (
           <h1 className="text-[36px] sm:text-[76px] leading-[1.08] sm:leading-[1.05] font-semibold tracking-tight">
             Hey, I'm Michael.<br/>I build software and hardware.
           </h1>
-          <p className="mt-3 sm:mt-4 text-lg sm:text-2xl text-zinc-700 max-w-3xl">
+          <p className="mt-3 sm:mt-4 text-lg sm:text-2xl text-emerald-800 max-w-3xl">
             {PROFILE.tagline}
           </p>
         </div>
@@ -247,53 +275,20 @@ const HomePage = () => (
         <ImageTile src={PROFILE.headshot} className="aspect-[16/10] sm:aspect-[16/7]" />
       </Container>
     </section>
-  </main>
-)
 
-// About page with details + photo (contacts removed, added Bio section)
-const AboutPage = () => (
-  <main className="bg-white text-black">
-    <section className="pt-10 sm:pt-16">
+    <section className="py-8 sm:py-12 bg-gradient-to-b from-white to-emerald-50/40">
       <Container>
-        <div className="grid md:grid-cols-[1.15fr_.85fr] gap-6 sm:gap-10 items-start">
-          <div>
-            <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">About me</h1>
-            <p className="mt-3 text-zinc-700 max-w-2xl">{PROFILE.subhead}</p>
-
-            {/* Bio section */}
-            <div className="mt-5 sm:mt-6 rounded-2xl border border-emerald-200 p-4 sm:p-6 bg-emerald-50/40">
-              <h3 className="font-medium mb-2 text-emerald-800">Bio</h3>
-              <p className="text-zinc-700 text-sm sm:text-base">
-                I’m an engineer who likes building measurable, real‑world things. My focus is embedded systems, energy
-                monitoring, and clean user interfaces that make hardware approachable. Recently, I’ve shipped an ESP32
-                smart power meter, an Arduino‑based oscilloscope, and a BLE mesh data relay. I care about translating
-                ideas into reliable hardware and software with simple controls, sensible defaults, and clear metrics.
-              </p>
-            </div>
-
-            <div className="mt-5 sm:mt-6 grid sm:grid-cols-2 gap-4">
-              <div className="rounded-2xl border border-emerald-200 p-4 bg-emerald-50/40">
-                <h3 className="font-medium mb-2 text-emerald-800">Interests</h3>
-                <ul className="text-zinc-700 text-sm space-y-1">
-                  <li>• Embedded systems & energy.</li>
-                  <li>• 3D‑ICs & semiconductor packaging.</li>
-                  <li>• Product UX for hardware tools.</li>
-                </ul>
-              </div>
-              <div className="rounded-2xl border border-emerald-200 p-4 bg-emerald-50/40">
-                <h3 className="font-medium mb-2 text-emerald-800">Schooling</h3>
-                <ul className="text-zinc-700 text-sm space-y-1">
-                  <li>• Dartmouth College — Engineering Management & Electrical Engineering ’27.</li>
-                  <li>• Bard College at Simon’s Rock (early college).</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Contact buttons intentionally removed (use Contact page). */}
+        <div className="rounded-[28px] border border-emerald-200/70 p-5 sm:p-8 bg-white">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-emerald-800">What I’m building</h2>
+          <p className="mt-2 text-sm sm:text-base text-zinc-700">
+            Embedded systems, power/energy tools, and simple UX for complex hardware. I focus on reliability,
+            metrics, and shipping real things quickly.
+          </p>
+          <div className="mt-4">
+            <AccentBar />
           </div>
-
-          <div className="order-first md:order-none">
-            <ImageTile src={PROFILE.aboutPhoto || PROFILE.headshot} className="aspect-[4/5]" />
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Badge>ESP32</Badge><Badge>Arduino</Badge><Badge>BLE</Badge><Badge>Web UI</Badge>
           </div>
         </div>
       </Container>
@@ -301,15 +296,46 @@ const AboutPage = () => (
   </main>
 )
 
+// About page — stark: just a big Bio block and a headshot
+const AboutPage = () => (
+  <main className="bg-white text-black">
+    <section className="pt-10 sm:pt-16">
+      <Container>
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-10 items-start">
+          {/* Headshot */}
+          <div className="order-first">
+            <ImageTile src={PROFILE.aboutPhoto || PROFILE.headshot} className="aspect-[4/5]" />
+          </div>
+
+          {/* Bio only */}
+          <div>
+            <SectionHeading>About me</SectionHeading>
+            <div className="mt-4 sm:mt-6 rounded-[28px] border border-emerald-200 p-5 sm:p-7 bg-emerald-50/30">
+              <p className="text-zinc-800 text-base sm:text-lg leading-7">
+                I’m an engineer who likes building measurable, real‑world things. My focus is embedded systems, energy
+                monitoring, and clean user interfaces that make hardware approachable. Recently, I’ve shipped an ESP32
+                smart power meter, an Arduino‑based oscilloscope, and a BLE mesh data relay. I care about translating
+                ideas into reliable hardware and software with simple controls, sensible defaults, and clear metrics.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  </main>
+)
+
+// -------------- List Pages
 const ProductsPage = () => (
   <main className="bg-white text-black">
     <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Products</h1>
-          <p className="mt-2 text-zinc-700 text-sm sm:text-base">PM‑style side projects that highlight problem framing, metrics, and outcomes.</p>
+        <SectionHeading>Products</SectionHeading>
+        <p className="mt-2 text-zinc-700 text-sm sm:text-base">PM‑style side projects that highlight problem framing, metrics, and outcomes.</p>
+        <div className="mt-4"><AccentBar /></div>
+        <div className="mt-6">
+          <TileGrid items={PRODUCTS} />
         </div>
-        <TileGrid items={PRODUCTS} />
       </Container>
     </section>
   </main>
@@ -319,11 +345,12 @@ const ProjectsPage = () => (
   <main className="bg-white text-black">
     <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Projects</h1>
-          <p className="mt-2 text-zinc-700 text-sm sm:text-base">Engineering builds aimed at rigor, performance, and reliability.</p>
+        <SectionHeading>Projects</SectionHeading>
+        <p className="mt-2 text-zinc-700 text-sm sm:text-base">Engineering builds aimed at rigor, performance, and reliability.</p>
+        <div className="mt-4"><AccentBar /></div>
+        <div className="mt-6">
+          <TileGrid items={PROJECTS} />
         </div>
-        <TileGrid items={PROJECTS} />
       </Container>
     </section>
   </main>
@@ -333,22 +360,124 @@ const ReadingsPage = () => (
   <main className="bg-white text-black">
     <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Readings</h1>
-          <p className="mt-2 text-zinc-700 text-sm sm:text-base">Books, articles, and media reviews related to engineering, PM, and entrepreneurship.</p>
+        <SectionHeading>Readings</SectionHeading>
+        <p className="mt-2 text-zinc-700 text-sm sm:text-base">Books, articles, and media reviews related to engineering, PM, and entrepreneurship.</p>
+        <div className="mt-4"><AccentBar /></div>
+        <div className="mt-6">
+          <TileGrid items={READINGS} />
         </div>
-        <TileGrid items={READINGS} />
       </Container>
     </section>
   </main>
 )
+
+// -------------- Detail Page Template
+const datasetByType = {
+  products: PRODUCTS,
+  projects: PROJECTS,
+  readings: READINGS,
+}
+
+function findItem(type, id) {
+  const list = datasetByType[type] || []
+  return list.find((x) => x.id === id)
+}
+
+const ItemDetail = ({ type }) => {
+  const { id } = useParams()
+  const item = findItem(type, id)
+
+  if (!item) {
+    return (
+      <main className="bg-white text-black">
+        <section className="pt-10 sm:pt-16">
+          <Container>
+            <SectionHeading>Not found</SectionHeading>
+            <p className="mt-3 text-zinc-700">We couldn’t find that entry. Try the list page.</p>
+            <div className="mt-5 flex gap-3">
+              <GhostButton href={`/${type}`}>Back to {type}</GhostButton>
+            </div>
+          </Container>
+        </section>
+      </main>
+    )
+  }
+
+  return (
+    <main className="bg-white text-black">
+      <section className="pt-10 sm:pt-16">
+        <Container>
+          <div className="flex items-center justify-between gap-4">
+            <SectionHeading>{item.title}</SectionHeading>
+            <Link
+              to={`/${type}`}
+              className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+            >
+              ← Back to {type}
+            </Link>
+          </div>
+          <p className="mt-2 text-zinc-700">{item.subtitle}</p>
+
+          <div className="mt-4"><AccentBar /></div>
+
+          <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-start">
+            <div className="space-y-4">
+              <ImageTile src={item.image} className="aspect-[16/9]" />
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4">
+                <h3 className="font-medium text-emerald-800">Overview</h3>
+                <p className="mt-2 text-sm sm:text-base text-zinc-700">
+                  Replace this paragraph with a short write‑up: problem, approach, and outcomes.
+                  Add metrics if possible (e.g., accuracy %, latency ms, power savings, or engagement lift).
+                </p>
+                {item.tags?.length ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {item.tags.map((t)=> <Badge key={t}>{t}</Badge>)}
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-black/10 p-4">
+                <h4 className="font-medium text-black">Links</h4>
+                <ul className="mt-2 text-sm text-emerald-800">
+                  <li><a className="hover:underline" href="#">Demo (placeholder)</a></li>
+                  <li><a className="hover:underline" href="#">Repo (placeholder)</a></li>
+                  <li><a className="hover:underline" href="#">Writeup (placeholder)</a></li>
+                </ul>
+              </div>
+              <div className="rounded-2xl border border-black/10 p-4">
+                <h4 className="font-medium text-black">Highlights</h4>
+                <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                  <li>• Clear problem framing.</li>
+                  <li>• Small, iterative milestones.</li>
+                  <li>• Measurable outcome/metric.</li>
+                </ul>
+              </div>
+              <Link
+                to={`/${type}`}
+                className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+              >
+                ← Back to {type}
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </section>
+    </main>
+  )
+}
+
+const ProductDetail = () => <ItemDetail type="products" />
+const ProjectDetail  = () => <ItemDetail type="projects" />
+const ReadingDetail  = () => <ItemDetail type="readings" />
 
 const ContactPage = () => (
   <main className="bg-white text-black">
     <section className="pt-10 sm:pt-16">
       <Container>
         <div className="rounded-[32px] border border-emerald-200 p-6 sm:p-12 text-center bg-white">
-          <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight">Contact</h1>
+          <SectionHeading>Contact</SectionHeading>
           <p className="mt-2 text-zinc-700 text-sm sm:text-base">Open to internships, research, and collaborations.</p>
           <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-3">
             <CTAButton href={`mailto:${PROFILE.email}`}>Email Michael</CTAButton>
@@ -370,10 +499,18 @@ export default function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<HomePage />} />
+
           <Route path="/about" element={<AboutPage />} />
+
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
+
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:id" element={<ProjectDetail />} />
+
           <Route path="/readings" element={<ReadingsPage />} />
+          <Route path="/readings/:id" element={<ReadingDetail />} />
+
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
         <Footer />
@@ -381,3 +518,4 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
