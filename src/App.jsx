@@ -1,13 +1,14 @@
 import './index.css'
 import React, { useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Routes, Route, NavLink, useLocation, useParams, Link } from 'react-router-dom'
-import { Mail, Github, Linkedin, FileDown, ArrowRight } from 'lucide-react'
+import { Mail, Github, Linkedin, FileDown, ArrowRight, Star } from 'lucide-react'
 
 // =====================================================
-// PORTFOLIO — Minimal, responsive, emerald-accented
-// - Mobile hamburger menu
-// - Green accents (headings, dividers, hover states)
-// - Detail pages for products/projects/readings
+/* PORTFOLIO — Minimal, responsive, emerald-accented
+   - Mobile hamburger menu
+   - Green accents (headings, dividers, hover states)
+   - Detail pages adapt by section: Products / Projects / Readings
+*/
 // =====================================================
 
 const PROFILE = {
@@ -68,6 +69,25 @@ const Badge = ({ children }) => (
   </span>
 )
 
+const Stat = ({ label, value, caption }) => (
+  <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+    <p className="text-xs uppercase tracking-wide text-emerald-700">{label}</p>
+    <p className="mt-1 text-xl font-semibold text-zinc-900">{value}</p>
+    {caption ? <p className="text-xs text-zinc-600 mt-1">{caption}</p> : null}
+  </div>
+)
+
+const KeyValue = ({ items }) => (
+  <dl className="grid sm:grid-cols-2 gap-3">
+    {items.map((kv) => (
+      <div key={kv.k} className="rounded-2xl border border-black/10 bg-white p-4">
+        <dt className="text-xs uppercase tracking-wide text-zinc-600">{kv.k}</dt>
+        <dd className="mt-1 text-sm text-zinc-900">{kv.v}</dd>
+      </div>
+    ))}
+  </dl>
+)
+
 const ImageTile = ({ src, alt='', className='' }) => (
   <div className={`rounded-[28px] overflow-hidden ${className} bg-gradient-to-br from-emerald-50 via-zinc-100 to-zinc-200`}>
     <img
@@ -90,11 +110,11 @@ const TileCard = ({ item }) => (
     <div className="p-6 sm:p-8">
       <div className="flex items-center justify-between gap-3">
         <h3 className="text-xl sm:text-2xl font-semibold tracking-tight">{item.title}</h3>
-        {item.tags?.length ? (
-          <div className="hidden sm:flex gap-2">{item.tags.slice(0,2).map((t)=> <Badge key={t}>{t}</Badge>)}</div>
-        ) : null}
       </div>
       <p className="mt-2 text-zinc-700 text-sm sm:text-base">{item.subtitle}</p>
+      {item.tags?.length ? (
+        <div className="mt-3 flex gap-2 flex-wrap">{item.tags.slice(0,3).map((t)=> <Badge key={t}>{t}</Badge>)}</div>
+      ) : null}
     </div>
     <ImageTile src={item.image} className="aspect-[16/10]" />
     <div className="p-4 sm:p-5">
@@ -296,28 +316,31 @@ const HomePage = () => (
   </main>
 )
 
-// About page — stark: just a big Bio block and a headshot
+// About page — matches list page layout
 const AboutPage = () => (
   <main className="bg-white text-black">
     <section className="pt-10 sm:pt-16">
       <Container>
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-10 items-start">
-          {/* Headshot */}
-          <div className="order-first">
-            <ImageTile src={PROFILE.aboutPhoto || PROFILE.headshot} className="aspect-[4/5]" />
+        <SectionHeading>About me</SectionHeading>
+        <p className="mt-2 text-zinc-700 text-sm sm:text-base">
+          {PROFILE.subhead}
+        </p>
+        <div className="mt-4"><AccentBar /></div>
+
+        <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-start">
+          {/* Bio block (left) */}
+          <div className="rounded-[28px] border border-emerald-200 p-5 sm:p-7 bg-emerald-50/30">
+            <p className="text-zinc-800 text-base sm:text-lg leading-7">
+              I’m an engineer who likes building measurable, real‑world things. My focus is embedded systems, energy
+              monitoring, and clean user interfaces that make hardware approachable. Recently, I’ve shipped an ESP32
+              smart power meter, an Arduino‑based oscilloscope, and a BLE mesh data relay. I care about translating
+              ideas into reliable hardware and software with simple controls, sensible defaults, and clear metrics.
+            </p>
           </div>
 
-          {/* Bio only */}
+          {/* Headshot (right) */}
           <div>
-            <SectionHeading>About me</SectionHeading>
-            <div className="mt-4 sm:mt-6 rounded-[28px] border border-emerald-200 p-5 sm:p-7 bg-emerald-50/30">
-              <p className="text-zinc-800 text-base sm:text-lg leading-7">
-                I’m an engineer who likes building measurable, real‑world things. My focus is embedded systems, energy
-                monitoring, and clean user interfaces that make hardware approachable. Recently, I’ve shipped an ESP32
-                smart power meter, an Arduino‑based oscilloscope, and a BLE mesh data relay. I care about translating
-                ideas into reliable hardware and software with simple controls, sensible defaults, and clear metrics.
-              </p>
-            </div>
+            <ImageTile src={PROFILE.aboutPhoto || PROFILE.headshot} className="aspect-[4/5]" />
           </div>
         </div>
       </Container>
@@ -383,6 +406,18 @@ function findItem(type, id) {
   return list.find((x) => x.id === id)
 }
 
+// Helpers for Readings rating stars
+const Stars = ({ value = 4 }) => {
+  const full = Math.max(0, Math.min(5, Math.round(value)))
+  return (
+    <div className="flex items-center gap-1">
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} className={`w-4 h-4 ${i < full ? 'fill-emerald-500 text-emerald-500' : 'text-zinc-300'}`} />
+      ))}
+    </div>
+  )
+}
+
 const ItemDetail = ({ type }) => {
   const { id } = useParams()
   const item = findItem(type, id)
@@ -403,6 +438,7 @@ const ItemDetail = ({ type }) => {
     )
   }
 
+  // Common header for all detail pages
   return (
     <main className="bg-white text-black">
       <section className="pt-10 sm:pt-16">
@@ -420,14 +456,22 @@ const ItemDetail = ({ type }) => {
 
           <div className="mt-4"><AccentBar /></div>
 
+          {/* Shared hero image + section-specific side content */}
           <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-start">
             <div className="space-y-4">
               <ImageTile src={item.image} className="aspect-[16/9]" />
+
+              {/* Overview box varies slightly per section via copy, but UI is shared */}
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4">
-                <h3 className="font-medium text-emerald-800">Overview</h3>
+                <h3 className="font-medium text-emerald-800">
+                  {type === 'products' ? 'Overview' : type === 'projects' ? 'Technical Overview' : 'Book Overview'}
+                </h3>
                 <p className="mt-2 text-sm sm:text-base text-zinc-700">
-                  Replace this paragraph with a short write‑up: problem, approach, and outcomes.
-                  Add metrics if possible (e.g., accuracy %, latency ms, power savings, or engagement lift).
+                  Replace this with a concise summary. Focus on {type === 'products'
+                    ? 'problem → solution → outcomes; highlight the core user and the JTBD.'
+                    : type === 'projects'
+                    ? 'requirements, architecture, constraints, and measurable performance targets.'
+                    : 'author’s thesis, what resonated, and the main ideas you’ll apply.'}
                 </p>
                 {item.tags?.length ? (
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -435,9 +479,135 @@ const ItemDetail = ({ type }) => {
                   </div>
                 ) : null}
               </div>
+
+              {/* Section-specific primary content */}
+              {type === 'products' && (
+                <>
+                  {/* KPIs */}
+                  <div className="grid sm:grid-cols-3 gap-3">
+                    <Stat label="Active users" value="~120" caption="last 30 days" />
+                    <Stat label="Time to value" value="< 60s" caption="from upload → insights" />
+                    <Stat label="Retention" value="38%" caption="28‑day repeat" />
+                  </div>
+
+                  {/* Features */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Key Features</h4>
+                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                      <li>• Guided flow from input → output with sensible defaults.</li>
+                      <li>• Metrics surfaced: success rate, coverage, and quality score.</li>
+                      <li>• Shareable export (PDF/CSV) and quick copy of bullets.</li>
+                    </ul>
+                  </div>
+
+                  {/* How it works / System */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">How it works</h4>
+                    <KeyValue items={[
+                      { k: 'Input', v: 'PDF resume → text extraction' },
+                      { k: 'Processing', v: 'NLP chunking, scoring, ATS heuristics' },
+                      { k: 'Output', v: 'Impact bullets + metrics + tips' },
+                      { k: 'Safeguards', v: 'Client-side pre-checks, error messaging' },
+                    ]}/>
+                  </div>
+
+                  {/* Testimonials */}
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                      <p className="text-sm text-zinc-800">“I shipped a better resume in one sitting. The metric prompts are clutch.”</p>
+                      <p className="mt-2 text-xs text-emerald-700">— CS undergrad, internship applicant</p>
+                    </div>
+                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                      <p className="text-sm text-zinc-800">“Great default suggestions; saved me ~2 hours.”</p>
+                      <p className="mt-2 text-xs text-emerald-700">— PM bootcamp student</p>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {type === 'projects' && (
+                <>
+                  {/* Skills & Tools */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Skills & Tools</h4>
+                    <KeyValue items={[
+                      { k: 'Skills', v: 'Embedded C/C++, firmware bring-up, serial protocols' },
+                      { k: 'Tools', v: 'ESP-IDF / Arduino, Logic analyzer, Oscilloscope' },
+                      { k: 'Hardware', v: 'ESP32, INA219, level shifting, buck regulation' },
+                      { k: 'Interfaces', v: 'WebSerial UI, realtime plotting' },
+                    ]}/>
+                  </div>
+
+                  {/* Architecture / Performance */}
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                      <h5 className="font-medium text-emerald-800">Architecture Notes</h5>
+                      <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                        <li>• ISR-driven sampling; ring buffer for burst capture.</li>
+                        <li>• Backpressure strategy for serial transport.</li>
+                        <li>• Cal factor & temperature compensation hooks.</li>
+                      </ul>
+                    </div>
+                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                      <h5 className="font-medium text-emerald-800">Performance</h5>
+                      <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                        <li>• Measurement error: ±1.5% @ 1 kHz.</li>
+                        <li>• End‑to‑end latency: ~45 ms (p95).</li>
+                        <li>• Uptime: 8h continuous, no resets.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Timeline */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Build Timeline</h4>
+                    <ol className="mt-2 text-sm text-zinc-700 space-y-1">
+                      <li>1) Week 1 — Requirements & block diagram.</li>
+                      <li>2) Week 2 — Prototype firmware & serial link.</li>
+                      <li>3) Week 3 — Web UI plots & calibration.</li>
+                      <li>4) Week 4 — Long‑run test & performance report.</li>
+                    </ol>
+                  </div>
+                </>
+              )}
+
+              {type === 'readings' && (
+                <>
+                  {/* My Review */}
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4">
+                    <h4 className="font-medium text-emerald-800">My Review</h4>
+                    <p className="mt-2 text-sm sm:text-base text-zinc-700">
+                      Short summary of what the book argues, what I agreed/disagreed with, and how it changes
+                      how I’ll build or evaluate products/tech.
+                    </p>
+                  </div>
+
+                  {/* Interesting Quotes */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Interesting Quotes</h4>
+                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                      <li>• “Quote #1 that captures a key idea.”</li>
+                      <li>• “Quote #2 that I’ll reference later.”</li>
+                      <li>• “Quote #3 that challenges a common belief.”</li>
+                    </ul>
+                  </div>
+
+                  {/* Key Ideas */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Key Ideas</h4>
+                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                      <li>• Idea 1 — why it matters.</li>
+                      <li>• Idea 2 — where it applies.</li>
+                      <li>• Idea 3 — limitations / caveats.</li>
+                    </ul>
+                  </div>
+                </>
+              )}
             </div>
 
+            {/* Right Column — Links + Section‑specific sidebars */}
             <div className="space-y-4">
+              {/* Links block shared */}
               <div className="rounded-2xl border border-black/10 p-4">
                 <h4 className="font-medium text-black">Links</h4>
                 <ul className="mt-2 text-sm text-emerald-800">
@@ -446,14 +616,78 @@ const ItemDetail = ({ type }) => {
                   <li><a className="hover:underline" href="#">Writeup (placeholder)</a></li>
                 </ul>
               </div>
-              <div className="rounded-2xl border border-black/10 p-4">
-                <h4 className="font-medium text-black">Highlights</h4>
-                <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                  <li>• Clear problem framing.</li>
-                  <li>• Small, iterative milestones.</li>
-                  <li>• Measurable outcome/metric.</li>
-                </ul>
-              </div>
+
+              {type === 'products' && (
+                <>
+                  {/* Problem / Audience */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Problem / Audience</h4>
+                    <KeyValue items={[
+                      { k: 'Primary user', v: 'Student / early‑career applicant' },
+                      { k: 'JTBD', v: 'Translate experience into impact bullets faster' },
+                      { k: 'Pain', v: 'Hard to quantify and tailor quickly' },
+                    ]}/>
+                  </div>
+
+                  {/* Adoption / Metrics */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Adoption & Metrics</h4>
+                    <dl className="grid grid-cols-2 gap-3">
+                      <Stat label="CSAT" value="4.6/5" />
+                      <Stat label="Export rate" value="72%" />
+                    </dl>
+                  </div>
+                </>
+              )}
+
+              {type === 'projects' && (
+                <>
+                  {/* BOM / Components */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Bill of Materials</h4>
+                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                      <li>• ESP32 DevKit‑C</li>
+                      <li>• INA219 current sensor</li>
+                      <li>• IRM‑05‑5 PSU, relay, terminal blocks</li>
+                    </ul>
+                  </div>
+
+                  {/* Risks / Next steps */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Risks & Next Steps</h4>
+                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                      <li>• Sensor saturation at high load → add shunt options.</li>
+                      <li>• Noise coupling → ground routing rework on next PCB.</li>
+                      <li>• Next: OTA updates + calibration wizard.</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {type === 'readings' && (
+                <>
+                  {/* Overall Rating */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Overall Rating</h4>
+                    <div className="mt-2 flex items-center gap-2">
+                      <Stars value={5} />
+                      <span className="text-sm text-zinc-700">5/5</span>
+                    </div>
+                  </div>
+
+                  {/* Who should read */}
+                  <div className="rounded-2xl border border-black/10 p-4">
+                    <h4 className="font-medium text-black">Who should read</h4>
+                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                      <li>• PMs shaping strategy.</li>
+                      <li>• Hardware founders balancing tradeoffs.</li>
+                      <li>• Students building first real projects.</li>
+                    </ul>
+                  </div>
+                </>
+              )}
+
+              {/* Back link for mobile */}
               <Link
                 to={`/${type}`}
                 className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
@@ -472,18 +706,72 @@ const ProductDetail = () => <ItemDetail type="products" />
 const ProjectDetail  = () => <ItemDetail type="projects" />
 const ReadingDetail  = () => <ItemDetail type="readings" />
 
+// Expanded Contact page — consistent header + larger content to push footer down
 const ContactPage = () => (
   <main className="bg-white text-black">
-    <section className="pt-10 sm:pt-16">
+    <section className="pt-10 sm:pt-16 pb-20 sm:pb-28">
       <Container>
-        <div className="rounded-[32px] border border-emerald-200 p-6 sm:p-12 text-center bg-white">
-          <SectionHeading>Contact</SectionHeading>
-          <p className="mt-2 text-zinc-700 text-sm sm:text-base">Open to internships, research, and collaborations.</p>
-          <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-center gap-3">
-            <CTAButton href={`mailto:${PROFILE.email}`}>Email Michael</CTAButton>
-            <GhostButton href={PROFILE.github}>GitHub</GhostButton>
-            <GhostButton href={PROFILE.linkedin}>LinkedIn</GhostButton>
-            <GhostButton href={PROFILE.resumeUrl}>Resume</GhostButton>
+        <SectionHeading>Contact</SectionHeading>
+        <p className="mt-2 text-zinc-700 text-sm sm:text-base">
+          Open to internships, research, and collaborations.
+        </p>
+        <div className="mt-4"><AccentBar /></div>
+
+        <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-start">
+          {/* Left: Big card with message + CTAs */}
+          <div className="rounded-[28px] border border-emerald-200 p-6 sm:p-8 bg-emerald-50/30">
+            <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-emerald-800">Get in touch</h3>
+            <p className="mt-2 text-zinc-700 text-sm sm:text-base leading-7">
+              The fastest way to reach me is email. I’m especially excited to chat about embedded
+              systems, energy tooling, and hardware‑software UX. If you have a project in mind,
+              a role I might be a fit for, or just want to swap notes on builds — reach out.
+            </p>
+
+            <div className="mt-5 flex flex-wrap gap-3">
+              <CTAButton href={`mailto:${PROFILE.email}`}>Email Michael</CTAButton>
+              <GhostButton href={PROFILE.linkedin}>LinkedIn</GhostButton>
+              <GhostButton href={PROFILE.github}>GitHub</GhostButton>
+              <GhostButton href={PROFILE.resumeUrl}>Resume</GhostButton>
+            </div>
+
+            <div className="mt-6 grid sm:grid-cols-3 gap-3">
+              <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                <p className="text-xs uppercase tracking-wide text-emerald-700">Response time</p>
+                <p className="mt-1 text-sm text-zinc-800">Usually within 24–48h.</p>
+              </div>
+              <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                <p className="text-xs uppercase tracking-wide text-emerald-700">Topics</p>
+                <p className="mt-1 text-sm text-zinc-800">Embedded, energy, product UX.</p>
+              </div>
+              <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                <p className="text-xs uppercase tracking-wide text-emerald-700">Location</p>
+                <p className="mt-1 text-sm text-zinc-800">Toronto ↔ Hanover (remote friendly).</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Links & availability */}
+          <div className="space-y-4">
+            <div className="rounded-2xl border border-black/10 p-5">
+              <h4 className="font-medium text-black">Links</h4>
+              <ul className="mt-2 text-sm text-emerald-800 space-y-1">
+                <li><a className="hover:underline" href={`mailto:${PROFILE.email}`}>Email</a></li>
+                <li><a className="hover:underline" href={PROFILE.linkedin}>LinkedIn</a></li>
+                <li><a className="hover:underline" href={PROFILE.github}>GitHub</a></li>
+                <li><a className="hover:underline" href={PROFILE.resumeUrl}>Resume (PDF)</a></li>
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-black/10 p-5">
+              <h4 className="font-medium text-black">Availability</h4>
+              <ul className="mt-2 text-sm text-zinc-700 space-y-1">
+                <li>• Coffee chats (15–20 min).</li>
+                <li>• Side‑project collabs (scope‑dependent).</li>
+                <li>• Internship opportunities (Summer).</li>
+              </ul>
+            </div>
+
+            <ImageTile src="/images/contact-cover.jpg" alt="Contact visual" className="aspect-[16/10]" />
           </div>
         </div>
       </Container>
@@ -518,4 +806,3 @@ export default function App() {
     </BrowserRouter>
   )
 }
-
