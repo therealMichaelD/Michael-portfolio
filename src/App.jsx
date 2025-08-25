@@ -49,12 +49,12 @@ const READINGS = [
 
 // ---------- UI helpers ----------
 const Container = ({ children, className='' }) => (
-  <div className={`max-w-[1100px] mx-auto px-4 sm:px-6 ${className}`}>{children}</div>
+  <div className={`max-w-[1320px] xl:max-w-[1440px] mx-auto px-4 sm:px-8 ${className}`}>{children}</div>
 )
 
 const SectionHeading = ({ children }) => (
   <div>
-    <h1 className="text-3xl sm:text-5xl font-semibold tracking-tight text-black">{children}</h1>
+    <h1 className="text-4xl sm:text-6xl font-semibold tracking-tight text-black">{children}</h1>
     <div className="mt-2 h-1 w-16 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" />
   </div>
 )
@@ -107,9 +107,9 @@ const TileCard = ({ item }) => (
     to={item.href}
     className="group rounded-[32px] overflow-hidden border bg-white text-black border-black/10 hover:border-emerald-400/70 hover:shadow-[0_8px_24px_rgba(16,185,129,0.15)] transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500"
   >
-    <div className="p-6 sm:p-8">
+    <div className="p-7 sm:p-9">
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-xl sm:text-2xl font-semibold tracking-tight">{item.title}</h3>
+        <h3 className="text-2xl sm:text-[28px] font-semibold tracking-tight">{item.title}</h3>
       </div>
       <p className="mt-2 text-zinc-700 text-sm sm:text-base">{item.subtitle}</p>
       {item.tags?.length ? (
@@ -117,7 +117,7 @@ const TileCard = ({ item }) => (
       ) : null}
     </div>
     <ImageTile src={item.image} className="aspect-[16/10]" />
-    <div className="p-4 sm:p-5">
+    <div className="p-5 sm:p-6">
       <span className="inline-flex items-center gap-2 text-emerald-700 group-hover:text-emerald-800">
         View details <ArrowRight className="w-4 h-4" />
       </span>
@@ -126,7 +126,7 @@ const TileCard = ({ item }) => (
 )
 
 const TileGrid = ({ items }) => (
-  <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+  <div className="grid gap-5 sm:gap-7 md:grid-cols-2 xl:grid-cols-3">
     {items.map((p) => (
       <TileCard key={p.id} item={p} />
     ))}
@@ -279,10 +279,10 @@ const HomePage = () => (
     <section className="pt-12 sm:pt-24">
       <Container>
         <div className="text-left">
-          <h1 className="text-[36px] sm:text-[76px] leading-[1.08] sm:leading-[1.05] font-semibold tracking-tight">
+          <h1 className="text-[44px] sm:text-[92px] leading-[1.08] sm:leading-[1.05] font-semibold tracking-tight">
             Hey, I'm Michael.<br/>All-In On Tech Management.
           </h1>
-          <p className="mt-3 sm:mt-4 text-lg sm:text-2xl text-emerald-800 max-w-3xl">
+          <p className="mt-3 sm:mt-4 text-xl sm:text-3xl text-emerald-800 max-w-3xl">
             {PROFILE.tagline}
           </p>
         </div>
@@ -292,25 +292,7 @@ const HomePage = () => (
     <section className="py-6 sm:py-14">
       <Container>
         {/* Huge photo area */}
-        <ImageTile src={PROFILE.headshot} className="aspect-[16/10] sm:aspect-[16/7]" />
-      </Container>
-    </section>
-
-    <section className="py-8 sm:py-12 bg-gradient-to-b from-white to-emerald-50/40">
-      <Container>
-        <div className="rounded-[28px] border border-emerald-200/70 p-5 sm:p-8 bg-white">
-          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-emerald-800">What I’m building</h2>
-          <p className="mt-2 text-sm sm:text-base text-zinc-700">
-            Embedded systems, power/energy tools, and simple UX for complex hardware. I focus on reliability,
-            metrics, and shipping real things quickly.
-          </p>
-          <div className="mt-4">
-            <AccentBar />
-          </div>
-          <div className="mt-5 flex flex-wrap gap-2">
-            <Badge>ESP32</Badge><Badge>Arduino</Badge><Badge>BLE</Badge><Badge>Web UI</Badge>
-          </div>
-        </div>
+        <ImageTile src={PROFILE.headshot} className="aspect-[16/9] sm:aspect-[16/6]" />
       </Container>
     </section>
   </main>
@@ -327,7 +309,7 @@ const AboutPage = () => (
         </p>
         <div className="mt-4"><AccentBar /></div>
 
-        <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-start">
+        <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 xl:gap-8 items-start">
           {/* Bio block (left) */}
           <div className="rounded-[28px] border border-emerald-200 p-5 sm:p-7 bg-emerald-50/30">
             <p className="text-zinc-800 text-base sm:text-lg leading-7">
@@ -457,7 +439,7 @@ const ItemDetail = ({ type }) => {
           <div className="mt-4"><AccentBar /></div>
 
           {/* Shared hero image + section-specific side content */}
-          <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-start">
+          <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 xl:gap-8 items-start">
             <div className="space-y-4">
               <ImageTile src={item.image} className="aspect-[16/9]" />
 
@@ -712,66 +694,17 @@ const ContactPage = () => (
     <section className="pt-10 sm:pt-16 pb-20 sm:pb-28">
       <Container>
         <SectionHeading>Contact</SectionHeading>
-        <p className="mt-2 text-zinc-700 text-sm sm:text-base">
-          Open to internships, research, and collaborations.
-        </p>
         <div className="mt-4"><AccentBar /></div>
 
-        <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 items-start">
-          {/* Left: Big card with message + CTAs */}
+        <div className="mt-6">
           <div className="rounded-[28px] border border-emerald-200 p-6 sm:p-8 bg-emerald-50/30">
-            <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-emerald-800">Get in touch</h3>
-            <p className="mt-2 text-zinc-700 text-sm sm:text-base leading-7">
-              The fastest way to reach me is email. I’m especially excited to chat about embedded
-              systems, energy tooling, and hardware‑software UX. If you have a project in mind,
-              a role I might be a fit for, or just want to swap notes on builds — reach out.
-            </p>
-
+            <h3 className="text-2xl sm:text-[28px] font-semibold tracking-tight text-emerald-800">Contact Michael</h3>
             <div className="mt-5 flex flex-wrap gap-3">
               <CTAButton href={`mailto:${PROFILE.email}`}>Email Michael</CTAButton>
-              <GhostButton href={PROFILE.linkedin}>LinkedIn</GhostButton>
               <GhostButton href={PROFILE.github}>GitHub</GhostButton>
+              <GhostButton href={PROFILE.linkedin}>LinkedIn</GhostButton>
               <GhostButton href={PROFILE.resumeUrl}>Resume</GhostButton>
             </div>
-
-            <div className="mt-6 grid sm:grid-cols-3 gap-3">
-              <div className="rounded-2xl border border-emerald-200 bg-white p-4">
-                <p className="text-xs uppercase tracking-wide text-emerald-700">Response time</p>
-                <p className="mt-1 text-sm text-zinc-800">Usually within 24–48h.</p>
-              </div>
-              <div className="rounded-2xl border border-emerald-200 bg-white p-4">
-                <p className="text-xs uppercase tracking-wide text-emerald-700">Topics</p>
-                <p className="mt-1 text-sm text-zinc-800">Embedded, energy, product UX.</p>
-              </div>
-              <div className="rounded-2xl border border-emerald-200 bg-white p-4">
-                <p className="text-xs uppercase tracking-wide text-emerald-700">Location</p>
-                <p className="mt-1 text-sm text-zinc-800">Toronto ↔ Hanover (remote friendly).</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Links & availability */}
-          <div className="space-y-4">
-            <div className="rounded-2xl border border-black/10 p-5">
-              <h4 className="font-medium text-black">Links</h4>
-              <ul className="mt-2 text-sm text-emerald-800 space-y-1">
-                <li><a className="hover:underline" href={`mailto:${PROFILE.email}`}>Email</a></li>
-                <li><a className="hover:underline" href={PROFILE.linkedin}>LinkedIn</a></li>
-                <li><a className="hover:underline" href={PROFILE.github}>GitHub</a></li>
-                <li><a className="hover:underline" href={PROFILE.resumeUrl}>Resume (PDF)</a></li>
-              </ul>
-            </div>
-
-            <div className="rounded-2xl border border-black/10 p-5">
-              <h4 className="font-medium text-black">Availability</h4>
-              <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                <li>• Coffee chats (15–20 min).</li>
-                <li>• Side‑project collabs (scope‑dependent).</li>
-                <li>• Internship opportunities (Summer).</li>
-              </ul>
-            </div>
-
-            <ImageTile src="/images/contact-cover.jpg" alt="Contact visual" className="aspect-[16/10]" />
           </div>
         </div>
       </Container>
