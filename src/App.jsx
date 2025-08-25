@@ -14,14 +14,14 @@ import { Mail, Github, Linkedin, FileDown, ArrowRight, Star } from 'lucide-react
 const PROFILE = {
   name: 'Michael Dang',
   tagline: 'Engineering Management and Electrical Engineering @ Dartmouth',
-  headline: 'I build software and hardware.',
+  headline: 'All-in on Tech Management',
   subhead: 'Embedded systems, energy monitors, and clean UX. I ship real things.',
-  email: 'your.email@dartmouth.edu',
-  github: 'https://github.com/your-handle',
-  linkedin: 'https://www.linkedin.com/in/your-handle/',
+  email: 'Michael.Dang3000@gmail.com',
+  github: 'https://github.com/therealMichaelD',
+  linkedin: 'https://www.linkedin.com/in/michaeldang1/',
   resumeUrl: '/Michael_Dang_Resume.pdf',
-  headshot: '/images/headshot.jpg',          // Home hero photo (big)
-  aboutPhoto: '/images/about-headshot.jpg',  // Optional different photo for About
+  headshot: '/HomePagePhoto.jpg',          // Home hero photo (big)
+  aboutPhoto: '/PortfolioHeadshot.jpg',  // Optional different photo for About
 }
 
 // ---------- Data ----------
@@ -280,7 +280,7 @@ const HomePage = () => (
       <Container>
         <div className="text-left">
           <h1 className="text-[36px] sm:text-[76px] leading-[1.08] sm:leading-[1.05] font-semibold tracking-tight">
-            Hey, I'm Michael.<br/>I build software and hardware.
+            Hey, I'm Michael.<br/>All-In On Tech Management.
           </h1>
           <p className="mt-3 sm:mt-4 text-lg sm:text-2xl text-emerald-800 max-w-3xl">
             {PROFILE.tagline}
