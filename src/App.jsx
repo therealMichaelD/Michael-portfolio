@@ -1,53 +1,320 @@
+// App.jsx
+// =====================================================
+// HOW TO EDIT CONTENT (TEXT + IMAGES) ✍️🖼️
+// 1) Scroll down to the DATA SECTION (around line ~80).
+// 2) For each item under PRODUCTS / PROJECTS / READINGS, edit:
+//    - title, subtitle
+//    - heroImage (main image on detail page)
+//    - gallery: add more images (URLs) + optional captions
+//    - blocks: you can edit each block's copy, lists, stats, reviews, etc.
+// 3) Every place that says  ✅ EDIT TEXT HERE  or  🖼️ ADD/CHANGE IMAGE HERE
+//    is safe to modify. These are plain strings/arrays—no code changes required.
+// 4) You can also add/remove entire blocks (e.g., add a new "features" entry or
+//    another "review")—the UI will render them automatically.
+// =====================================================
+
 import './index.css'
 import React, { useEffect, useRef, useState } from 'react'
 import { BrowserRouter, Routes, Route, NavLink, useLocation, useParams, Link } from 'react-router-dom'
 import { Mail, Github, Linkedin, FileDown, ArrowRight, Star } from 'lucide-react'
 
 // =====================================================
-/* PORTFOLIO — Minimal, responsive, emerald-accented
-   - Mobile hamburger menu
-   - Green accents (headings, dividers, hover states)
-   - Detail pages adapt by section: Products / Projects / Readings
-*/
+// PORTFOLIO — Minimal, responsive, emerald-accented
+// - Mobile hamburger menu
+// - Green accents (headings, dividers, hover states)
+// - Detail pages adapt by section: Products / Projects / Readings
+// - Modular, individually-editable blocks with image galleries
 // =====================================================
 
 const PROFILE = {
   name: 'Michael Dang',
   tagline: 'Engineering Management and Electrical Engineering @ Dartmouth',
   headline: 'All-in on Tech Management',
-  subhead: 'Embedded systems, energy monitors, and clean UX. I ship real things.',
+  subhead: '',
   email: 'Michael.Dang3000@gmail.com',
   github: 'https://github.com/therealMichaelD',
   linkedin: 'https://www.linkedin.com/in/michaeldang1/',
   resumeUrl: '/Michael_Dang_Resume.pdf',
-  headshot: '/HomePagePhoto.jpg',          // Home hero photo (big)
-  aboutPhoto: '/PortfolioHeadshot.jpg',  // Optional different photo for About
+  headshot: '/HomePagePhoto.jpg',          // 🖼️ ADD/CHANGE IMAGE HERE (Home hero)
+  aboutPhoto: '/PortfolioHeadshot.jpg',    // 🖼️ ADD/CHANGE IMAGE HERE (About photo)
 }
 
-// ---------- Data ----------
+// =====================================================
+// ================   D A T A   S E C T I O N  =========
+// =====================================================
+// ⚠️ Everything below is safe to edit. You can:
+//  - change text (strings) ✅
+//  - add/remove list items ✅
+//  - update image paths ✅
+//  - add or remove entire blocks ✅
+
+// ---------- PRODUCTS ----------
 const PRODUCTS = [
-  { id: 'resume-insights', title: 'Resume Insights', subtitle: 'Upload a PDF → get impact bullets, metrics, ATS tips.', image: '/images/resume-insights.png', href: '/products/resume-insights', tags: ['ATS', 'NLP', 'Metrics'] },
-  { id: 'habit-metrics', title: 'Habit Metrics Dashboard', subtitle: 'North-star + input metrics, retention, alerts.', image: '/images/habit-metrics.png', href: '/products/habit-metrics', tags: ['Analytics', 'Dashboards'] },
-  { id: 'placeholder1', title: 'Product Placeholder One', subtitle: 'This is a placeholder description for a future product.', image: '/images/placeholder1.png', href: '/products/placeholder1', tags: ['Ideation'] },
-  { id: 'placeholder2', title: 'Product Placeholder Two', subtitle: 'Another placeholder product idea for PM impact.', image: '/images/placeholder2.png', href: '/products/placeholder2', tags: ['Prototype'] },
+  {
+    id: 'resume-insights',
+    title: 'Resume Insights', // ✅ EDIT TEXT HERE
+    subtitle: 'Upload a PDF → get impact bullets, metrics, ATS tips.', // ✅
+    href: '/products/resume-insights',
+    tags: ['ATS', 'NLP', 'Metrics'], // ✅
+    heroImage: '/images/resume-insights.png', // 🖼️ ADD/CHANGE IMAGE HERE
+    gallery: [ // 🖼️ Add as many images as you want
+      { src: '/images/resume-insights-1.png', caption: 'Upload screen' },
+      { src: '/images/resume-insights-2.png', caption: 'Insights view' },
+    ],
+    blocks: {
+      // ✅ Overview copy shown in the accent card
+      overviewText:
+        'Turn a resume PDF into crisp, metric-forward bullets with ATS-friendly structure in under a minute.',
+
+      // ✅ Problem & Audience as key-value rows
+      problemAudience: [
+        { k: 'Primary user', v: 'Student / early‑career applicant' },
+        { k: 'JTBD', v: 'Translate experience into impact bullets faster' },
+        { k: 'Pain', v: 'Hard to quantify and tailor quickly' },
+        { k: 'Alternatives', v: 'Manual editing, generic templates' },
+      ],
+
+      // ✅ Features list
+      features: [
+        'Guided flow from input → output with sensible defaults.',
+        'Metrics surfaced: success rate, coverage, quality score.',
+        'Export as PDF/CSV and quick-copy of bullets.',
+        'Error handling and recovery for messy PDFs.',
+      ],
+
+      // ✅ How it works key-values
+      howItWorks: [
+        { k: 'Input', v: 'PDF resume → text extraction' },
+        { k: 'Processing', v: 'NLP chunking, scoring, ATS heuristics' },
+        { k: 'Output', v: 'Impact bullets + metrics + tips' },
+        { k: 'Safeguards', v: 'Client-side pre-checks, error messaging' },
+      ],
+
+      // ✅ KPI mini-stats (3 will look best)
+      kpis: [
+        { label: 'Active users', value: '~120', caption: 'last 30 days' },
+        { label: 'Time to value', value: '< 60s', caption: 'upload → insights' },
+        { label: 'Retention', value: '38%', caption: '28‑day repeat' },
+      ],
+
+      // ✅ Adoption metrics block (shown as two Stat boxes by default)
+      adoptionMetrics: [
+        { label: 'CSAT', value: '4.6/5' },
+        { label: 'Export rate', value: '72%' },
+      ],
+
+      // ✅ User reviews
+      reviews: [
+        { quote: 'I shipped a better resume in one sitting. The metric prompts are clutch.', author: 'CS undergrad' },
+        { quote: 'Great default suggestions; saved me ~2 hours.', author: 'PM bootcamp student' },
+      ],
+
+      // ✅ Changelog simple list
+      changelog: [
+        'v0.3 — Added export to CSV; improved ATS heuristics.',
+        'v0.2 — Stabilized PDF parser; added metric suggestions.',
+        'v0.1 — MVP with upload → bullets.',
+      ],
+
+      // ✅ Optional right-sidebar quick facts
+      atAGlance: [
+        { k: 'Status', v: 'Beta' },
+        { k: 'Licensing', v: 'Free for students' },
+      ],
+
+      // ✅ Links on the right sidebar (replace # with real links)
+      links: [
+        { label: 'Demo', href: '#' },
+        { label: 'Repo', href: '#' },
+        { label: 'Writeup', href: '#' },
+      ],
+    },
+  },
+
+  // You can duplicate the object above for more products:
+  {
+    id: 'habit-metrics',
+    title: 'Habit Metrics Dashboard',
+    subtitle: 'North-star + input metrics, retention, alerts.',
+    href: '/products/habit-metrics',
+    tags: ['Analytics', 'Dashboards'],
+    heroImage: '/images/habit-metrics.png',
+    gallery: [{ src: '/images/habit-metrics-1.png', caption: 'Dashboard tiles' }],
+    blocks: {
+      overviewText: 'A lightweight tracker that connects habits to outcomes with real-time alerts.',
+      problemAudience: [
+        { k: 'Primary user', v: 'Students & indie builders' },
+        { k: 'JTBD', v: 'Track inputs that lead to measurable outcomes' },
+      ],
+      features: ['Custom metrics', 'Streak logic', 'CSV export', 'Daily reminders'],
+      howItWorks: [
+        { k: 'Input', v: 'Manual or CSV import' },
+        { k: 'Processing', v: 'Rolling windows + alerts' },
+        { k: 'Output', v: 'Trends & retention views' },
+      ],
+      kpis: [
+        { label: 'DAU', value: '54', caption: 'last 7 days' },
+        { label: '7‑day retention', value: '42%', caption: '' },
+        { label: 'Exports', value: '210', caption: 'lifetime' },
+      ],
+      adoptionMetrics: [{ label: 'NPS', value: '58' }, { label: 'Bug rate', value: '< 1%' }],
+      reviews: [{ quote: 'Finally a dashboard that nudges, not nags.', author: 'Grad student' }],
+      changelog: ['v0.2 — Added retention chart', 'v0.1 — MVP'],
+      atAGlance: [{ k: 'Status', v: 'Alpha' }],
+      links: [{ label: 'Demo', href: '#' }],
+    },
+  },
 ]
 
+// ---------- PROJECTS ----------
 const PROJECTS = [
-  { id: 'power-meter', title: 'ESP32 Smart Power Meter', subtitle: 'Live voltage, current, energy in browser.', image: '/images/power-meter.png', href: '/projects/power-meter', tags: ['ESP32', 'INA219', 'WebSerial'] },
-  { id: 'oscilloscope', title: 'Arduino Oscilloscope', subtitle: 'Triggering, capture, waveform rendering.', image: '/images/oscilloscope.png', href: '/projects/oscilloscope', tags: ['Arduino', 'Signal'] },
-  { id: 'ble-mesh', title: 'BLE Mesh Data Relay', subtitle: 'Low‑power sensor network with hop routing.', image: '/images/ble-mesh.png', href: '/projects/ble-mesh', tags: ['BLE', 'Networking'] },
-  { id: 'placeholder3', title: 'Project Placeholder One', subtitle: 'This is a placeholder engineering project.', image: '/images/placeholder3.png', href: '/projects/placeholder3', tags: ['WIP'] },
-  { id: 'placeholder4', title: 'Project Placeholder Two', subtitle: 'Another placeholder project with engineering focus.', image: '/images/placeholder4.png', href: '/projects/placeholder4', tags: ['WIP'] },
+  {
+    id: 'power-meter',
+    title: 'ESP32 Smart Power Meter',
+    subtitle: 'Live voltage, current, energy in browser.',
+    href: '/projects/power-meter',
+    tags: ['ESP32', 'INA219', 'WebSerial'],
+    heroImage: '/images/power-meter.png', // 🖼️ main project image
+    gallery: [
+      { src: '/images/power-meter-1.jpg', caption: 'Breadboard prototype' }, // 🖼️ add more
+      { src: '/images/power-meter-2.jpg', caption: 'Serial UI' },
+    ],
+    blocks: {
+      overviewText:
+        'A compact meter using INA219 + ESP32 that streams measurements via WebSerial for real-time plotting.',
+      skillsTools: [
+        { k: 'Skills', v: 'Embedded C/C++, firmware bring-up, serial protocols' },
+        { k: 'Tools', v: 'ESP-IDF / Arduino, Logic analyzer, Oscilloscope' },
+        { k: 'Hardware', v: 'ESP32, INA219, level shifting, buck regulation' },
+        { k: 'Interfaces', v: 'WebSerial UI, realtime plotting' },
+      ],
+      architectureNotes: [
+        'ISR-driven sampling with ring buffer for burst capture.',
+        'Backpressure strategy on serial transport.',
+        'Calibration factor & temperature compensation hooks.',
+      ],
+      performance: [
+        'Measurement error: ±1.5% @ 1 kHz.',
+        'End‑to‑end latency: ~45 ms (p95).',
+        'Uptime: 8h continuous, zero resets.',
+      ],
+      benchmarks: [
+        { k: 'Throughput', v: '2.4k samples/s sustained' },
+        { k: 'Noise floor', v: '<3 mVrms on shielded wiring' },
+        { k: 'Thermal drift', v: '<0.4% across 20°C' },
+        { k: 'Power', v: '~180 mW total draw' },
+      ],
+      timeline: [
+        'Week 1 — Requirements & block diagram.',
+        'Week 2 — Prototype firmware & serial link.',
+        'Week 3 — Web UI plots & calibration.',
+        'Week 4 — Long‑run test & performance report.',
+      ],
+      bom: [
+        'ESP32 DevKit‑C',
+        'INA219 current sensor',
+        'IRM‑05‑5 PSU, relay, terminal blocks',
+        'Assorted passives, wiring, headers',
+      ],
+      risks: [
+        'Sensor saturation at high load → add shunt options.',
+        'Noise coupling → ground routing rework on next PCB.',
+        'Next: OTA updates + calibration wizard.',
+      ],
+      environment: [
+        { k: 'Firmware', v: 'Arduino (ESP32) — Release 0.3' },
+        { k: 'UI', v: 'Vanilla JS + WebSerial' },
+      ],
+      links: [
+        { label: 'Demo', href: '#' },
+        { label: 'Repo', href: '#' },
+        { label: 'Writeup', href: '#' },
+      ],
+    },
+  },
+
+  {
+    id: 'oscilloscope',
+    title: 'Arduino Oscilloscope',
+    subtitle: 'Triggering, capture, waveform rendering.',
+    href: '/projects/oscilloscope',
+    tags: ['Arduino', 'Signal'],
+    heroImage: '/images/oscilloscope.png',
+    gallery: [{ src: '/images/oscilloscope-1.jpg', caption: 'Waveform capture' }],
+    blocks: {
+      overviewText: 'Simple 1‑ch scope using ADC sampling + Processing visualizer.',
+      skillsTools: [
+        { k: 'Skills', v: 'ADC, triggers, signal conditioning' },
+        { k: 'Tools', v: 'Arduino IDE, Processing' },
+      ],
+      architectureNotes: ['Circular buffer', 'Software trigger', 'Downsampling'],
+      performance: ['10‑bit ADC', '~5 kS/s', 'Basic cursor measurements'],
+      benchmarks: [{ k: 'Latency', v: '~60 ms' }],
+      timeline: ['Week 1 — ADC tests', 'Week 2 — Trigger & draw', 'Week 3 — Export CSV'],
+      bom: ['Arduino Uno', 'Breadboard + jumpers', 'USB serial'],
+      risks: ['Aliasing at higher frequencies'],
+      environment: [{ k: 'Firmware', v: 'Arduino UNO' }],
+      links: [{ label: 'Repo', href: '#' }],
+    },
+  },
 ]
 
+// ---------- READINGS ----------
 const READINGS = [
-  { id: 'book1', title: 'The Innovator’s Dilemma', subtitle: 'Clayton Christensen — reflections on disruptive innovation.', image: '/images/book1.png', href: '/readings/book1', tags: ['Strategy'] },
-  { id: 'book2', title: 'Inspired', subtitle: 'Marty Cagan — lessons on building tech products.', image: '/images/book2.png', href: '/readings/book2', tags: ['PM'] },
-  { id: 'placeholder-reading1', title: 'Reading Placeholder One', subtitle: 'Placeholder for a future reading review.', image: '/images/placeholder-reading1.png', href: '/readings/placeholder-reading1', tags: ['Notes'] },
-  { id: 'placeholder-reading2', title: 'Reading Placeholder Two', subtitle: 'Another placeholder entry for reading/media review.', image: '/images/placeholder-reading2.png', href: '/readings/placeholder-reading2', tags: ['Notes'] },
+  {
+    id: 'book1',
+    title: 'The Innovator’s Dilemma',
+    subtitle: 'Clayton Christensen — reflections on disruptive innovation.',
+    href: '/readings/book1',
+    tags: ['Strategy'],
+    heroImage: '/images/book1.png',
+    gallery: [{ src: '/images/book1-quote.jpg', caption: 'Favorite passage' }],
+    blocks: {
+      overviewText:
+        'Christensen explains why successful companies miss disruptive tech—and how to respond with the right bets.',
+      review:
+        'A must-read on timing and portfolio risk. It sharpened how I evaluate early signals vs. sustaining improvements.',
+      quotes: [
+        '“The reason that it is so difficult for existing firms to capitalize on disruptive innovations is that their processes and their business model that make them good at the existing business actually make them bad at competing in the disruption.”',
+        '“Disruptive technologies typically underperform established products in mainstream markets.”',
+      ],
+      keyIdeas: ['Sustaining vs. disruptive trajectories', 'Jobs-to-be-done lens', 'Small-market trap'],
+      who: ['PMs shaping strategy', 'Hardware founders weighing tradeoffs', 'Students exploring tech bets'],
+      rating: 5,
+      bibliography: [
+        { k: 'Author', v: 'Clayton M. Christensen' },
+        { k: 'Published', v: '1997' },
+      ],
+      links: [{ label: 'Notes', href: '#' }],
+    },
+  },
+  {
+    id: 'book2',
+    title: 'Inspired',
+    subtitle: 'Marty Cagan — lessons on building tech products.',
+    href: '/readings/book2',
+    tags: ['PM'],
+    heroImage: '/images/book2.png',
+    gallery: [],
+    blocks: {
+      overviewText:
+        'Patterns for empowering teams, discovering value, and shipping what matters.',
+      review:
+        'Great field guide to product discovery. I adopted the framing for opportunity trees and risk lists.',
+      quotes: ['“The role of product is to discover a product that is valuable, usable and feasible.”'],
+      keyIdeas: ['Dual-track discovery/delivery', 'Outcome > output', 'Empowered teams'],
+      who: ['Early-career PMs', 'Tech leads partnering with PM'],
+      rating: 4,
+      bibliography: [{ k: 'Author', v: 'Marty Cagan' }],
+      links: [{ label: 'Summary', href: '#' }],
+    },
+  },
 ]
 
-// ---------- UI helpers ----------
+// =====================================================
+// ==================  U I   H E L P E R S  ============
+// =====================================================
+
 const Container = ({ children, className='' }) => (
   <div className={`max-w-[1320px] xl:max-w-[1440px] mx-auto px-4 sm:px-8 ${className}`}>{children}</div>
 )
@@ -77,10 +344,10 @@ const Stat = ({ label, value, caption }) => (
   </div>
 )
 
-const KeyValue = ({ items }) => (
+const KeyValue = ({ items=[] }) => (
   <dl className="grid sm:grid-cols-2 gap-3">
-    {items.map((kv) => (
-      <div key={kv.k} className="rounded-2xl border border-black/10 bg-white p-4">
+    {items.map((kv, idx) => (
+      <div key={idx} className="rounded-2xl border border-black/10 bg-white p-4">
         <dt className="text-xs uppercase tracking-wide text-zinc-600">{kv.k}</dt>
         <dd className="mt-1 text-sm text-zinc-900">{kv.v}</dd>
       </div>
@@ -102,6 +369,20 @@ const ImageTile = ({ src, alt='', className='' }) => (
   </div>
 )
 
+const Gallery = ({ images=[] }) => {
+  if (!images.length) return null
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {images.map((im, i) => (
+        <div key={i}>
+          <ImageTile src={im.src} alt={im.caption || `image-${i}`} className="aspect-[4/3]" />
+          {im.caption ? <p className="mt-1 text-xs text-zinc-600">{im.caption}</p> : null}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 const TileCard = ({ item }) => (
   <Link
     to={item.href}
@@ -116,7 +397,7 @@ const TileCard = ({ item }) => (
         <div className="mt-3 flex gap-2 flex-wrap">{item.tags.slice(0,3).map((t)=> <Badge key={t}>{t}</Badge>)}</div>
       ) : null}
     </div>
-    <ImageTile src={item.image} className="aspect-[16/10]" />
+    <ImageTile src={item.heroImage} className="aspect-[16/10]" />
     <div className="p-5 sm:p-6">
       <span className="inline-flex items-center gap-2 text-emerald-700 group-hover:text-emerald-800">
         View details <ArrowRight className="w-4 h-4" />
@@ -130,6 +411,27 @@ const TileGrid = ({ items }) => (
     {items.map((p) => (
       <TileCard key={p.id} item={p} />
     ))}
+  </div>
+)
+
+// Reusable cards for detail pages (individually editable)
+const SectionCard = ({ title, children, tone='neutral' }) => {
+  const tones = {
+    neutral: 'border-black/10 bg-white',
+    accent: 'border-emerald-200 bg-emerald-50/40',
+  }
+  return (
+    <div className={`rounded-2xl p-4 sm:p-5 ${tones[tone]} border`}>
+      <h4 className="font-medium text-black">{title}</h4>
+      <div className="mt-2 space-y-2 text-sm sm:text-base text-zinc-700">{children}</div>
+    </div>
+  )
+}
+
+const ReviewCard = ({ quote, author }) => (
+  <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+    <p className="text-sm text-zinc-800">“{quote}”</p>
+    <p className="mt-2 text-xs text-emerald-700">— {author}</p>
   </div>
 )
 
@@ -183,10 +485,7 @@ const MobileMenu = ({ open, setOpen }) => {
   const ref = useRef(null)
   const location = useLocation()
 
-  // Close on route change
   useEffect(() => { setOpen(false) }, [location.pathname, setOpen])
-
-  // Close on click outside + ESC
   useEffect(() => {
     function onClick(e) {
       if (open && ref.current && !ref.current.contains(e.target)) setOpen(false)
@@ -291,14 +590,14 @@ const HomePage = () => (
 
     <section className="py-6 sm:py-14">
       <Container>
-        {/* Huge photo area */}
+        {/* 🖼️ Home hero image, change in PROFILE.headshot above */}
         <ImageTile src={PROFILE.headshot} className="aspect-[16/9] sm:aspect-[16/6]" />
       </Container>
     </section>
   </main>
 )
 
-// About page — matches list page layout
+// About page — clean spacing between paragraphs
 const AboutPage = () => (
   <main className="bg-white text-black">
     <section className="pt-10 sm:pt-16">
@@ -311,17 +610,28 @@ const AboutPage = () => (
 
         <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 xl:gap-8 items-start">
           {/* Bio block (left) */}
-          <div className="rounded-[28px] border border-emerald-200 p-5 sm:p-7 bg-emerald-50/30">
+          <div className="rounded-[28px] border border-emerald-200 p-5 sm:p-7 bg-emerald-50/30 space-y-4">
+            {/* ✅ EDIT TEXT HERE (About paragraphs) */}
             <p className="text-zinc-800 text-base sm:text-lg leading-7">
-              I’m an engineer who likes building measurable, real‑world things. My focus is embedded systems, energy
-              monitoring, and clean user interfaces that make hardware approachable. Recently, I’ve shipped an ESP32
-              smart power meter, an Arduino‑based oscilloscope, and a BLE mesh data relay. I care about translating
-              ideas into reliable hardware and software with simple controls, sensible defaults, and clear metrics.
+              Hi, I’m Michael Dang — a Master’s in Engineering Management and Bachelor’s in Electrical Engineering student at Dartmouth College, passionate about technology management and building at the intersection of software and hardware.
+            </p>
+            <p className="text-zinc-800 text-base sm:text-lg leading-7">
+              Originally from Toronto, Canada, I’m especially interested in semiconductors, software, and product management, where I can combine technical depth with strategic thinking to create impactful solutions.
+            </p>
+            <p className="text-zinc-800 text-base sm:text-lg leading-7">
+              I love exploring side projects that push me to learn and build. A few of my favorite builds include a TinyML wake-word lamp, an Arduino-based oscilloscope, and an ESP32 Smart Power Meter.
+            </p>
+            <p className="text-zinc-800 text-base sm:text-lg leading-7">
+              Outside of work and school, you’ll often find me supporting my Toronto sports teams, running, spending time outdoors, or diving into books and podcasts on tech, leadership, and innovation.
+            </p>
+            <p className="text-zinc-800 text-base sm:text-lg leading-7">
+              I’m currently seeking an Engineering or Tech Management internship for Summer 2026, where I can contribute my skills and continue growing at the intersection of technology and business.
             </p>
           </div>
 
           {/* Headshot (right) */}
           <div>
+            {/* 🖼️ About image, change in PROFILE.aboutPhoto above */}
             <ImageTile src={PROFILE.aboutPhoto || PROFILE.headshot} className="aspect-[4/5]" />
           </div>
         </div>
@@ -420,7 +730,8 @@ const ItemDetail = ({ type }) => {
     )
   }
 
-  // Common header for all detail pages
+  const B = item.blocks || {}
+
   return (
     <main className="bg-white text-black">
       <section className="pt-10 sm:pt-16">
@@ -438,238 +749,232 @@ const ItemDetail = ({ type }) => {
 
           <div className="mt-4"><AccentBar /></div>
 
-          {/* Shared hero image + section-specific side content */}
+          {/* Layout: main column (left) with stacked blocks, sidebar (right) */}
           <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 xl:gap-8 items-start">
-            <div className="space-y-4">
-              <ImageTile src={item.image} className="aspect-[16/9]" />
+            {/* LEFT */}
+            <div className="space-y-4 sm:space-y-5">
+              {/* 🖼️ Detail hero image */}
+              <ImageTile src={item.heroImage} className="aspect-[16/9]" />
 
-              {/* Overview box varies slightly per section via copy, but UI is shared */}
-              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4">
-                <h3 className="font-medium text-emerald-800">
-                  {type === 'products' ? 'Overview' : type === 'projects' ? 'Technical Overview' : 'Book Overview'}
-                </h3>
-                <p className="mt-2 text-sm sm:text-base text-zinc-700">
-                  Replace this with a concise summary. Focus on {type === 'products'
-                    ? 'problem → solution → outcomes; highlight the core user and the JTBD.'
-                    : type === 'projects'
-                    ? 'requirements, architecture, constraints, and measurable performance targets.'
-                    : 'author’s thesis, what resonated, and the main ideas you’ll apply.'}
-                </p>
-                {item.tags?.length ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {item.tags.map((t)=> <Badge key={t}>{t}</Badge>)}
-                  </div>
-                ) : null}
-              </div>
+              {/* 🖼️ Optional gallery — add images in item.gallery */}
+              <Gallery images={item.gallery} />
 
-              {/* Section-specific primary content */}
+              {/* Shared Overview */}
+              {(B.overviewText || item.tags?.length) && (
+                <SectionCard title={type === 'products' ? 'Overview' : type === 'projects' ? 'Technical Overview' : 'Book Overview'} tone="accent">
+                  {/* ✅ EDIT TEXT HERE: overviewText in DATA SECTION */}
+                  {B.overviewText && <p>{B.overviewText}</p>}
+                  {item.tags?.length ? (
+                    <div className="flex flex-wrap gap-2 pt-1">{item.tags.map((t)=> <Badge key={t}>{t}</Badge>)}</div>
+                  ) : null}
+                </SectionCard>
+              )}
+
+              {/* === PRODUCTS BLOCKS === */}
               {type === 'products' && (
                 <>
-                  {/* KPIs */}
-                  <div className="grid sm:grid-cols-3 gap-3">
-                    <Stat label="Active users" value="~120" caption="last 30 days" />
-                    <Stat label="Time to value" value="< 60s" caption="from upload → insights" />
-                    <Stat label="Retention" value="38%" caption="28‑day repeat" />
-                  </div>
+                  {B.problemAudience?.length ? (
+                    <SectionCard title="Problem & Audience">
+                      {/* ✅ EDIT TEXT HERE: problemAudience (key-value list) */}
+                      <KeyValue items={B.problemAudience} />
+                    </SectionCard>
+                  ) : null}
 
-                  {/* Features */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Key Features</h4>
-                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                      <li>• Guided flow from input → output with sensible defaults.</li>
-                      <li>• Metrics surfaced: success rate, coverage, and quality score.</li>
-                      <li>• Shareable export (PDF/CSV) and quick copy of bullets.</li>
-                    </ul>
-                  </div>
+                  {B.features?.length ? (
+                    <SectionCard title="Key Features">
+                      {/* ✅ EDIT TEXT HERE: features (bullet list) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.features.map((f, i) => <li key={i}>{f}</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
 
-                  {/* How it works / System */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">How it works</h4>
-                    <KeyValue items={[
-                      { k: 'Input', v: 'PDF resume → text extraction' },
-                      { k: 'Processing', v: 'NLP chunking, scoring, ATS heuristics' },
-                      { k: 'Output', v: 'Impact bullets + metrics + tips' },
-                      { k: 'Safeguards', v: 'Client-side pre-checks, error messaging' },
-                    ]}/>
-                  </div>
+                  {B.howItWorks?.length ? (
+                    <SectionCard title="How it Works">
+                      {/* ✅ EDIT TEXT HERE: howItWorks (key-value list) */}
+                      <KeyValue items={B.howItWorks} />
+                    </SectionCard>
+                  ) : null}
 
-                  {/* Testimonials */}
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
-                      <p className="text-sm text-zinc-800">“I shipped a better resume in one sitting. The metric prompts are clutch.”</p>
-                      <p className="mt-2 text-xs text-emerald-700">— CS undergrad, internship applicant</p>
+                  {B.kpis?.length ? (
+                    <div className="grid sm:grid-cols-3 gap-3">
+                      {/* ✅ EDIT TEXT HERE: kpis (mini-stat tiles) */}
+                      {B.kpis.map((s, i) => <Stat key={i} {...s} />)}
                     </div>
-                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
-                      <p className="text-sm text-zinc-800">“Great default suggestions; saved me ~2 hours.”</p>
-                      <p className="mt-2 text-xs text-emerald-700">— PM bootcamp student</p>
-                    </div>
-                  </div>
+                  ) : null}
+
+                  {B.adoptionMetrics?.length ? (
+                    <SectionCard title="Adoption & Metrics">
+                      <dl className="grid grid-cols-2 gap-3">
+                        {B.adoptionMetrics.map((m, i) => <Stat key={i} {...m} />)}
+                      </dl>
+                    </SectionCard>
+                  ) : null}
+
+                  {B.reviews?.length ? (
+                    <SectionCard title="User Reviews">
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {B.reviews.map((r, i) => <ReviewCard key={i} quote={r.quote} author={r.author} />)}
+                      </div>
+                    </SectionCard>
+                  ) : null}
+
+                  {B.changelog?.length ? (
+                    <SectionCard title="Changelog">
+                      <ul className="text-sm space-y-1">
+                        {B.changelog.map((c, i) => <li key={i}>• {c}</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
                 </>
               )}
 
+              {/* === PROJECTS BLOCKS === */}
               {type === 'projects' && (
                 <>
-                  {/* Skills & Tools */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Skills & Tools</h4>
-                    <KeyValue items={[
-                      { k: 'Skills', v: 'Embedded C/C++, firmware bring-up, serial protocols' },
-                      { k: 'Tools', v: 'ESP-IDF / Arduino, Logic analyzer, Oscilloscope' },
-                      { k: 'Hardware', v: 'ESP32, INA219, level shifting, buck regulation' },
-                      { k: 'Interfaces', v: 'WebSerial UI, realtime plotting' },
-                    ]}/>
-                  </div>
+                  {B.skillsTools?.length ? (
+                    <SectionCard title="Skills & Tools">
+                      {/* ✅ EDIT TEXT HERE: skillsTools (key-value list) */}
+                      <KeyValue items={B.skillsTools} />
+                    </SectionCard>
+                  ) : null}
 
-                  {/* Architecture / Performance */}
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
-                      <h5 className="font-medium text-emerald-800">Architecture Notes</h5>
-                      <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                        <li>• ISR-driven sampling; ring buffer for burst capture.</li>
-                        <li>• Backpressure strategy for serial transport.</li>
-                        <li>• Cal factor & temperature compensation hooks.</li>
+                  {B.architectureNotes?.length ? (
+                    <SectionCard title="Architecture Notes">
+                      {/* ✅ EDIT TEXT HERE: architectureNotes (bullets) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.architectureNotes.map((n, i) => <li key={i}>{n}</li>)}
                       </ul>
-                    </div>
-                    <div className="rounded-2xl border border-emerald-200 bg-white p-4">
-                      <h5 className="font-medium text-emerald-800">Performance</h5>
-                      <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                        <li>• Measurement error: ±1.5% @ 1 kHz.</li>
-                        <li>• End‑to‑end latency: ~45 ms (p95).</li>
-                        <li>• Uptime: 8h continuous, no resets.</li>
-                      </ul>
-                    </div>
-                  </div>
+                    </SectionCard>
+                  ) : null}
 
-                  {/* Timeline */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Build Timeline</h4>
-                    <ol className="mt-2 text-sm text-zinc-700 space-y-1">
-                      <li>1) Week 1 — Requirements & block diagram.</li>
-                      <li>2) Week 2 — Prototype firmware & serial link.</li>
-                      <li>3) Week 3 — Web UI plots & calibration.</li>
-                      <li>4) Week 4 — Long‑run test & performance report.</li>
-                    </ol>
-                  </div>
+                  {B.performance?.length ? (
+                    <SectionCard title="Performance">
+                      {/* ✅ EDIT TEXT HERE: performance (bullets) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.performance.map((n, i) => <li key={i}>{n}</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
+
+                  {B.benchmarks?.length ? (
+                    <SectionCard title="Benchmarks">
+                      {/* ✅ EDIT TEXT HERE: benchmarks (key-value list) */}
+                      <KeyValue items={B.benchmarks} />
+                    </SectionCard>
+                  ) : null}
+
+                  {B.timeline?.length ? (
+                    <SectionCard title="Build Timeline">
+                      {/* ✅ EDIT TEXT HERE: timeline (numbered list) */}
+                      <ol className="list-decimal pl-5 space-y-1">
+                        {B.timeline.map((t, i) => <li key={i}>{t}</li>)}
+                      </ol>
+                    </SectionCard>
+                  ) : null}
+
+                  {B.bom?.length ? (
+                    <SectionCard title="Bill of Materials (BOM)">
+                      {/* ✅ EDIT TEXT HERE: bom (bullets) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.bom.map((b, i) => <li key={i}>{b}</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
+
+                  {B.risks?.length ? (
+                    <SectionCard title="Risks & Next Steps">
+                      {/* ✅ EDIT TEXT HERE: risks (bullets) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.risks.map((r, i) => <li key={i}>{r}</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
                 </>
               )}
 
+              {/* === READINGS BLOCKS === */}
               {type === 'readings' && (
                 <>
-                  {/* My Review */}
-                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50/40 p-4">
-                    <h4 className="font-medium text-emerald-800">My Review</h4>
-                    <p className="mt-2 text-sm sm:text-base text-zinc-700">
-                      Short summary of what the book argues, what I agreed/disagreed with, and how it changes
-                      how I’ll build or evaluate products/tech.
-                    </p>
-                  </div>
+                  {(B.review || B.overviewText) ? (
+                    <SectionCard title="My Review" tone="accent">
+                      {/* ✅ EDIT TEXT HERE: review (paragraph) */}
+                      <p>{B.review || B.overviewText}</p>
+                    </SectionCard>
+                  ) : null}
 
-                  {/* Interesting Quotes */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Interesting Quotes</h4>
-                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                      <li>• “Quote #1 that captures a key idea.”</li>
-                      <li>• “Quote #2 that I’ll reference later.”</li>
-                      <li>• “Quote #3 that challenges a common belief.”</li>
-                    </ul>
-                  </div>
+                  {B.quotes?.length ? (
+                    <SectionCard title="Interesting Quotes">
+                      {/* ✅ EDIT TEXT HERE: quotes (bullets) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.quotes.map((q, i) => <li key={i}>“{q}”</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
 
-                  {/* Key Ideas */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Key Ideas</h4>
-                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                      <li>• Idea 1 — why it matters.</li>
-                      <li>• Idea 2 — where it applies.</li>
-                      <li>• Idea 3 — limitations / caveats.</li>
-                    </ul>
-                  </div>
+                  {B.keyIdeas?.length ? (
+                    <SectionCard title="Key Ideas">
+                      {/* ✅ EDIT TEXT HERE: keyIdeas (bullets) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.keyIdeas.map((it, i) => <li key={i}>{it}</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
+
+                  {B.who?.length ? (
+                    <SectionCard title="Who Should Read">
+                      {/* ✅ EDIT TEXT HERE: who (bullets) */}
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.who.map((it, i) => <li key={i}>{it}</li>)}
+                      </ul>
+                    </SectionCard>
+                  ) : null}
+
+                  {typeof B.rating === 'number' ? (
+                    <SectionCard title="Overall Rating">
+                      <div className="flex items-center gap-2">
+                        <Stars value={B.rating} />
+                        <span className="text-sm text-zinc-700">{B.rating}/5</span>
+                      </div>
+                    </SectionCard>
+                  ) : null}
                 </>
               )}
             </div>
 
-            {/* Right Column — Links + Section‑specific sidebars */}
-            <div className="space-y-4">
-              {/* Links block shared */}
-              <div className="rounded-2xl border border-black/10 p-4">
-                <h4 className="font-medium text-black">Links</h4>
-                <ul className="mt-2 text-sm text-emerald-800">
-                  <li><a className="hover:underline" href="#">Demo (placeholder)</a></li>
-                  <li><a className="hover:underline" href="#">Repo (placeholder)</a></li>
-                  <li><a className="hover:underline" href="#">Writeup (placeholder)</a></li>
-                </ul>
-              </div>
+            {/* RIGHT SIDEBAR */}
+            <div className="space-y-4 sm:space-y-5">
+              {/* Links (all types) */}
+              {B.links?.length ? (
+                <SectionCard title="Links">
+                  {/* ✅ EDIT TEXT HERE: links (right sidebar) */}
+                  <ul className="text-sm text-emerald-800 space-y-1">
+                    {B.links.map((lnk, i) => (
+                      <li key={i}><a className="hover:underline" href={lnk.href}>{lnk.label}</a></li>
+                    ))}
+                  </ul>
+                </SectionCard>
+              ) : null}
 
-              {type === 'products' && (
-                <>
-                  {/* Problem / Audience */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Problem / Audience</h4>
-                    <KeyValue items={[
-                      { k: 'Primary user', v: 'Student / early‑career applicant' },
-                      { k: 'JTBD', v: 'Translate experience into impact bullets faster' },
-                      { k: 'Pain', v: 'Hard to quantify and tailor quickly' },
-                    ]}/>
-                  </div>
+              {/* Type-specific quick facts */}
+              {type === 'products' && B.atAGlance?.length ? (
+                <SectionCard title="At a Glance">
+                  <KeyValue items={B.atAGlance} />
+                </SectionCard>
+              ) : null}
 
-                  {/* Adoption / Metrics */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Adoption & Metrics</h4>
-                    <dl className="grid grid-cols-2 gap-3">
-                      <Stat label="CSAT" value="4.6/5" />
-                      <Stat label="Export rate" value="72%" />
-                    </dl>
-                  </div>
-                </>
-              )}
+              {type === 'projects' && B.environment?.length ? (
+                <SectionCard title="Environment">
+                  <KeyValue items={B.environment} />
+                </SectionCard>
+              ) : null}
 
-              {type === 'projects' && (
-                <>
-                  {/* BOM / Components */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Bill of Materials</h4>
-                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                      <li>• ESP32 DevKit‑C</li>
-                      <li>• INA219 current sensor</li>
-                      <li>• IRM‑05‑5 PSU, relay, terminal blocks</li>
-                    </ul>
-                  </div>
+              {type === 'readings' && B.bibliography?.length ? (
+                <SectionCard title="Bibliography">
+                  <KeyValue items={B.bibliography} />
+                </SectionCard>
+              ) : null}
 
-                  {/* Risks / Next steps */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Risks & Next Steps</h4>
-                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                      <li>• Sensor saturation at high load → add shunt options.</li>
-                      <li>• Noise coupling → ground routing rework on next PCB.</li>
-                      <li>• Next: OTA updates + calibration wizard.</li>
-                    </ul>
-                  </div>
-                </>
-              )}
-
-              {type === 'readings' && (
-                <>
-                  {/* Overall Rating */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Overall Rating</h4>
-                    <div className="mt-2 flex items-center gap-2">
-                      <Stars value={5} />
-                      <span className="text-sm text-zinc-700">5/5</span>
-                    </div>
-                  </div>
-
-                  {/* Who should read */}
-                  <div className="rounded-2xl border border-black/10 p-4">
-                    <h4 className="font-medium text-black">Who should read</h4>
-                    <ul className="mt-2 text-sm text-zinc-700 space-y-1">
-                      <li>• PMs shaping strategy.</li>
-                      <li>• Hardware founders balancing tradeoffs.</li>
-                      <li>• Students building first real projects.</li>
-                    </ul>
-                  </div>
-                </>
-              )}
-
-              {/* Back link for mobile */}
               <Link
                 to={`/${type}`}
                 className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
