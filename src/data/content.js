@@ -221,11 +221,11 @@ export const PROFILE = {
   export const READINGS = [
     {
       id: 'book1',
-      title: 'The Innovator’s Dilemma',
-      subtitle: 'Clayton Christensen — reflections on disruptive innovation.',
+      title: 'Steve Jobs',
+      subtitle: 'Walter Isaacson',
       href: '/readings/book1',
-      tags: ['Strategy'],
-      heroImage: '/images/book1.png',
+      tags: ['Biography'],
+      heroImage: '/SteveJobsImage.jpg',
       gallery: [{ src: '/images/book1-quote.jpg', caption: 'Favorite passage' }],
       blocks: {
         overviewText:
@@ -248,11 +248,11 @@ export const PROFILE = {
     },
     {
       id: 'book2',
-      title: 'Inspired',
-      subtitle: 'Marty Cagan — lessons on building tech products.',
+      title: 'Play Nice But Win',
+      subtitle: 'Michael Dell',
       href: '/readings/book2',
-      tags: ['PM'],
-      heroImage: '/images/book2.png',
+      tags: ['Autobiography'],
+      heroImage: '/PlayNiceButWin.jpg',
       gallery: [],
       blocks: {
         overviewText:
@@ -265,6 +265,33 @@ export const PROFILE = {
         rating: 4,
         bibliography: [{ k: 'Author', v: 'Marty Cagan' }],
         links: [{ label: 'Summary', href: '#' }],
+      },
+    },
+    {
+      id: 'book3',
+      title: 'Zero to One',
+      subtitle: 'Peter Theil',
+      href: '/readings/book3',
+      tags: ['Star-Up'],
+      heroImage: '/ZeroToOne.jpg',
+      gallery: [{ src: '/images/book1-quote.jpg', caption: 'Favorite passage' }],
+      blocks: {
+        overviewText:
+          'Christensen explains why successful companies miss disruptive tech—and how to respond with the right bets.',
+        review:
+          'A must-read on timing and portfolio risk. It sharpened how I evaluate early signals vs. sustaining improvements.',
+        quotes: [
+          'The reason that it is so difficult for existing firms to capitalize on disruptive innovations is that their processes and their business model that make them good at the existing business actually make them bad at competing in the disruption.',
+          'Disruptive technologies typically underperform established products in mainstream markets.',
+        ],
+        keyIdeas: ['Sustaining vs. disruptive trajectories', 'Jobs-to-be-done lens', 'Small-market trap'],
+        who: ['PMs shaping strategy', 'Hardware founders weighing tradeoffs', 'Students exploring tech bets'],
+        rating: 5,
+        bibliography: [
+          { k: 'Author', v: 'Clayton M. Christensen' },
+          { k: 'Published', v: '1997' },
+        ],
+        links: [{ label: 'Notes', href: '#' }],
       },
     },
   ]

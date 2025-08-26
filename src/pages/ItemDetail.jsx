@@ -25,6 +25,7 @@ export const ItemDetail = ({ type }) => {
   const { id } = useParams()
   const item = findItem(type, id)
   const B = item?.blocks || {}
+  const isReadings = type === 'readings'
 
   if (!item) {
     return (
@@ -55,13 +56,33 @@ export const ItemDetail = ({ type }) => {
           <p className="mt-2 text-zinc-700">{item.subtitle}</p>
           <div className="mt-4"><AccentBar /></div>
 
-          <div className="mt-6 grid md:grid-cols-[1.2fr_.8fr] gap-6 xl:gap-8 items-start">
+          <div
+            className={`mt-6 grid ${
+              isReadings ? 'grid-cols-1' : 'md:grid-cols-[1.2fr_.8fr]'
+            } gap-6 xl:gap-8 items-start`}
+          >
+
             {/* LEFT column */}
             <div className="space-y-4 sm:space-y-5">
               {/* 🖼️ hero image */}
-              <ImageTile src={item.heroImage} className="aspect-[16/9]" />
+              
               {/* 🖼️ gallery */}
-              <Gallery images={item.gallery} />
+              {type === 'readings' ? (
+                <Gallery
+                  // Remove the “Favorite passage” item by filtering it out:
+                  images={(item.gallery || []).filter(
+                    im => (im.caption || '').toLowerCase() !== 'favorite passage'
+                  )}
+                  // Make the gallery much smaller and portrait-friendly:
+                  className="max-w-[420px]"             // shrink overall gallery width
+                  columnsClass="grid-cols-3 md:grid-cols-4" // more, smaller thumbnails
+                  imageAspectClass="aspect-[3/4]"       // bookish portrait thumbs
+                  fit="contain"                         // don’t crop tall images
+                />
+              ) : (
+                <Gallery images={item.gallery} />
+              )}
+
 
               {/* Overview */}
               {(B.overviewText || item.tags?.length) && (
@@ -191,24 +212,34 @@ export const ItemDetail = ({ type }) => {
             </div>
 
             {/* RIGHT column */}
+            {/* Right sidebar — hide Links & Bibliography for Readings */}
             <div className="space-y-4 sm:space-y-5">
-              {B.links?.length && (
+              {/* Links: render only when NOT readings */}
+              {!isReadings && B.links?.length && (
                 <SectionCard title="Links">
                   <ul className="text-sm text-emerald-800 space-y-1">
                     {B.links.map((lnk,i)=><li key={i}><a className="hover:underline" href={lnk.href}>{lnk.label}</a></li>)}
                   </ul>
                 </SectionCard>
               )}
+
               {type === 'products' && B.atAGlance?.length && (
                 <SectionCard title="At a Glance"><KeyValue items={B.atAGlance} /></SectionCard>
               )}
+
               {type === 'projects' && B.environment?.length && (
                 <SectionCard title="Environment"><KeyValue items={B.environment} /></SectionCard>
               )}
-              {type === 'readings' && B.bibliography?.length && (
-                <SectionCard title="Bibliography"><KeyValue items={B.bibliography} /></SectionCard>
-              )}
-              <Link to={`/${type}`} className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500">← Back to {type}</Link>
+
+              {/* Bibliography: removed for readings (don’t render at all) */}
+              {/* (Nothing here) */}
+
+              <Link
+                to={`/${type}`}
+                className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+              >
+                ← Back to {type}
+              </Link>
             </div>
           </div>
         </Container>

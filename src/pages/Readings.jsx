@@ -10,7 +10,7 @@ const Readings = () => (
       <Container>
         <SectionHeading>Readings</SectionHeading>
         <p className="mt-2 text-zinc-700 text-sm sm:text-base">
-          Books, articles, and media reviews related to engineering, PM, and entrepreneurship.
+          Books, articles, and podcasts related to engineering, PM, and entrepreneurship.
         </p>
         <div className="mt-4"><AccentBar /></div>
         <div className="mt-6">
