@@ -113,7 +113,7 @@ export const ItemDetail = ({ type }) => {
 
               {/* Overview */}
               {(B.overviewText || item.tags?.length) && (
-                <SectionCard title={type === 'products' ? 'Overview' : type === 'projects' ? 'Technical Overview' : 'Book Overview'} tone="accent">
+                <SectionCard title={type === 'products' ? 'Overview' : type === 'projects' ? 'Overview' : 'Book Overview'} tone="accent">
                   {B.overviewText && <p>{B.overviewText}</p>}
                   {item.tags?.length ? (
                     <div className="flex flex-wrap gap-2 pt-1">
@@ -122,6 +122,20 @@ export const ItemDetail = ({ type }) => {
                   ) : null}
                 </SectionCard>
               )}
+
+              {/* Projects → move Links right below Technical Overview */}
+              {isProjects && B.links?.length && (
+                <SectionCard title="Links">
+                  <ul className="text-sm text-emerald-800 space-y-1">
+                    {B.links.map((lnk, i) => (
+                      <li key={i}>
+                        <a className="hover:underline" href={lnk.href}>{lnk.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </SectionCard>
+              )}
+
 
               {/* PRODUCTS (unchanged) */}
               {type === 'products' && (
@@ -198,7 +212,7 @@ export const ItemDetail = ({ type }) => {
                     </SectionCard>
                   )}
                   {B.risks?.length && (
-                    <SectionCard title="Risks & Next Steps">
+                    <SectionCard title="Next Steps">
                       <ul className="list-disc pl-5 space-y-1">{B.risks.map((r,i)=><li key={i}>{r}</li>)}</ul>
                     </SectionCard>
                   )}
@@ -206,13 +220,6 @@ export const ItemDetail = ({ type }) => {
                   {/* Moved from sidebar → full-width in main stack */}
                   {B.environment?.length && (
                     <SectionCard title="Environment"><KeyValue items={B.environment} /></SectionCard>
-                  )}
-                  {B.links?.length && (
-                    <SectionCard title="Links">
-                      <ul className="text-sm text-emerald-800 space-y-1">
-                        {B.links.map((lnk,i)=><li key={i}><a className="hover:underline" href={lnk.href}>{lnk.label}</a></li>)}
-                      </ul>
-                    </SectionCard>
                   )}
 
                   {/* Mobile back link now that the sidebar is hidden */}

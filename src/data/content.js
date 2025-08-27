@@ -23,10 +23,10 @@ export const PROFILE = {
   export const PRODUCTS = [
     {
       id: 'resume-insights',
-      title: 'Resume Insights', // ✅ EDIT TEXT HERE
-      subtitle: 'Upload a PDF → get impact bullets, metrics, ATS tips.', // ✅
+      title: 'IN-PROGRESS', // ✅ EDIT TEXT HERE
+      subtitle: ' ', // ✅
       href: '/products/resume-insights',
-      tags: ['ATS', 'NLP', 'Metrics'],
+      tags: [' ', ' ', ' '],
       heroImage: '/images/resume-insights.png', // 🖼️ main image on detail page
       gallery: [ // 🖼️ Add as many images as you want
         { src: '/images/resume-insights-1.png', caption: 'Upload screen' },
@@ -34,7 +34,7 @@ export const PROFILE = {
       ],
       blocks: {
         overviewText:
-          'Turn a resume PDF into crisp, metric-forward bullets with ATS-friendly structure in under a minute.',
+          ' ',
   
         problemAudience: [
           { k: 'Primary user', v: 'Student / early-career applicant' },
@@ -91,38 +91,6 @@ export const PROFILE = {
         ],
       },
     },
-    {
-      id: 'habit-metrics',
-      title: 'Habit Metrics Dashboard',
-      subtitle: 'North-star + input metrics, retention, alerts.',
-      href: '/products/habit-metrics',
-      tags: ['Analytics', 'Dashboards'],
-      heroImage: '/images/habit-metrics.png',
-      gallery: [{ src: '/images/habit-metrics-1.png', caption: 'Dashboard tiles' }],
-      blocks: {
-        overviewText: 'A lightweight tracker that connects habits to outcomes with real-time alerts.',
-        problemAudience: [
-          { k: 'Primary user', v: 'Students & indie builders' },
-          { k: 'JTBD', v: 'Track inputs that lead to measurable outcomes' },
-        ],
-        features: ['Custom metrics', 'Streak logic', 'CSV export', 'Daily reminders'],
-        howItWorks: [
-          { k: 'Input', v: 'Manual or CSV import' },
-          { k: 'Processing', v: 'Rolling windows + alerts' },
-          { k: 'Output', v: 'Trends & retention views' },
-        ],
-        kpis: [
-          { label: 'DAU', value: '54', caption: 'last 7 days' },
-          { label: '7-day retention', value: '42%', caption: '' },
-          { label: 'Exports', value: '210', caption: 'lifetime' },
-        ],
-        adoptionMetrics: [{ label: 'NPS', value: '58' }, { label: 'Bug rate', value: '< 1%' }],
-        reviews: [{ quote: 'Finally a dashboard that nudges, not nags.', author: 'Grad student' }],
-        changelog: ['v0.2 — Added retention chart', 'v0.1 — MVP'],
-        atAGlance: [{ k: 'Status', v: 'Alpha' }],
-        links: [{ label: 'Demo', href: '#' }],
-      },
-    },
   ]
   
   // ---------- PROJECTS ----------
@@ -130,7 +98,7 @@ export const PROFILE = {
     {
       id: 'power-meter',
       title: 'ESP32 Smart Power Meter',
-      subtitle: 'Live voltage, current, energy in browser.',
+      subtitle: 'Compact smart meter for precision current and voltage measurement.',
       href: '/projects/power-meter',
       tags: ['ESP32', 'INA219', 'WebSerial'],
       heroImage: '/images/power-meter.png', // 🖼️
@@ -140,22 +108,23 @@ export const PROFILE = {
       ],
       blocks: {
         overviewText:
-          'A compact meter using INA219 + ESP32 that streams measurements via WebSerial for real-time plotting.',
+          'A compact ESP32-based smart meter using the INA219 current/voltage sensor, streaming real-time power measurements over WebSerial for visualization and analysis.',
         skillsTools: [
-          { k: 'Skills', v: 'Embedded C/C++, firmware bring-up, serial protocols' },
-          { k: 'Tools', v: 'ESP-IDF / Arduino, Logic analyzer, Oscilloscope' },
-          { k: 'Hardware', v: 'ESP32, INA219, level shifting, buck regulation' },
-          { k: 'Interfaces', v: 'WebSerial UI, realtime plotting' },
+          { k: 'Skills', v: 'Embedded C/C++, firmware bring-up, I2C Communication, Serial Protocols, Data Acquisition, Calibration, Error Analysis, Real-Time System Debugging' },
+          { k: 'Tools', v: 'ESP-IDF/Arduino IDE, Logic Analyzer, Oscilloscope, Multimeter' },
+          { k: 'Hardware', v: 'ESP32 DevKitC, INA219 current/voltage sensor, level shifting, relay switching' },
+          { k: 'Interfaces', v: 'WebSerial-Based Dashboard With Real-Time Plotting, Serial Protocol For Calibration And Debug' },
         ],
         architectureNotes: [
-          'ISR-driven sampling with ring buffer for burst capture.',
-          'Backpressure strategy on serial transport.',
-          'Calibration factor & temperature compensation hooks.',
+          'I²C communication between ESP32 and INA219 for precision power sensing.',
+          'ISR-driven data sampling with buffering for smooth streaming.',
+          'WebSerial pipeline for real-time measurement plotting in browser.',
+          'Calibration hooks for measurement accuracy and drift compensation.'
         ],
         performance: [
-          'Measurement error: ±1.5% @ 1 kHz.',
-          'End-to-end latency: ~45 ms (p95).',
-          'Uptime: 8h continuous, zero resets.',
+          'Measurement accuracy: ±1.5% (after calibration).',
+          'Sampling rate: up to 1 kHz effective throughput.',
+          'Latency: ~45 ms',
         ],
         benchmarks: [
           { k: 'Throughput', v: '2.4k samples/s sustained' },
@@ -169,20 +138,10 @@ export const PROFILE = {
           'Week 3 — Web UI plots & calibration.',
           'Week 4 — Long-run test & performance report.',
         ],
-        bom: [
-          'ESP32 DevKit-C',
-          'INA219 current sensor',
-          'IRM-05-5 PSU, relay, terminal blocks',
-          'Assorted passives, wiring, headers',
-        ],
         risks: [
           'Sensor saturation at high load → add shunt options.',
           'Noise coupling → ground routing rework on next PCB.',
           'Next: OTA updates + calibration wizard.',
-        ],
-        environment: [
-          { k: 'Firmware', v: 'Arduino (ESP32) — Release 0.3' },
-          { k: 'UI', v: 'Vanilla JS + WebSerial' },
         ],
         links: [
           { label: 'Demo', href: '#' },
@@ -194,24 +153,23 @@ export const PROFILE = {
     {
       id: 'oscilloscope',
       title: 'Arduino Oscilloscope',
-      subtitle: 'Triggering, capture, waveform rendering.',
+      subtitle: 'Turning Arduino into a budget-friendly signal analyzer.',
       href: '/projects/oscilloscope',
-      tags: ['Arduino', 'Signal'],
+      tags: ['Arduino','Oscilloscope','Signal Processing'],
       heroImage: '/images/oscilloscope.png',
       gallery: [{ src: '/images/oscilloscope-1.jpg', caption: 'Waveform capture' }],
       blocks: {
-        overviewText: 'Simple 1-ch scope using ADC sampling + Processing visualizer.',
+        overviewText: 'DIY Arduino-based oscilloscope that samples analog signals via the Arduino’s ADC and streams data to a custom Processing GUI for real-time waveform visualization.',
         skillsTools: [
-          { k: 'Skills', v: 'ADC, triggers, signal conditioning' },
-          { k: 'Tools', v: 'Arduino IDE, Processing' },
+          { k: 'Skills', v: 'ADC sampling, software triggering, signal conditioning, real-time visualization, data buffering',},
+          { k: 'Tools', v: 'Arduino IDE, Processing, Serial communication' },
+          { k: 'Hardware', v: 'Arduino Uno R3, Voltage divider network, Potentiometers, USB' },
         ],
-        architectureNotes: ['Circular buffer', 'Software trigger', 'Downsampling'],
-        performance: ['10-bit ADC', '~5 kS/s', 'Basic cursor measurements'],
-        benchmarks: [{ k: 'Latency', v: '~60 ms' }],
-        timeline: ['Week 1 — ADC tests', 'Week 2 — Trigger & draw', 'Week 3 — Export CSV'],
-        bom: ['Arduino Uno', 'Breadboard + jumpers', 'USB serial'],
-        risks: ['Aliasing at higher frequencies'],
-        environment: [{ k: 'Firmware', v: 'Arduino UNO' }],
+        architectureNotes: ['Circular buffer for continuous sampling', 'Software trigger for stable waveform display', 'Adjustable Volt/Div and Time/Div via potentiometers','Processing-based GUI with overlays and grid calibration','Interactive cursors for quick measurements'],
+        performance: ['10-bit ADC resolution', '~5 kS/s sampling rate', 'Basic cursor measurements for amplitude and time differences','Real-time waveform plotting','Adjustable scales (Volt/Div, Time/Div)'],
+        benchmarks: [{ k: 'Latency', v: '~60 ms end-to-end' },{ k: ' ', v: 'Smooth real-time display with minimal frame drops under normal load' }],
+        timeline: ['Week 1 — ADC integration: Verified Arduino Uno ADC performance, buffering, and sampling rate.', 'Week 2 — Trigger &  Visualization: Implemented software trigger logic and real-time waveform drawing in Processing', 'Week 3 — Data Export: Added functionality to save captured signals as CSV for offline analysis.'],
+        risks: ['Aliasing at higher frequencies: Limited by ~5 kS/s sampling; signals above ~2 kHz require external anti-aliasing filtering.', 'Planned Improvements: Add hardware front-end (op-amp conditioning), dual-channel support, and more advanced measurement tools (FFT, RMS).'],
         links: [{ label: 'Repo', href: '#' }],
       },
     },
@@ -231,13 +189,15 @@ export const PROFILE = {
         overviewText:
           'Based on over forty interviews with Jobs himself, Walter Isaacsons Steve Jobs provides a comprehensive and unflinching look at the Apple co-founders extraordinary life. It chronicles his journey from an adopted child in Silicon Valley to a visionary leader who revolutionized several industries, including personal computers, animated movies (Pixar), and mobile devices. The biography explores his unique and often-contradictory personality, characterized by a demanding perfectionism, a "reality distortion field" that pushed his teams to achieve the impossible, and a ruthless side that created friction with employees and competitors. Isaacson offers a balanced portrait of a complex figure, highlighting how Jobs passion for marrying technology with the liberal arts ultimately fueled his genius and shaped his legacy.',
         review:
-          'A must-read on timing and portfolio risk. It sharpened how I evaluate early signals vs. sustaining improvements.',
+          ' ',
         quotes: [
-          'The reason that it is so difficult for existing firms to capitalize on disruptive innovations is that their processes and their business model that make them good at the existing business actually make them bad at competing in the disruption.',
-          'Disruptive technologies typically underperform established products in mainstream markets.',
+          'Picasso had a saying—‘good artists copy, great artists steal’—and we have always been shameless about stealing great ideas',
+          'Some people say, ‘Give the customers what they want.’ But that’s not my approach. Our job is to figure out what they’re going to want before they do… People don’t know what they want until you show it to them.',
+          'A person was either a hero or a bozo, a product was either amazing or shit.',
+          'Simplicity that is the ultimate of sophistication.'
         ],
-        keyIdeas: ['Sustaining vs. disruptive trajectories', 'Jobs-to-be-done lens', 'Small-market trap'],
-        who: ['PMs shaping strategy', 'Hardware founders weighing tradeoffs', 'Students exploring tech bets'],
+        keyIdeas: ['Innovation over market research', 'Cross-disciplinary inspiration', 'Perfectionism and intensity','Legacy of integrated ecosystems','Think different mindset'],
+        who: ['Product Managers', 'Designers', 'Apple Fans','Entrepreneurs'],
         rating: 5,
         bibliography: [
           { k: 'Author', v: 'Clayton M. Christensen' },
@@ -258,10 +218,10 @@ export const PROFILE = {
         overviewText:
           'In Play Nice But Win, Michael Dell provides a personal account of his career, from starting a computer business in his college dorm room to leading Dell Technologies through some of its most challenging moments. The book details three key battles: the launch of his company, the fight to take it private in 2013 against activist investor Carl Icahn, and the transformation of the business through the massive acquisition of EMC in 2016. Throughout his story, Dell shares lessons on leadership, the importance of a long-term vision over short-term market pressures, and how a guiding principle of "playing nice but winning" shaped his approach to building a company that would last.',
         review:
-          'Great field guide to product discovery. I adopted the framing for opportunity trees and risk lists.',
-        quotes: ['The role of product is to discover a product that is valuable, usable and feasible.'],
-        keyIdeas: ['Dual-track discovery/delivery', 'Outcome > output', 'Empowered teams'],
-        who: ['Early-career PMs', 'Tech leads partnering with PM'],
+          ' ',
+        quotes: ['In business you can surround yourself with the smartest people, you can plan ahead with the greatest care and intelligence, but one thing you can count on is that from time to time you’ll get smacked in the face with a flounder—aka something you’d never anticipated.','Growth covers up a lot of sins.','The way I describe this when talking with businesspeople is that the domain of technology is no longer in the IT department; the whole company is technology. I’m talking about all companies. If you’re trying to make cars or medical devices or any kind of product at all, and you want to have new customers, technology is the fulcrum of progress in everything you’re doing.','A corporation is a living organism. It has to continue to shed its skin. Methods have to change. Focus has to change. Values have to change. The sum total of those changes is transformation.'],
+        keyIdeas: ['Playing nice—but winning with integrity', 'Transformation is a constant necessity', 'Balancing profit, growth, and market share','Going private to regain agility','Deep customer empathy'],
+        who: ['Managers', 'Engineers','Entrepreneurs','Business and Tech Students'],
         rating: 4,
         bibliography: [{ k: 'Author', v: 'Marty Cagan' }],
         links: [{ label: 'Summary', href: '#' }],
@@ -279,13 +239,16 @@ export const PROFILE = {
         overviewText:
           'Zero to One by Peter Thiel is a book about building unique, innovative businesses by creating something entirely new (going from 0 to 1) rather than copying or iterating on existing ideas (going from 1 to n). Thiel, a PayPal co-founder and investor, argues that true progress comes from vertical innovation and developing a monopoly in a new market, not from competition in an existing one. The book provides insights into how to achieve this, offering a framework for creating value through original thinking and identifying unique, defensible business ideas.',
         review:
-          'A must-read on timing and portfolio risk. It sharpened how I evaluate early signals vs. sustaining improvements.',
+          ' ',
         quotes: [
-          'The reason that it is so difficult for existing firms to capitalize on disruptive innovations is that their processes and their business model that make them good at the existing business actually make them bad at competing in the disruption.',
-          'Disruptive technologies typically underperform established products in mainstream markets.',
+          'The biggest leaps in value come from creating something entirely new (going from 0 to 1), not by copying what already exists(1 to n)',
+          'The best businesses dominate a small niche first, then expand.',
+          'Technology should aim for 10x improvements, not incremental gains.',
+          'The “last mover advantage” matters; build something so strong that you become the final innovator in a space.',
+          'Distribution is as important as product; great tech alone doesn’t sell itself.'
         ],
-        keyIdeas: ['Sustaining vs. disruptive trajectories', 'Jobs-to-be-done lens', 'Small-market trap'],
-        who: ['PMs shaping strategy', 'Hardware founders weighing tradeoffs', 'Students exploring tech bets'],
+        keyIdeas: ['Start small, scale later', 'Sales and distribution matter', 'Timing is everything', 'Zero to One vs. One to Many'],
+        who: ['Aspiring Entrepreneurs', 'Startup Founders', 'Business Students',"Engineers"],
         rating: 5,
         bibliography: [
           { k: 'Author', v: 'Clayton M. Christensen' },
