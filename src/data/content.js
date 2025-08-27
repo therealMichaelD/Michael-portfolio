@@ -229,7 +229,7 @@ export const PROFILE = {
       gallery: [{ src: '/images/book1-quote.jpg', caption: 'Favorite passage' }],
       blocks: {
         overviewText:
-          'Christensen explains why successful companies miss disruptive tech—and how to respond with the right bets.',
+          'Based on over forty interviews with Jobs himself, Walter Isaacsons Steve Jobs provides a comprehensive and unflinching look at the Apple co-founders extraordinary life. It chronicles his journey from an adopted child in Silicon Valley to a visionary leader who revolutionized several industries, including personal computers, animated movies (Pixar), and mobile devices. The biography explores his unique and often-contradictory personality, characterized by a demanding perfectionism, a "reality distortion field" that pushed his teams to achieve the impossible, and a ruthless side that created friction with employees and competitors. Isaacson offers a balanced portrait of a complex figure, highlighting how Jobs passion for marrying technology with the liberal arts ultimately fueled his genius and shaped his legacy.',
         review:
           'A must-read on timing and portfolio risk. It sharpened how I evaluate early signals vs. sustaining improvements.',
         quotes: [
@@ -256,7 +256,7 @@ export const PROFILE = {
       gallery: [],
       blocks: {
         overviewText:
-          'Patterns for empowering teams, discovering value, and shipping what matters.',
+          'In Play Nice But Win, Michael Dell provides a personal account of his career, from starting a computer business in his college dorm room to leading Dell Technologies through some of its most challenging moments. The book details three key battles: the launch of his company, the fight to take it private in 2013 against activist investor Carl Icahn, and the transformation of the business through the massive acquisition of EMC in 2016. Throughout his story, Dell shares lessons on leadership, the importance of a long-term vision over short-term market pressures, and how a guiding principle of "playing nice but winning" shaped his approach to building a company that would last.',
         review:
           'Great field guide to product discovery. I adopted the framing for opportunity trees and risk lists.',
         quotes: ['The role of product is to discover a product that is valuable, usable and feasible.'],
@@ -277,7 +277,7 @@ export const PROFILE = {
       gallery: [{ src: '/images/book1-quote.jpg', caption: 'Favorite passage' }],
       blocks: {
         overviewText:
-          'Christensen explains why successful companies miss disruptive tech—and how to respond with the right bets.',
+          'Zero to One by Peter Thiel is a book about building unique, innovative businesses by creating something entirely new (going from 0 to 1) rather than copying or iterating on existing ideas (going from 1 to n). Thiel, a PayPal co-founder and investor, argues that true progress comes from vertical innovation and developing a monopoly in a new market, not from competition in an existing one. The book provides insights into how to achieve this, offering a framework for creating value through original thinking and identifying unique, defensible business ideas.',
         review:
           'A must-read on timing and portfolio risk. It sharpened how I evaluate early signals vs. sustaining improvements.',
         quotes: [

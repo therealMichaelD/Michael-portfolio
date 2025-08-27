@@ -8,6 +8,7 @@ import Gallery from '../components/common/Gallery'
 import SectionCard from '../components/common/SectionCard'
 import ReviewCard from '../components/common/ReviewCard'
 import Stars from '../components/common/Stars'
+import Carousel from '../components/common/Carousel' // ✅ NEW
 
 // Map route type -> dataset
 const datasetByType = {
@@ -26,6 +27,7 @@ export const ItemDetail = ({ type }) => {
   const item = findItem(type, id)
   const B = item?.blocks || {}
   const isReadings = type === 'readings'
+  const isProjects = type === 'projects'
 
   if (!item) {
     return (
@@ -45,6 +47,16 @@ export const ItemDetail = ({ type }) => {
     )
   }
 
+  // Build a de-duplicated images array for the project carousel (hero + gallery)
+  const projectCarouselImages = isProjects
+    ? [
+        { src: item.heroImage, caption: item.title || 'Hero' },
+        ...(item.gallery || []),
+      ]
+        .filter(Boolean)
+        .filter((im, idx, arr) => im?.src && arr.findIndex(x => x.src === im.src) === idx)
+    : []
+
   return (
     <main className="bg-white text-black">
       <section className="pt-10 sm:pt-16">
@@ -56,38 +68,52 @@ export const ItemDetail = ({ type }) => {
           <p className="mt-2 text-zinc-700">{item.subtitle}</p>
           <div className="mt-4"><AccentBar /></div>
 
+          {/* GRID:
+             - Projects: single column (full-width sections)
+             - Readings: single column
+             - Products: 2-column (content + sidebar) */}
           <div
             className={`mt-6 grid ${
-              isReadings ? 'grid-cols-1' : 'md:grid-cols-[1.2fr_.8fr]'
+              (isReadings || isProjects) ? 'grid-cols-1' : 'md:grid-cols-[1.2fr_.8fr]'
             } gap-6 xl:gap-8 items-start`}
           >
 
-            {/* LEFT column */}
+            {/* PROJECTS — full-width carousel (hero + gallery) */}
+            {isProjects && (
+              <div className="w-full">
+                <Carousel
+                  images={projectCarouselImages}
+                  aspectClass="aspect-[16/9]"
+                  fit="cover"
+                  showCaption={true}
+                  showDots={true}
+                />
+              </div>
+            )}
+
+            {/* MAIN column (projects/readings are single-column; products are the left column) */}
             <div className="space-y-4 sm:space-y-5">
-              {/* 🖼️ hero image */}
-              
-              {/* 🖼️ gallery */}
+              {/* 🖼️ hero / gallery:
+                  - Projects: handled by full-width Carousel above.
+                  - Readings: compact portrait gallery with filtering.
+                  - Products: keep default gallery. */}
               {type === 'readings' ? (
                 <Gallery
-                  // Remove the “Favorite passage” item by filtering it out:
                   images={(item.gallery || []).filter(
                     im => (im.caption || '').toLowerCase() !== 'favorite passage'
                   )}
-                  // Make the gallery much smaller and portrait-friendly:
-                  className="max-w-[420px]"             // shrink overall gallery width
-                  columnsClass="grid-cols-3 md:grid-cols-4" // more, smaller thumbnails
-                  imageAspectClass="aspect-[3/4]"       // bookish portrait thumbs
-                  fit="contain"                         // don’t crop tall images
+                  className="max-w-[420px]"
+                  columnsClass="grid-cols-3 md:grid-cols-4"
+                  imageAspectClass="aspect-[3/4]"
+                  fit="contain"
                 />
               ) : (
-                <Gallery images={item.gallery} />
+                (!isProjects ? <Gallery images={item.gallery} /> : null)
               )}
-
 
               {/* Overview */}
               {(B.overviewText || item.tags?.length) && (
                 <SectionCard title={type === 'products' ? 'Overview' : type === 'projects' ? 'Technical Overview' : 'Book Overview'} tone="accent">
-                  {/* ✅ EDIT TEXT HERE: overviewText in content.js */}
                   {B.overviewText && <p>{B.overviewText}</p>}
                   {item.tags?.length ? (
                     <div className="flex flex-wrap gap-2 pt-1">
@@ -97,7 +123,7 @@ export const ItemDetail = ({ type }) => {
                 </SectionCard>
               )}
 
-              {/* PRODUCTS */}
+              {/* PRODUCTS (unchanged) */}
               {type === 'products' && (
                 <>
                   {B.problemAudience?.length && (
@@ -142,7 +168,7 @@ export const ItemDetail = ({ type }) => {
                 </>
               )}
 
-              {/* PROJECTS */}
+              {/* PROJECTS — all full-width in main stack (incl. Environment & Links) */}
               {type === 'projects' && (
                 <>
                   {B.skillsTools?.length && (
@@ -176,6 +202,26 @@ export const ItemDetail = ({ type }) => {
                       <ul className="list-disc pl-5 space-y-1">{B.risks.map((r,i)=><li key={i}>{r}</li>)}</ul>
                     </SectionCard>
                   )}
+
+                  {/* Moved from sidebar → full-width in main stack */}
+                  {B.environment?.length && (
+                    <SectionCard title="Environment"><KeyValue items={B.environment} /></SectionCard>
+                  )}
+                  {B.links?.length && (
+                    <SectionCard title="Links">
+                      <ul className="text-sm text-emerald-800 space-y-1">
+                        {B.links.map((lnk,i)=><li key={i}><a className="hover:underline" href={lnk.href}>{lnk.label}</a></li>)}
+                      </ul>
+                    </SectionCard>
+                  )}
+
+                  {/* Mobile back link now that the sidebar is hidden */}
+                  <Link
+                    to={`/${type}`}
+                    className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+                  >
+                    ← Back to {type}
+                  </Link>
                 </>
               )}
 
@@ -211,36 +257,37 @@ export const ItemDetail = ({ type }) => {
               )}
             </div>
 
-            {/* RIGHT column */}
-            {/* Right sidebar — hide Links & Bibliography for Readings */}
-            <div className="space-y-4 sm:space-y-5">
-              {/* Links: render only when NOT readings */}
-              {!isReadings && B.links?.length && (
-                <SectionCard title="Links">
-                  <ul className="text-sm text-emerald-800 space-y-1">
-                    {B.links.map((lnk,i)=><li key={i}><a className="hover:underline" href={lnk.href}>{lnk.label}</a></li>)}
-                  </ul>
-                </SectionCard>
-              )}
+            {/* RIGHT column — render ONLY for products (projects/readings use full-width main) */}
+            {(!isReadings && !isProjects) && (
+              <div className="space-y-4 sm:space-y-5">
+                {/* Links: for products only */}
+                {B.links?.length && (
+                  <SectionCard title="Links">
+                    <ul className="text-sm text-emerald-800 space-y-1">
+                      {B.links.map((lnk,i)=><li key={i}><a className="hover:underline" href={lnk.href}>{lnk.label}</a></li>)}
+                    </ul>
+                  </SectionCard>
+                )}
 
-              {type === 'products' && B.atAGlance?.length && (
-                <SectionCard title="At a Glance"><KeyValue items={B.atAGlance} /></SectionCard>
-              )}
+                {/* Product-only sidebar cards */}
+                {type === 'products' && B.atAGlance?.length && (
+                  <SectionCard title="At a Glance"><KeyValue items={B.atAGlance} /></SectionCard>
+                )}
 
-              {type === 'projects' && B.environment?.length && (
-                <SectionCard title="Environment"><KeyValue items={B.environment} /></SectionCard>
-              )}
+                {/* Environment appears in main stack for projects, not here */}
+                {type === 'projects' && B.environment?.length && (
+                  <SectionCard title="Environment"><KeyValue items={B.environment} /></SectionCard>
+                )}
 
-              {/* Bibliography: removed for readings (don’t render at all) */}
-              {/* (Nothing here) */}
-
-              <Link
-                to={`/${type}`}
-                className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
-              >
-                ← Back to {type}
-              </Link>
-            </div>
+                {/* Mobile back link for products when sidebar is present */}
+                <Link
+                  to={`/${type}`}
+                  className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+                >
+                  ← Back to {type}
+                </Link>
+              </div>
+            )}
           </div>
         </Container>
       </section>
