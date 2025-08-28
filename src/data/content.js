@@ -14,7 +14,7 @@ export const PROFILE = {
     email: 'Michael.Dang3000@gmail.com',
     github: 'https://github.com/therealMichaelD',
     linkedin: 'https://www.linkedin.com/in/michaeldang1/',
-    resumeUrl: '/Michael_Dang_Resume.pdf',
+    resumeUrl: '/ResumePortfolio2.pdf',
     headshot: '/HomePagePhoto.jpg',       // 🖼️ ADD/CHANGE IMAGE HERE (Home hero)
     aboutPhoto: '/PortfolioHeadshot.jpg', // 🖼️ ADD/CHANGE IMAGE HERE (About photo)
   }
@@ -157,7 +157,7 @@ export const PROFILE = {
       href: '/projects/oscilloscope',
       tags: ['Arduino','Oscilloscope','Signal Processing'],
       heroImage: '/images/oscilloscope.png',
-      gallery: [{ src: '/images/oscilloscope-1.jpg', caption: 'Waveform capture' }],
+      gallery: [{ src: '/Oscilloscope1.jpg', caption: 'Hardware' }],
       blocks: {
         overviewText: 'DIY Arduino-based oscilloscope that samples analog signals via the Arduino’s ADC and streams data to a custom Processing GUI for real-time waveform visualization.',
         skillsTools: [
