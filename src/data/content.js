@@ -23,7 +23,7 @@ export const PROFILE = {
   export const PRODUCTS = [
     {
       id: 'resume-insights',
-      title: 'IN-PROGRESS', // ✅ EDIT TEXT HERE
+      title: 'Coming Soon', // ✅ EDIT TEXT HERE
       subtitle: ' ', // ✅
       href: '/products/resume-insights',
       tags: [' ', ' ', ' '],
@@ -104,7 +104,7 @@ export const PROFILE = {
       heroImage: '/images/power-meter.png', // 🖼️
       gallery: [
         { src: '/images/power-meter-1.jpg', caption: 'Breadboard prototype' }, // 🖼️ add more
-        { src: '/images/power-meter-2.jpg', caption: 'Serial UI' },
+        { src: '/ESP32SmartMeterGUI.jpg', caption: 'Serial UI' },
       ],
       blocks: {
         overviewText:
@@ -156,7 +156,7 @@ export const PROFILE = {
       subtitle: 'Turning Arduino into a budget-friendly signal analyzer.',
       href: '/projects/oscilloscope',
       tags: ['Arduino','Oscilloscope','Signal Processing'],
-      heroImage: '/images/oscilloscope.png',
+      heroImage: '/OWiring.jpg',
       gallery: [{ src: '/Oscilloscope1.jpg', caption: 'Hardware' }],
       blocks: {
         overviewText: 'DIY Arduino-based oscilloscope that samples analog signals via the Arduino’s ADC and streams data to a custom Processing GUI for real-time waveform visualization.',
