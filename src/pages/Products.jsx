@@ -8,7 +8,7 @@ const Products = () => (
   <main className="bg-white text-black">
     <section className="pt-10 sm:pt-16">
       <Container>
-        <SectionHeading>Products</SectionHeading>
+        <SectionHeading>Products-Coming Soon</SectionHeading>
         <p className="mt-2 text-zinc-700 text-sm sm:text-base">
           PM-style side projects that highlight problem framing, metrics, and outcomes.
         </p>

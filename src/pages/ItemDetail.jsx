@@ -78,13 +78,14 @@ export const ItemDetail = ({ type }) => {
             } gap-6 xl:gap-8 items-start`}
           >
 
-            {/* PROJECTS — full-width carousel (hero + gallery) */}
             {isProjects && (
               <div className="w-full">
                 <Carousel
                   images={projectCarouselImages}
-                  aspectClass="aspect-[16/9]"
-                  fit="cover"
+                  viewportClass="h-[56vh] sm:h-[64vh] max-h-[780px]" // stable height
+                  fit="scale-down"                                    // never upscale tiny images
+                  padClass="p-3 sm:p-4"                               // add whitespace frame
+                  canvasBgClass="bg-white"                            // clean background
                   showCaption={true}
                   showDots={true}
                 />

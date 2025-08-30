@@ -1,25 +1,24 @@
 // src/components/common/Carousel.jsx
-// Simple carousel with arrows, dots, keyboard (←/→), and touch swipe.
-// Props:
-// - images:      [{ src: string, caption?: string }]
-// - aspectClass: e.g., "aspect-[16/9]" (default) or "aspect-[2/3]" for books
-// - fit:         "cover" | "contain" (default "cover")
-// - className:   extra classes for the outer wrapper
-// - startIndex:  slide to start on (default 0)
-// - showDots:    show pagination dots (default true)
-// - showCaption: show current slide caption (default true)
+// Carousel with arrows, dots, keyboard + touch and robust image sizing.
+// Key differences from the previous version:
+// - Height-based viewport (stable across slides)
+// - Slides use flex-center
+// - <img> uses w-auto h-auto + max-w/max-h + object-contain/scale-down
+//   so portrait/landscape/small images all render fully without cropping.
 
 import React, { useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export default function Carousel({
   images = [],
-  aspectClass = 'aspect-[16/9]',
-  fit = 'cover',
+  viewportClass = 'h-[56vh] sm:h-[64vh] max-h-[780px]', // tweak if you want taller/shorter
+  fit = 'contain',              // 'contain' (default), 'scale-down' (never upscale), or 'cover'
   className = '',
   startIndex = 0,
   showDots = true,
   showCaption = true,
+  padClass = 'p-3 sm:p-4',      // whitespace frame around the image
+  canvasBgClass = 'bg-white',   // background behind image (try 'bg-zinc-50' if you prefer)
 }) {
   const len = images.length
   if (!len) return null
@@ -28,7 +27,7 @@ export default function Carousel({
   const go = (n) => setIdx((i) => (i + n + len) % len)
   const to = (n) => setIdx(((n % len) + len) % len)
 
-  // Keyboard: ← / →
+  // Keyboard nav
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'ArrowLeft') go(-1)
@@ -46,14 +45,18 @@ export default function Carousel({
     if (Math.abs(dx) > 40) dx < 0 ? go(1) : go(-1)
   }
 
-  const objectClass = fit === 'contain' ? 'object-contain' : 'object-cover'
+  // Fit classes
+  const fitClass =
+    fit === 'cover'
+      ? 'object-cover'
+      : fit === 'scale-down'
+      ? 'object-scale-down' // never upscale
+      : 'object-contain'    // default: fit inside (can upscale within bounds)
 
   return (
     <div className={`relative w-full ${className}`} aria-roledescription="carousel">
       {/* Viewport */}
-      <div
-        className={`overflow-hidden rounded-[28px] ${aspectClass} bg-gradient-to-br from-emerald-50 via-zinc-100 to-zinc-200`}
-      >
+      <div className={`overflow-hidden rounded-[28px] ${viewportClass} bg-gradient-to-br from-emerald-50 via-zinc-100 to-zinc-200`}>
         {/* Track */}
         <div
           className="h-full w-full flex transition-transform duration-500"
@@ -62,13 +65,17 @@ export default function Carousel({
           onTouchEnd={onTouchEnd}
         >
           {images.map((im, i) => (
-            <div key={i} className="w-full shrink-0">
+            // Each slide fills the viewport and centers its content
+            <div key={i} className={`w-full h-full shrink-0 flex items-center justify-center ${canvasBgClass} ${padClass}`}>
               <img
                 src={im.src}
                 alt={im.caption || `image-${i}`}
                 loading="lazy"
                 decoding="async"
-                className={`w-full h-full ${objectClass}`}
+                draggable={false}
+                // IMPORTANT: let the image size itself naturally, only cap it.
+                className={`w-auto h-auto max-w-full max-h-full ${fitClass}`}
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
             </div>
           ))}
@@ -99,7 +106,7 @@ export default function Carousel({
 
       {/* Caption */}
       {showCaption && images[idx]?.caption && (
-        <p className="mt-2 text-sm text-zinc-600">{images[idx].caption}</p>
+        <p className="mt-2 text-sm text-zinc-600 text-center">{images[idx].caption}</p>
       )}
 
       {/* Dots */}
@@ -110,9 +117,7 @@ export default function Carousel({
               key={i}
               aria-label={`Go to slide ${i + 1}`}
               onClick={() => to(i)}
-              className={`h-1.5 rounded-full transition-all ${
-                i === idx ? 'w-5 bg-emerald-600' : 'w-2 bg-zinc-300'
-              }`}
+              className={`h-1.5 rounded-full transition-all ${i === idx ? 'w-5 bg-emerald-600' : 'w-2 bg-zinc-300'}`}
             />
           ))}
         </div>
