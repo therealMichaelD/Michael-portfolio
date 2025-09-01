@@ -183,53 +183,108 @@ export const ItemDetail = ({ type }) => {
                 </>
               )}
 
-              {/* PROJECTS — all full-width in main stack (incl. Environment & Links) */}
+              {/* PROJECTS */}
               {type === 'projects' && (
                 <>
+                  {/* Skills & Tools (unchanged) */}
                   {B.skillsTools?.length && (
-                    <SectionCard title="Skills & Tools"><KeyValue items={B.skillsTools} /></SectionCard>
+                    <SectionCard title="Skills & Tools">
+                      <KeyValue items={B.skillsTools} />
+                    </SectionCard>
                   )}
+
+                  {/* ✅ NEW — Problem (full width, directly below Skills & Tools) */}
+                  {B.problem && (
+                    <SectionCard title="Problem">
+                      <p className="whitespace-pre-line">{B.problem}</p>
+                    </SectionCard>
+                  )}
+
+                  {/* ✅ NEW — Approach (full width) */}
+                  {B.approach && (
+                    <SectionCard title="Approach">
+                      <p className="whitespace-pre-line">{B.approach}</p>
+                    </SectionCard>
+                  )}
+
+                  {/* ✅ NEW — Key Work (bulleted) */}
+                  {B.keyWork?.length && (
+                    <SectionCard title="Key Work">
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.keyWork.map((n, i) => <li key={i}>{n}</li>)}
+                      </ul>
+                    </SectionCard>
+                  )}
+
+                  {/* Architecture Notes (unchanged) */}
                   {B.architectureNotes?.length && (
                     <SectionCard title="Architecture Notes">
-                      <ul className="list-disc pl-5 space-y-1">{B.architectureNotes.map((n,i)=><li key={i}>{n}</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.architectureNotes.map((n, i) => <li key={i}>{n}</li>)}
+                      </ul>
                     </SectionCard>
                   )}
+
+                  {/* Performance (unchanged) */}
                   {B.performance?.length && (
                     <SectionCard title="Performance">
-                      <ul className="list-disc pl-5 space-y-1">{B.performance.map((n,i)=><li key={i}>{n}</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.performance.map((n, i) => <li key={i}>{n}</li>)}
+                      </ul>
                     </SectionCard>
                   )}
-                  {B.benchmarks?.length && (
-                    <SectionCard title="Benchmarks"><KeyValue items={B.benchmarks} /></SectionCard>
+
+                  {/* ✅ NEW — Results (bulleted). If you want metrics, also add resultsStats below */}
+                  {B.results?.length && (
+                    <SectionCard title="Results">
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.results.map((n, i) => <li key={i}>{n}</li>)}
+                      </ul>
+                    </SectionCard>
                   )}
+                  {/* Optional: show headline metrics as Stat cards
+                    {B.resultsStats?.length && (
+                      <SectionCard title="Results (Metrics)">
+                        <div className="grid sm:grid-cols-3 gap-3">
+                          {B.resultsStats.map((s, i) => <Stat key={i} {...s} />)}
+                        </div>
+                      </SectionCard>
+                    )}
+                  */}
+
+                  {/* Benchmarks (unchanged) */}
+                  {B.benchmarks?.length && (
+                    <SectionCard title="Benchmarks">
+                      <KeyValue items={B.benchmarks} />
+                    </SectionCard>
+                  )}
+
+                  {/* Build Timeline (unchanged) */}
                   {B.timeline?.length && (
                     <SectionCard title="Build Timeline">
-                      <ol className="list-decimal pl-5 space-y-1">{B.timeline.map((t,i)=><li key={i}>{t}</li>)}</ol>
+                      <ol className="list-decimal pl-5 space-y-1">
+                        {B.timeline.map((t, i) => <li key={i}>{t}</li>)}
+                      </ol>
                     </SectionCard>
                   )}
+
+                  {/* Bill of Materials (unchanged) */}
                   {B.bom?.length && (
                     <SectionCard title="Bill of Materials (BOM)">
-                      <ul className="list-disc pl-5 space-y-1">{B.bom.map((b,i)=><li key={i}>{b}</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.bom.map((b, i) => <li key={i}>{b}</li>)}
+                      </ul>
                     </SectionCard>
                   )}
+
+                  {/* Next Steps (unchanged) */}
                   {B.risks?.length && (
                     <SectionCard title="Next Steps">
-                      <ul className="list-disc pl-5 space-y-1">{B.risks.map((r,i)=><li key={i}>{r}</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.risks.map((r, i) => <li key={i}>{r}</li>)}
+                      </ul>
                     </SectionCard>
                   )}
-
-                  {/* Moved from sidebar → full-width in main stack */}
-                  {B.environment?.length && (
-                    <SectionCard title="Environment"><KeyValue items={B.environment} /></SectionCard>
-                  )}
-
-                  {/* Mobile back link now that the sidebar is hidden */}
-                  <Link
-                    to={`/${type}`}
-                    className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
-                  >
-                    ← Back to {type}
-                  </Link>
                 </>
               )}
 
