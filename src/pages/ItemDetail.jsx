@@ -1,5 +1,6 @@
 // src/pages/ItemDetail.jsx
-import React from 'react'
+import React, { useState } from 'react' 
+import PdfEmbed from '../components/common/PdfEmbed'
 import { Link, useParams } from 'react-router-dom'
 import { PRODUCTS, PROJECTS, READINGS } from '../data/content'
 import { Container, SectionHeading, AccentBar, KeyValue, Stat } from '../components/ui/Primitives'
@@ -78,39 +79,173 @@ export const ItemDetail = ({ type }) => {
             } gap-6 xl:gap-8 items-start`}
           >
 
-            {isProjects && (
-              <div className="w-full">
-                <Carousel
-                  images={projectCarouselImages}
-                  viewportClass="h-[56vh] sm:h-[64vh] max-h-[780px]" // stable height
-                  fit="scale-down"                                    // never upscale tiny images
-                  padClass="p-3 sm:p-4"                               // add whitespace frame
-                  canvasBgClass="bg-white"                            // clean background
-                  showCaption={true}
-                  showDots={true}
-                />
-              </div>
-            )}
+            {isProjects && (() => {
+              // ✅ Only count real gallery images (ignore heroImage)
+              const galleryImages = (item.gallery || []).filter(im => im?.src)
+              const hasGallery = galleryImages.length > 0
+              const hasPdf = !!B.pdfUrl
+
+              // Default tab: Gallery if available, else PDF
+              const [tab, setTab] = useState(hasGallery ? 'gallery' : 'pdf')
+
+              // Nothing to show
+              if (!hasPdf && !hasGallery) return null
+
+              // Build the carousel images only when we actually have gallery images
+              const carouselImages = hasGallery
+                ? [
+                    // include heroImage first if you want it leading the gallery…
+                    item.heroImage ? { src: item.heroImage, caption: item.title || 'Hero' } : null,
+                    ...galleryImages,
+                  ].filter(Boolean)
+                : []
+
+              return (
+                <div className="w-full rounded-[28px] border border-black/10 overflow-hidden bg-white">
+                  {/* Tabs header */}
+                  <div className="flex items-center justify-between gap-3 p-2 sm:p-3 border-b">
+                    <div className="inline-flex rounded-full border border-emerald-300 overflow-hidden">
+                      {hasGallery && (
+                        <button
+                          onClick={() => setTab('gallery')}
+                          className={`px-3 py-1.5 text-sm ${tab === 'gallery' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                        >
+                          Gallery
+                        </button>
+                      )}
+                      {hasPdf && (
+                        <button
+                          onClick={() => setTab('pdf')}
+                          className={`px-3 py-1.5 text-sm ${tab === 'pdf' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                        >
+                          PDF
+                        </button>
+                      )}
+                    </div>
+
+                    {hasPdf && (
+                      <a
+                        href={B.pdfUrl}
+                        className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+                        download
+                      >
+                        Download PDF
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Viewer body */}
+                  <div className="p-3">
+                    {tab === 'gallery' && hasGallery ? (
+                      <Carousel
+                        images={carouselImages}
+                        viewportClass="h-[56vh] sm:h-[64vh] max-h-[780px]"
+                        fit="scale-down"
+                        padClass="p-3 sm:p-4"
+                        canvasBgClass="bg-white"
+                        showCaption={true}
+                        showDots={true}
+                      />
+                    ) : hasPdf ? (
+                      <PdfEmbed url={B.pdfUrl} className="h-[78vh]" title={`${item.title} — PDF`} />
+                    ) : null}
+                  </div>
+                </div>
+              )
+            })()}
 
             {/* MAIN column (projects/readings are single-column; products are the left column) */}
             <div className="space-y-4 sm:space-y-5">
-              {/* 🖼️ hero / gallery:
-                  - Projects: handled by full-width Carousel above.
-                  - Readings: compact portrait gallery with filtering.
-                  - Products: keep default gallery. */}
-              {type === 'readings' ? (
-                <Gallery
-                  images={(item.gallery || []).filter(
-                    im => (im.caption || '').toLowerCase() !== 'favorite passage'
-                  )}
-                  className="max-w-[420px]"
-                  columnsClass="grid-cols-3 md:grid-cols-4"
-                  imageAspectClass="aspect-[3/4]"
-                  fit="contain"
-                />
-              ) : (
-                (!isProjects ? <Gallery images={item.gallery} /> : null)
-              )}
+              {/* 🖼️ hero / media:
+                  - Projects: images handled by full-width Carousel above.
+                  - Non-projects: show PDF <-> Gallery toggle when pdfUrl exists; otherwise the original gallery.
+              */}
+              {!isProjects && (() => {
+                // Prepare gallery images (keep your Readings filtering/portrait tweaks)
+                const galleryImages = isReadings
+                  ? (item.gallery || []).filter(
+                      im => (im.caption || '').toLowerCase() !== 'favorite passage'
+                    )
+                  : (item.gallery || [])
+
+                const hasPdf = !!B.pdfUrl
+                const hasGallery = galleryImages.length > 0
+
+                // Default to PDF when present, else Gallery
+                const [tab, setTab] = useState(hasPdf ? 'pdf' : 'gallery')
+
+                if (!hasPdf) {
+                  // No PDF → render the gallery exactly like before
+                  return isReadings ? (
+                    <Gallery
+                      images={galleryImages}
+                      className="max-w-[420px]"
+                      columnsClass="grid-cols-3 md:grid-cols-4"
+                      imageAspectClass="aspect-[3/4]"
+                      fit="contain"
+                    />
+                  ) : (
+                    <Gallery images={galleryImages} />
+                  )
+                }
+
+                // PDF present → show tabs to switch between PDF and Gallery
+                return (
+                  <div className="rounded-[28px] border border-black/10 overflow-hidden bg-white">
+                    {/* Tabs header */}
+                    <div className="flex items-center justify-between gap-3 p-2 sm:p-3 border-b">
+                      <div className="inline-flex rounded-full border border-emerald-300 overflow-hidden">
+                        <button
+                          onClick={() => setTab('pdf')}
+                          className={`px-3 py-1.5 text-sm ${tab === 'pdf' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                        >
+                          PDF
+                        </button>
+                        {hasGallery && (
+                          <button
+                            onClick={() => setTab('gallery')}
+                            className={`px-3 py-1.5 text-sm ${tab === 'gallery' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                          >
+                            Gallery
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Optional: Download */}
+                      {B.pdfUrl && (
+                        <a
+                          href={B.pdfUrl}
+                          className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+                          download
+                        >
+                          Download PDF
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Viewer body */}
+                    <div className="p-0">
+                      {tab === 'pdf' ? (
+                        <PdfEmbed url={B.pdfUrl} className="h-[78vh]" title={`${item.title} — PDF`} />
+                      ) : isReadings ? (
+                        <div className="p-3">
+                          <Gallery
+                            images={galleryImages}
+                            className="max-w-[420px]"
+                            columnsClass="grid-cols-3 md:grid-cols-4"
+                            imageAspectClass="aspect-[3/4]"
+                            fit="contain"
+                          />
+                        </div>
+                      ) : (
+                        <div className="p-3">
+                          <Gallery images={galleryImages} />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })()}
 
               {/* Overview */}
               {(B.overviewText || item.tags?.length) && (
@@ -136,7 +271,6 @@ export const ItemDetail = ({ type }) => {
                   </ul>
                 </SectionCard>
               )}
-
 
               {/* PRODUCTS (unchanged) */}
               {type === 'products' && (
@@ -193,21 +327,21 @@ export const ItemDetail = ({ type }) => {
                     </SectionCard>
                   )}
 
-                  {/* ✅ NEW — Problem (full width, directly below Skills & Tools) */}
+                  {/* Problem (full width, directly below Skills & Tools) */}
                   {B.problem && (
                     <SectionCard title="Problem">
                       <p className="whitespace-pre-line">{B.problem}</p>
                     </SectionCard>
                   )}
 
-                  {/* ✅ NEW — Approach (full width) */}
+                  {/* Approach (full width) */}
                   {B.approach && (
                     <SectionCard title="Approach">
                       <p className="whitespace-pre-line">{B.approach}</p>
                     </SectionCard>
                   )}
 
-                  {/* ✅ NEW — Key Work (bulleted) */}
+                  {/* Key Work (bulleted) */}
                   {B.keyWork?.length && (
                     <SectionCard title="Key Work">
                       <ul className="list-disc pl-5 space-y-1">
@@ -234,7 +368,7 @@ export const ItemDetail = ({ type }) => {
                     </SectionCard>
                   )}
 
-                  {/* ✅ NEW — Results (bulleted). If you want metrics, also add resultsStats below */}
+                  {/* Results */}
                   {B.results?.length && (
                     <SectionCard title="Results">
                       <ul className="list-disc pl-5 space-y-1">
@@ -242,15 +376,6 @@ export const ItemDetail = ({ type }) => {
                       </ul>
                     </SectionCard>
                   )}
-                  {/* Optional: show headline metrics as Stat cards
-                    {B.resultsStats?.length && (
-                      <SectionCard title="Results (Metrics)">
-                        <div className="grid sm:grid-cols-3 gap-3">
-                          {B.resultsStats.map((s, i) => <Stat key={i} {...s} />)}
-                        </div>
-                      </SectionCard>
-                    )}
-                  */}
 
                   {/* Benchmarks (unchanged) */}
                   {B.benchmarks?.length && (

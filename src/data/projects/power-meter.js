@@ -46,9 +46,7 @@ const powerMeter = {
         'Next: OTA updates + calibration wizard.',
       ],
       links: [
-        { label: 'Demo', href: '#' },
         { label: 'Repo', href: '#' },
-        { label: 'Writeup', href: '#' },
       ],
     },
   }
