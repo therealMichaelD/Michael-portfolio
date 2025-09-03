@@ -410,6 +410,51 @@ export const ItemDetail = ({ type }) => {
                       </ul>
                     </SectionCard>
                   )}
+
+                  {/* ✅ Collaborators (bottom of projects) */}
+                  {Array.isArray(B.collaborators) && B.collaborators.length > 0 && (
+                    <SectionCard title="Collaborators">
+                      <ul className="grid sm:grid-cols-2 gap-3">
+                        {B.collaborators.map((c, i) => (
+                          <li
+                            key={`${c.name}-${i}`}
+                            className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white p-3"
+                          >
+                            {c.avatar ? (
+                              <img
+                                src={c.avatar}
+                                alt={c.name}
+                                className="w-10 h-10 rounded-full object-cover"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-medium">
+                                {(c.name || '?').slice(0,1)}
+                              </div>
+                            )}
+
+                            <div className="min-w-0">
+                              <div className="font-medium text-black truncate">
+                                {c.href ? (
+                                  <a href={c.href} className="text-emerald-700 hover:underline">
+                                    {c.name}
+                                  </a>
+                                ) : (
+                                  c.name
+                                )}
+                              </div>
+                              {c.role && (
+                                <div className="text-sm text-zinc-600 truncate">
+                                  {c.role}
+                                </div>
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </SectionCard>
+                  )}
                 </>
               )}
 
