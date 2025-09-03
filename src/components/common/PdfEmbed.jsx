@@ -1,16 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 
-// Worker setup (Vite / CRA friendly)
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString()
+/* ---- Robust worker setup (👈 key change)
+   Use the classic UMD worker (.js), not the ESM .mjs that causes
+   "Setting up fake worker failed: 'Importing a module script failed'".
+   Works in CRA, Vite, Next, and iOS.
+*/
+(function setPdfWorker() {
+  try {
+    // Bundler-resolved URL (Vite/CRA/webpack will rewrite this to an asset URL)
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+      'pdfjs-dist/build/pdf.worker.min.js',
+      import.meta.url
+    ).toString()
+  } catch {
+    // Fallbacks: self-host (if you copy it) then CDN
+    // 1) Optional self-host: copy node_modules/pdfjs-dist/build/pdf.worker.min.js -> public/vendor/pdf.worker.min.js
+    // pdfjs.GlobalWorkerOptions.workerSrc = '/vendor/pdf.worker.min.js'
+    // 2) CDN fallback:
+    pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+  }
+})()
 
-/**
- * PdfEmbed — desktop uses native <iframe>, mobile/tablets use react-pdf.
- * Mobile path pre-fetches PDF bytes to avoid iOS/CORS/range issues.
- */
 export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) {
   const [usePdfJs, setUsePdfJs] = useState(false)
   const [numPages, setNumPages] = useState(null)
@@ -19,8 +30,8 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
   const [width, setWidth] = useState(900)
 
   // Pre-fetched PDF data for mobile/tablets
-  const [pdfData, setPdfData] = useState(null)           // Uint8Array
-  const [error, setError] = useState(null)               // string | null
+  const [pdfData, setPdfData] = useState(null)   // Uint8Array
+  const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
 
   // Decide when to use react-pdf (iOS/iPadOS or small screens)
@@ -29,7 +40,7 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
     const ua = navigator.userAgent || ''
     const isiOS =
       /iPad|iPhone|iPod/.test(ua) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) // iPadOS as "Mac"
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) // iPadOS reports as Mac
     const small = window.matchMedia('(max-width: 768px)').matches
     setUsePdfJs(isiOS || small)
   }, [])
@@ -44,7 +55,7 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
     return () => ro.disconnect()
   }, [])
 
-  // On mobile/tablets: pre-fetch the PDF as bytes (fixes iOS issues)
+  // On mobile/tablets: pre-fetch the PDF as bytes (avoids iOS/CORS/range issues)
   useEffect(() => {
     if (!usePdfJs || !url) return
     let aborted = false
@@ -53,35 +64,30 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
         setLoading(true)
         setError(null)
         setPdfData(null)
-        // Resolve to absolute URL to avoid base/href oddities
+
         const absUrl = url.startsWith('http')
           ? url
           : new URL(url, window.location.origin).href
 
         const res = await fetch(absUrl, {
-          // Same-origin PDF should work; if hosted elsewhere ensure CORS
           credentials: 'omit',
           cache: 'no-store',
         })
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         const buf = await res.arrayBuffer()
-        if (!aborted) {
-          setPdfData(new Uint8Array(buf))
-        }
+        if (!aborted) setPdfData(new Uint8Array(buf))
       } catch (e) {
         if (!aborted) setError(e?.message || 'Failed to fetch PDF')
       } finally {
         if (!aborted) setLoading(false)
       }
     })()
-    return () => {
-      aborted = true
-    }
+    return () => { aborted = true }
   }, [usePdfJs, url])
 
   if (!url) return null
 
-  // 🖥️ Desktop: native PDF viewer in iframe (fastest path)
+  // 🖥️ Desktop: native PDF viewer in iframe (fastest)
   if (!usePdfJs) {
     const src = `${url}#view=FitH&pagemode=none`
     return (
@@ -96,7 +102,7 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
     )
   }
 
-  // 📱 Mobile/tablets: react-pdf scroller (with pre-fetched bytes)
+  // 📱 Mobile/tablets: react-pdf scroller with pre-fetched bytes
   return (
     <div className={`rounded-[28px] border border-black/10 overflow-hidden bg-white ${className}`}>
       {/* Toolbar */}
@@ -137,12 +143,7 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
       {error && (
         <div className="p-4 text-sm text-red-600">
           Failed to load PDF ({error}).{' '}
-          <a
-            href={url}
-            className="underline text-emerald-700"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href={url} className="underline text-emerald-700" target="_blank" rel="noreferrer">
             Open in new tab
           </a>
         </div>
@@ -152,7 +153,7 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
       <div
         ref={containerRef}
         className="max-h-[82vh] overflow-auto p-3 sm:p-4"
-        style={{ WebkitOverflowScrolling: 'touch' }} // smooth momentum scroll on iOS
+        style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {loading && !pdfData && !error && (
           <div className="p-6 text-sm text-zinc-600">Loading PDF…</div>
@@ -160,7 +161,7 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
 
         {pdfData && !error && (
           <Document
-            file={{ data: pdfData }}                 // 👈 pass bytes, not URL (fixes iOS)
+            file={{ data: pdfData }}   // 👈 pass bytes, not URL
             onLoadSuccess={({ numPages }) => setNumPages(numPages)}
             onLoadError={(e) => setError(e?.message || 'Failed to parse PDF')}
             loading={<div className="p-6 text-sm text-zinc-600">Rendering…</div>}
