@@ -2,7 +2,7 @@
 
 const duckcar = {
     id: 'duckcar',
-    title: 'Duck Car',
+    title: 'Duck Car1',
     subtitle:
       'Closed-loop control design and hardware implementation for a self-driving duck car.',
     href: '/projects/duckcar',
