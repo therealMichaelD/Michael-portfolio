@@ -1,6 +1,7 @@
 // src/pages/ItemDetail.jsx
 import React, { useState } from 'react' 
 import PdfEmbed from '../components/common/PdfEmbed'
+import PptxEmbed from '../components/common/PptxEmbed'
 import { Link, useParams } from 'react-router-dom'
 import { PRODUCTS, PROJECTS, READINGS } from '../data/content'
 import { Container, SectionHeading, AccentBar, KeyValue, Stat } from '../components/ui/Primitives'
@@ -84,17 +85,19 @@ export const ItemDetail = ({ type }) => {
               const galleryImages = (item.gallery || []).filter(im => im?.src)
               const hasGallery = galleryImages.length > 0
               const hasPdf = !!B.pdfUrl
+              const hasPpt = !!B.pptUrl   // ✅ NEW
 
-              // Default tab: Gallery if available, else PDF
-              const [tab, setTab] = useState(hasGallery ? 'gallery' : 'pdf')
+              // Default tab: Gallery > PDF > PPT
+              const [tab, setTab] = useState(
+                hasGallery ? 'gallery' : (hasPdf ? 'pdf' : (hasPpt ? 'ppt' : 'gallery'))
+              )
 
               // Nothing to show
-              if (!hasPdf && !hasGallery) return null
+              if (!hasPdf && !hasGallery && !hasPpt) return null
 
               // Build the carousel images only when we actually have gallery images
               const carouselImages = hasGallery
                 ? [
-                    // include heroImage first if you want it leading the gallery…
                     item.heroImage ? { src: item.heroImage, caption: item.title || 'Hero' } : null,
                     ...galleryImages,
                   ].filter(Boolean)
@@ -121,22 +124,42 @@ export const ItemDetail = ({ type }) => {
                           PDF
                         </button>
                       )}
+                      {hasPpt && (
+                        <button
+                          onClick={() => setTab('ppt')}
+                          className={`px-3 py-1.5 text-sm ${tab === 'ppt' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                        >
+                          PPT
+                        </button>
+                      )}
                     </div>
 
-                    {hasPdf && (
-                      <a
-                        href={B.pdfUrl}
-                        className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
-                        download
-                      >
-                        Download PDF
-                      </a>
-                    )}
+                    {/* Download shortcuts */}
+                    <div className="hidden sm:flex items-center gap-2">
+                      {hasPdf && (
+                        <a
+                          href={B.pdfUrl}
+                          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+                          download
+                        >
+                          Download PDF
+                        </a>
+                      )}
+                      {hasPpt && (
+                        <a
+                          href={B.pptUrl}
+                          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+                          download
+                        >
+                          Download PPTX
+                        </a>
+                      )}
+                    </div>
                   </div>
 
                   {/* Viewer body */}
                   <div className="p-3">
-                    {tab === 'gallery' && hasGallery ? (
+                    {tab === 'gallery' && hasGallery && (
                       <Carousel
                         images={carouselImages}
                         viewportClass="h-[56vh] sm:h-[64vh] max-h-[780px]"
@@ -146,9 +169,15 @@ export const ItemDetail = ({ type }) => {
                         showCaption={true}
                         showDots={true}
                       />
-                    ) : hasPdf ? (
+                    )}
+
+                    {tab === 'pdf' && hasPdf && (
                       <PdfEmbed url={B.pdfUrl} className="h-[78vh]" title={`${item.title} — PDF`} />
-                    ) : null}
+                    )}
+
+                    {tab === 'ppt' && hasPpt && (
+                      <PptxEmbed url={B.pptUrl} className="h-[78vh]" title={`${item.title} — PPTX`} />
+                    )}
                   </div>
                 </div>
               )
