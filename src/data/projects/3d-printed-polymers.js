@@ -106,7 +106,9 @@ const threeDPrintedPolymers = {
       ],
   
       // 📄 Optional — add a PDF to enable the PDF tab:
-      // pdfUrl: '/docs/3d-printed-polymers.pdf',
+      pdfUrl: '/ENGS24FinalReport.pdf',
+
+      pptUrl: 'PolymerShow.pptx',
   
       // 👥 Optional collaborators (renders at bottom if present)
       collaborators: [

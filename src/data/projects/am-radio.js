@@ -12,7 +12,7 @@ const amRadio = {
   
     // 🖼️ Optional gallery (add images as you have them; leave empty if none yet)
     gallery: [
-      // { src: '/am-radio/schematic.png', caption: 'Hand-drawn schematic' },
+      { src: '/Engs32LTSpice.png', caption: 'LTSpice schematic' },
       // { src: '/am-radio/envelope-scope.png', caption: 'Envelope detector scope capture' },
     ],
   
