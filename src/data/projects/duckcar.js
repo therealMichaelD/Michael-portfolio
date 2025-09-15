@@ -64,7 +64,7 @@ const duckcar = {
 
       problem: 'The ENGS 26 final project tasked us with applying control theory to a physical system — either a duck car or an inverted pendulum. My team selected the duck car, whose goal was to autonomously drive forward and stop at a precise distance from a wall. The challenge was that the uncompensated system, while stable, had poor transient performance: a settling time of nearly 7 seconds and overshoot exceeding 25%, making it too slow and oscillatory for the required demo. The project demanded that we: Model the dynamics of the motor and sensor, Analyze system stability in both time and frequency domains, Set realistic design specifications (settling time, overshoot, margins, control effort), Design, implement, and test a compensator circuit that met these specifications.',
       
-      pdfUrl: '/Engs 26 Final report.pdf',
+      pdfUrl: '/Engs26Finalreport.pdf',
 
       collaborators: [
         {

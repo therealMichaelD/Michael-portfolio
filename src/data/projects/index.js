@@ -4,6 +4,7 @@ import duckcar from './duckcar'
 import multimeter from './multimeter'
 import wakelamp from './wakelamp'
 import finalThesis from './final-thesis'
+import fireTornadoes from './fire-tornadoes'
 
 
 export const PROJECTS = [
@@ -11,6 +12,7 @@ export const PROJECTS = [
   oscilloscope,
   duckcar,
   multimeter,
-  wakelamp,
-  finalThesis
+  finalThesis,
+  fireTornadoes,
+  wakelamp
 ]
