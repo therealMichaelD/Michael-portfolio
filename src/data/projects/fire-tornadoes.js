@@ -10,17 +10,6 @@ const fireTornadoes = {
     heroImage: '/FireTornadoHero.png',
   
     // 🖼️ Gallery images (optional). Add/remove as you like.
-    gallery: [
-        {
-          src: '/duckcar/demo.mp4',
-          type: 'video',                // 👈 tells carousel it’s a video
-          poster: '/duckcar/demo-cover.jpg', // optional thumbnail while loading
-          caption: 'Closed-loop demo',
-          loop: true,                   // optional (default true)
-          muted: true,                  // optional (default true for inline mobile)
-          autoplay: false               // optional (default false)
-        },
-      ],
   
     blocks: {
       // ✅ High-level overview (no step-by-step or hazardous detail)
@@ -68,6 +57,8 @@ const fireTornadoes = {
         // { label: 'Writeup', href: '#' },
         // { label: 'Dataset', href: '#' },
       ],
+
+      youtubeId: 'https://youtu.be/zdbautSN5kc',
   
       // Optional: add a PDF to enable the PDF tab on projects
       // pdfUrl: '/docs/fire-tornadoes.pdf',

@@ -2,6 +2,7 @@
 import React, { useState } from 'react' 
 import PdfEmbed from '../components/common/PdfEmbed'
 import PptxEmbed from '../components/common/PptxEmbed'
+import VideoEmbed from '../components/common/VideoEmbed' // ✅ NEW
 import { Link, useParams } from 'react-router-dom'
 import { PRODUCTS, PROJECTS, READINGS } from '../data/content'
 import { Container, SectionHeading, AccentBar, KeyValue, Stat } from '../components/ui/Primitives'
@@ -86,14 +87,18 @@ export const ItemDetail = ({ type }) => {
               const hasGallery = galleryImages.length > 0
               const hasPdf = !!B.pdfUrl
               const hasPpt = !!B.pptUrl   // ✅ NEW
+              const hasVideo = !!B.youtubeId // ✅ NEW
 
-              // Default tab: Gallery > PDF > PPT
+              // Default tab: Gallery > PDF > PPT > Video (if only video exists, start with 'video')
               const [tab, setTab] = useState(
-                hasGallery ? 'gallery' : (hasPdf ? 'pdf' : (hasPpt ? 'ppt' : 'gallery'))
+                hasGallery ? 'gallery'
+                  : (hasPdf ? 'pdf'
+                  : (hasPpt ? 'ppt'
+                  : (hasVideo ? 'video' : 'gallery')))
               )
 
               // Nothing to show
-              if (!hasPdf && !hasGallery && !hasPpt) return null
+              if (!hasPdf && !hasGallery && !hasPpt && !hasVideo) return null // ✅ NEW includes hasVideo
 
               // Build the carousel images only when we actually have gallery images
               const carouselImages = hasGallery
@@ -130,6 +135,14 @@ export const ItemDetail = ({ type }) => {
                           className={`px-3 py-1.5 text-sm ${tab === 'ppt' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
                         >
                           PPT
+                        </button>
+                      )}
+                      {hasVideo && ( // ✅ NEW
+                        <button
+                          onClick={() => setTab('video')}
+                          className={`px-3 py-1.5 text-sm ${tab === 'video' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                        >
+                          Video
                         </button>
                       )}
                     </div>
@@ -177,6 +190,10 @@ export const ItemDetail = ({ type }) => {
 
                     {tab === 'ppt' && hasPpt && (
                       <PptxEmbed url={B.pptUrl} className="h-[78vh]" title={`${item.title} — PPTX`} />
+                    )}
+
+                    {tab === 'video' && hasVideo && ( // ✅ NEW
+                      <VideoEmbed id={B.youtubeId} title={`${item.title} — Video`} />
                     )}
                   </div>
                 </div>
