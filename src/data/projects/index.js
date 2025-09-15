@@ -5,6 +5,8 @@ import multimeter from './multimeter'
 import wakelamp from './wakelamp'
 import finalThesis from './final-thesis'
 import fireTornadoes from './fire-tornadoes'
+import amRadio from './am-radio'
+import threeDPrintedPolymers from './3d-printed-polymers'
 
 
 export const PROJECTS = [
@@ -14,5 +16,7 @@ export const PROJECTS = [
   multimeter,
   finalThesis,
   fireTornadoes,
+  amRadio,
+  threeDPrintedPolymers, 
   wakelamp
 ]
