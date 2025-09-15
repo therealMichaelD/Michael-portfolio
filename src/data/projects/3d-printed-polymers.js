@@ -29,10 +29,6 @@ const threeDPrintedPolymers = {
         { k: 'Tools', v: 'PrusaSlicer/Cura, Tensile tester (D638), Calipers, DSC/DMA (optional), Surface profilometer (optional)' },
       ],
   
-      // ✅ Problem (full width)
-      problem:
-        'Identify process windows that maximize tensile strength and dimensional accuracy while maintaining reasonable print time and surface quality across multiple polymer families.',
-  
       // ✅ Approach (full width)
       approach:
         'Use standardized test geometries (ASTM D638 Type V dogbones; calibration cubes; overhang bridges). Plan factorial experiments varying temperature, speed, layer height, infill pattern/percentage, and cooling. Record print outcomes, measure dimensions, and test tensile strength. Evaluate annealing and orientation effects (XY vs Z). Summarize DFAM heuristics from the dataset.',
@@ -52,20 +48,6 @@ const threeDPrintedPolymers = {
         'Reduced XY dimensional error below ±0.1 mm on calibration cubes with tuned flow and linear advance.',
         'Improved overhang performance at 55–60° for PETG using targeted cooling + slower external perimeters.',
         'Established DFAM cheatsheet for hole sizing, thread inserts, and bridging rules per material.',
-      ],
-  
-      // 🧱 Architecture / Notes (bulleted)
-      architectureNotes: [
-        'Slicer profiles versioned; notes include temp towers and retraction towers per filament brand.',
-        'Common fixtures for tensile and roughness measurements; repeatability checks every N prints.',
-        'Per-material adhesion notes (bed surfaces, temps, first-layer strategies).',
-      ],
-  
-      // ⚙️ Performance (bulleted)
-      performance: [
-        'XY dimensional error: target ±0.1 mm; Z step banding minimized via linear advance & pressure equalization.',
-        'Overhang: stable up to 55–60° on PETG; 65–70° on PLA with tuned cooling.',
-        'Layer adhesion: improved in Nylon with higher chamber temps and reduced cooling.',
       ],
   
       // 📊 Benchmarks (KeyValue)

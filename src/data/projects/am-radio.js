@@ -73,24 +73,12 @@ const amRadio = {
         'Phase II — LC filter build, full-chain prototype, headphone driver, on-air test.',
       ],
   
-      // (Optional) Next steps
-      risks: [
-        'Gain/offset interaction at high settings → watch headroom and saturation.',
-        'Tuning sensitivity in LC tank requires careful coil handling and shielding.',
-      ],
-  
-      // 🔗 Links (these show under your “Links” section)
-      links: [
-        { label: 'Phase I (PDF)', href: '/docs/AMRadio1.pdf' },
-        { label: 'Phase II (PDF)', href: '/docs/AMRadio2.pdf' },
-      ],
-  
       // 📄 PDF viewer (enables the PDF tab). You can point to the Phase II final write-up:
       pdfUrl: '/docs/AMRadio2.pdf',
   
       // 👥 Optional collaborators (renders at bottom if present)
       collaborators: [
-        // { name: 'Teammate Name', role: 'Filter & Tuning', href: 'https://www.linkedin.com/in/...' },
+        { name: 'Abigail Paquette'},
       ],
     },
   }

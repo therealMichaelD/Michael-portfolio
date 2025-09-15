@@ -18,5 +18,4 @@ export const PROJECTS = [
   fireTornadoes,
   amRadio,
   threeDPrintedPolymers, 
-  wakelamp
 ]

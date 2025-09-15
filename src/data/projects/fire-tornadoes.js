@@ -55,46 +55,12 @@ const fireTornadoes = {
         { k: 'Tools', v: 'Camera tracking, protective shielding, timing & logging' },
       ],
   
-      // Optional technical notes (bulleted)
-      architectureNotes: [
-        'Shielded visualization chamber to prevent external drafts.',
-        'Symmetric swirl induction to stabilize column.',
-        'Short-duration trials with conservative constraints.',
-      ],
-  
-      // Optional performance notes (bulleted)
-      performance: [
-        'Stable vortex formation in controlled environment.',
-        'Repeatability across short, timed trials.',
-      ],
-  
-      // Optional benchmarks (KeyValue)
-      benchmarks: [
-        { k: 'Run duration', v: 'Short, timed trials' },
-        { k: 'Stability', v: 'Consistent column under controlled intake' },
-      ],
-  
-      // Optional timeline
-      timeline: [
-        'Week 1 — Literature survey & constraints.',
-        'Week 2 — Enclosure & swirl prototype.',
-        'Week 3 — Instrumentation & trials.',
-        'Week 4 — Analysis, documentation, and safety review.',
-      ],
-  
       // Optional bill of materials (keep high-level & non-hazardous)
       bom: [
         'Transparent shielding & enclosure materials',
         'Nonflammable base and containment surfaces',
         'Video capture & analysis tools',
         'Safety equipment (extinguisher, gloves, eye protection)',
-      ],
-  
-      // Optional next steps
-      risks: [
-        'Only operate under supervision with safety readiness.',
-        'Limit to short, controlled demonstrations with containment.',
-        'Avoid replicating outside of appropriate lab/supervised settings.',
       ],
   
       // Optional links (leave or remove)
