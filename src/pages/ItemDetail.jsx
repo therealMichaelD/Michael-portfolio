@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import PdfEmbed from '../components/common/PdfEmbed'
 import PptxEmbed from '../components/common/PptxEmbed'
 import VideoEmbed from '../components/common/VideoEmbed' // ✅ NEW
+import RepoPreview from '../components/common/RepoPreview' // ✅ NEW
 import { Link, useParams } from 'react-router-dom'
 import { PRODUCTS, PROJECTS, READINGS } from '../data/content'
 import { Container, SectionHeading, AccentBar, KeyValue, Stat } from '../components/ui/Primitives'
@@ -88,17 +89,19 @@ export const ItemDetail = ({ type }) => {
               const hasPdf = !!B.pdfUrl
               const hasPpt = !!B.pptUrl   // ✅ NEW
               const hasVideo = !!B.youtubeId // ✅ NEW
+              const hasRepo = !!B.repo       // ✅ NEW
 
-              // Default tab: Gallery > PDF > PPT > Video (if only video exists, start with 'video')
+              // Default tab: Gallery > PDF > PPT > Video > Repo (if only one exists, start with that)
               const [tab, setTab] = useState(
                 hasGallery ? 'gallery'
                   : (hasPdf ? 'pdf'
                   : (hasPpt ? 'ppt'
-                  : (hasVideo ? 'video' : 'gallery')))
+                  : (hasVideo ? 'video'
+                  : (hasRepo ? 'repo' : 'gallery'))))
               )
 
               // Nothing to show
-              if (!hasPdf && !hasGallery && !hasPpt && !hasVideo) return null // ✅ NEW includes hasVideo
+              if (!hasPdf && !hasGallery && !hasPpt && !hasVideo && !hasRepo) return null // ✅ includes hasRepo
 
               // Build the carousel images only when we actually have gallery images
               const carouselImages = hasGallery
@@ -137,12 +140,20 @@ export const ItemDetail = ({ type }) => {
                           PPT
                         </button>
                       )}
-                      {hasVideo && ( // ✅ NEW
+                      {hasVideo && (
                         <button
                           onClick={() => setTab('video')}
                           className={`px-3 py-1.5 text-sm ${tab === 'video' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
                         >
                           Video
+                        </button>
+                      )}
+                      {hasRepo && ( // ✅ NEW
+                        <button
+                          onClick={() => setTab('repo')}
+                          className={`px-3 py-1.5 text-sm ${tab === 'repo' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                        >
+                          Repo
                         </button>
                       )}
                     </div>
@@ -192,8 +203,12 @@ export const ItemDetail = ({ type }) => {
                       <PptxEmbed url={B.pptUrl} className="h-[78vh]" title={`${item.title} — PPTX`} />
                     )}
 
-                    {tab === 'video' && hasVideo && ( // ✅ NEW
+                    {tab === 'video' && hasVideo && (
                       <VideoEmbed id={B.youtubeId} title={`${item.title} — Video`} />
+                    )}
+
+                    {tab === 'repo' && hasRepo && ( // ✅ NEW
+                      <RepoPreview ownerRepo={B.repo} />
                     )}
                   </div>
                 </div>
