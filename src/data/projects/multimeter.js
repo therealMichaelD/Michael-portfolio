@@ -5,6 +5,12 @@ const multimeter = {
     href: '/projects/multimeter',
     tags: ['Arduino','Multimeter','Measurement','Electronics Test'],
     heroImage: '/ArduinoMultimeter.jpeg',
+
+    gallery: [
+      { src: '/ArduinoOscilloscopeGUI.png', caption: 'Processing GUI' },
+      // { src: '/am-radio/envelope-scope.png', caption: 'Envelope detector scope capture' },
+    ],
+
     blocks: {
       overviewText: 'DIY Arduino-based digital multimeter that measures DC voltage, DC current, resistance, continuity/diode, and frequency. Uses protected input networks and a high-resolution ADC, with results shown on a compact OLED UI and streamed over serial for logging.',
       skillsTools: [

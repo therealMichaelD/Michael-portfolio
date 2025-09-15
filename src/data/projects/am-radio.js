@@ -74,7 +74,7 @@ const amRadio = {
       ],
   
       // 📄 PDF viewer (enables the PDF tab). You can point to the Phase II final write-up:
-      pdfUrl: '/docs/AMRadio2.pdf',
+      pdfUrl: '/AMRadio2.pdf',
   
       // 👥 Optional collaborators (renders at bottom if present)
       collaborators: [
