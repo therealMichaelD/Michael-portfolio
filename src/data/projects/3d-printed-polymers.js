@@ -11,12 +11,10 @@ const threeDPrintedPolymers = {
     heroImage: '/Eng24Hero.png',
   
     // 🖼️ Gallery (images and/or videos). Add your assets under /public/3d-printed-polymers/
-    gallery: [
-      { src: '/3d-printed-polymers/dogbone.jpg', caption: 'ASTM D638 dogbone specimens' },
-      { src: '/3d-printed-polymers/benchy.jpg', caption: 'Benchmark geometry for calibration' },
+    //gallery: [
       // Video is supported by your Carousel:
       // { src: '/3d-printed-polymers/tensile-test.mp4', type: 'video', poster: '/3d-printed-polymers/tensile-poster.jpg', caption: 'Tensile test clip' },
-    ],
+    //],
   
     blocks: {
       // ✍️ Overview
@@ -94,7 +92,9 @@ const threeDPrintedPolymers = {
   
       // 👥 Optional collaborators (renders at bottom if present)
       collaborators: [
-        // { name: 'Teammate A', role: 'Testing & Analysis', href: 'https://www.linkedin.com/in/...' },
+        { name: 'Lillia Hammond'},
+        { name: 'Karl-Oskar Pajus'},
+        { name: 'Calista Adler'},
       ],
     },
   }

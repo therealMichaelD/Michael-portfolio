@@ -74,8 +74,11 @@ const fireTornadoes = {
   
       // Optional collaborators (renders at the bottom if present)
       collaborators: [
-        // { name: 'Teammate A', role: 'Visualization & Analysis', href: 'https://www.linkedin.com/in/teammate-a/', avatar: '/collaborators/teammate-a.jpg' },
-        // { name: 'Teammate B', role: 'Enclosure & Safety', href: 'https://github.com/teammate-b' },
+        { name: 'Jacob Dresser'},
+        { name: 'Eva Ferrari'},
+        { name: 'Selen Kazmirici'},
+        { name: 'Elaine Sarazen'},
+        { name: 'Trevor Gittes-Taplin'},
       ],
     },
   }

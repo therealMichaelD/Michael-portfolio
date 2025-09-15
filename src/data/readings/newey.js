@@ -9,8 +9,8 @@ const newey = {
     blocks: {
       overviewText:
         ' ',
-      //review:
-      //  ' ',
+      review:
+        ' ',
       quotes: [
         'One thing that I learned from almost flunking those exams was that distraction is the enemy of performance.',
       ],
