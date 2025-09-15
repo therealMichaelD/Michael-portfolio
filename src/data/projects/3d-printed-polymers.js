@@ -8,7 +8,7 @@ const threeDPrintedPolymers = {
     tags: ['Additive Manufacturing', 'Materials', 'DFAM', 'Testing'],
   
     // 🖼️ Optional cover image (put a file under /public/3d-printed-polymers/)
-    heroImage: '/3d-printed-polymers/cover.jpg',
+    heroImage: '/Eng24Hero.png',
   
     // 🖼️ Gallery (images and/or videos). Add your assets under /public/3d-printed-polymers/
     gallery: [

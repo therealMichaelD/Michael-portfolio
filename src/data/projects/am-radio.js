@@ -8,7 +8,7 @@ const amRadio = {
     tags: ['Analog', 'RF', 'Envelope Detector', 'LC Filter'],
   
     // 🖼️ Optional cover (put a file in /public/am-radio/cover.jpg or change path)
-    heroImage: '/am-radio/cover.jpg',
+    heroImage: '/Eng32Hero.jpeg',
   
     // 🖼️ Optional gallery (add images as you have them; leave empty if none yet)
     gallery: [

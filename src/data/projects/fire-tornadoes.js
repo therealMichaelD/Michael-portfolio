@@ -7,14 +7,20 @@ const fireTornadoes = {
     tags: ['Fluids', 'Visualization', 'Thermal', 'Controls'],
   
     // 🖼️ Cover image (optional). Put your file in public/fire-tornadoes/cover.jpg
-    heroImage: '/fire-tornadoes/cover.jpg',
+    heroImage: '/FireTornadoHero.png',
   
     // 🖼️ Gallery images (optional). Add/remove as you like.
     gallery: [
-      // { src: '/fire-tornadoes/setup.jpg', caption: 'Tabletop visualization setup' },
-      // { src: '/fire-tornadoes/vortex.jpg', caption: 'Vortex column during peak rotation' },
-      // { src: '/fire-tornadoes/vanes.jpg', caption: 'Vane geometry used to impart swirl' },
-    ],
+        {
+          src: '/duckcar/demo.mp4',
+          type: 'video',                // 👈 tells carousel it’s a video
+          poster: '/duckcar/demo-cover.jpg', // optional thumbnail while loading
+          caption: 'Closed-loop demo',
+          loop: true,                   // optional (default true)
+          muted: true,                  // optional (default true for inline mobile)
+          autoplay: false               // optional (default false)
+        },
+      ],
   
     blocks: {
       // ✅ High-level overview (no step-by-step or hazardous detail)

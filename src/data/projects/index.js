@@ -10,9 +10,9 @@ import threeDPrintedPolymers from './3d-printed-polymers'
 
 
 export const PROJECTS = [
+  duckcar,
   powerMeter,
   oscilloscope,
-  duckcar,
   multimeter,
   finalThesis,
   fireTornadoes,
