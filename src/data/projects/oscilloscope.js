@@ -19,6 +19,8 @@ const oscilloscope = {
       timeline: ['Week 1 — ADC integration: Verified Arduino Uno ADC performance, buffering, and sampling rate.', 'Week 2 — Trigger &  Visualization: Implemented software trigger logic and real-time waveform drawing in Processing', 'Week 3 — Data Export: Added functionality to save captured signals as CSV for offline analysis.'],
       risks: ['Aliasing at higher frequencies: Limited by ~5 kS/s sampling; signals above ~2 kHz require external anti-aliasing filtering.', 'Planned Improvements: Add hardware front-end (op-amp conditioning), dual-channel support, and more advanced measurement tools (FFT, RMS).'],
       links: [{ label: 'Repo', href: '#' }],
+      repo: 'therealMichaelD/Arduino_Osciloscope',
+      
     },
   }
   

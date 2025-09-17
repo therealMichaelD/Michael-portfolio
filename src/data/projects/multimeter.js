@@ -23,6 +23,7 @@ const multimeter = {
       timeline: ['Week 1 — Voltage, Current, and Resistance: Implemented divider network and ADC readout, verified vs bench supply. Added shunt resistor, ohmmeter mode, and buzzer for continuity.', 'Week 2 — Display and Calibration: Integrated OLED Screen and added Calibration Constants'],
       risks: ['Improve accuracy with external ADC', 'Add autoranging for voltage, current, and resistance','Expand to AC voltage measurement with RMS conversion','Add frequency counter using interrupts and timers','Enclosure with labeled jacks and protection fuses'],
       links: [{ label: 'Repo', href: '#' }],
+      repo: 'therealMichaelD/Arduino_Multimeter_Code',
     },
   }
   

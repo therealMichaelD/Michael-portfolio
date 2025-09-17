@@ -45,9 +45,9 @@ const powerMeter = {
         'Noise coupling → ground routing rework on next PCB.',
         'Next: OTA updates + calibration wizard.',
       ],
-      links: [
-        { label: 'Repo', href: '#' },
-      ],
+
+      repo: 'therealMichaelD/ESP32_SmartMeter_Code',
+
     },
   }
   
