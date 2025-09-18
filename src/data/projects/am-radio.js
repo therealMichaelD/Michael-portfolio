@@ -3,7 +3,7 @@ const amRadio = {
     id: 'am-radio',
     title: 'AM Radio Receiver',
     subtitle:
-      'ENGS 32 project — narrowband LC filter, envelope detector, variable-gain amplification, and headphone driver.',
+      'A simple AM radio receiver built to tune and detect broadcast signals.',
     href: '/projects/am-radio',
     tags: ['Analog', 'RF', 'Envelope Detector', 'LC Filter'],
   

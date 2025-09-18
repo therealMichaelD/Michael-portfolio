@@ -2,7 +2,7 @@
 const finalThesis = {
     id: 'final-thesis',
     title: '3D Integrated Circuits',
-    subtitle: 'Final Research Thesis',
+    subtitle: ' Thesis exploring 3D integrated circuits and their impact on the future of semiconductors.',
     href: '/projects/final-thesis',
     tags: ['Thesis', 'Research'],
   

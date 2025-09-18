@@ -2,7 +2,7 @@
 const fireTornadoes = {
     id: 'fire-tornadoes',
     title: 'Fire Tornadoes',
-    subtitle: 'Visualizing buoyant convection and induced vorticity in a safe, controlled demo.',
+    subtitle: 'A controlled experiment exploring the physics and dynamics of fire tornado formation.',
     href: '/projects/fire-tornadoes',
     tags: ['Fluids', 'Visualization', 'Thermal', 'Controls'],
   

@@ -3,7 +3,7 @@ const threeDPrintedPolymers = {
     id: '3d-printed-polymers',
     title: '3D Printed Polymers',
     subtitle:
-      'Material selection, print parameter tuning, and post-processing to optimize strength, surface finish, and dimensional accuracy.',
+      'Analyzing how 3D printing parameters affect the strength and microstructure of PLA polymers.',
     href: '/projects/3d-printed-polymers',
     tags: ['Additive Manufacturing', 'Materials', 'DFAM', 'Testing'],
   

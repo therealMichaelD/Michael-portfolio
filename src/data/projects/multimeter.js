@@ -1,7 +1,7 @@
 const multimeter = {
     id: 'multimeter',
     title: 'Arduino Multimeter',
-    subtitle: 'Compact Arduino-powered multimeter',
+    subtitle: 'A versatile Arduino-based multimeter that measures voltage, current, and resistance.',
     href: '/projects/multimeter',
     tags: ['Arduino','Multimeter','Measurement','Electronics Test'],
     heroImage: '/ArduinoMultimeter.jpeg',
