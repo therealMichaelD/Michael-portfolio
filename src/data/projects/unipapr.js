@@ -97,7 +97,7 @@ const unipapr = {
       // ✅ PPT tab (appears in your media tabs at top of the page)
       // Put the PPTX file in /public/pptx/ or use an external URL:
       // e.g., '/pptx/UniPAPR-Presentation.pptx'  (rename your file accordingly)
-      pptUrl: '/pptx/UniPAPR-Presentation.pptx',
+      pptUrl: '/UniPAPR_Presentation.pptx',
   
       // If you export a PDF later, you can add:
       // pdfUrl: '/docs/UniPAPR-Report.pdf',
@@ -105,18 +105,11 @@ const unipapr = {
       // If you publish a demo video (YouTube), add:
       // youtubeId: 'XXXXXXXXXXX',
   
-      // Optional links section (renders as a “Links” card)
-      links: [
-        { label: 'Slide deck (PPTX)', href: '/pptx/UniPAPR-Presentation.pptx' },
-        // { label: 'Repo', href: 'https://github.com/yourname/unipapr' },
-      ],
-  
       // ✅ Collaborators (renders at the bottom if present)
       collaborators: [
-        { name: 'Andrew',  role: 'Design & Prototyping' },
-        { name: 'Michael', role: 'Electronics & Testing' },
-        { name: 'Mia',     role: 'CAD & Ductwork' },
-        { name: 'Raylene', role: 'Testing & Operations' },
+        { name: 'Andrew Wilson'},
+        { name: 'Mia Steinberg'},
+        { name: 'Raylene Guo'},
       ],
     },
   }
