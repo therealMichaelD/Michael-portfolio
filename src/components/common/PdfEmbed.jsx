@@ -1,46 +1,67 @@
-import React from 'react'
+// src/components/common/PdfEmbed.jsx
+import React, { useMemo } from 'react'
 
 /**
- * Robust PDF embed:
+ * Robust PDF embed with reliable re-mount:
  * - Encodes spaces in URL (so "My File.pdf" works)
- * - Uses <iframe> on desktop; falls back to <object> on iOS/Safari
- * - Offers "Open" & "Download" actions as a guaranteed fallback
+ * - Adds a tiny cache-buster on each mount to force reload after tab toggles
+ * - Uses <iframe> on desktop; <embed> on Safari/iOS for better stability
+ * - Always shows Open / Download actions as fallback
  */
-export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) {
+export default function PdfEmbed({
+  url,
+  className = '',
+  title = 'PDF viewer',
+  cacheBust = true, // set to false if you *really* want caching between tab switches
+}) {
   if (!url) return null
 
-  // Normalize/encode: if the url has spaces, encodeURI will turn them into %20.
-  // Keep absolute paths ("/docs/file.pdf") or https URLs intact.
+  // Normalize/encode: turn spaces into %20 etc.
   const normalized = encodeURI(url.trim())
 
-  // Heuristic: Safari/iOS tends to behave better with <object> than <iframe>.
+  // UA check for more stable renderer choice
   const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
   const isiOS = /\b(iPad|iPhone|iPod)\b/i.test(ua)
   const isSafari = /^((?!chrome|android).)*safari/i.test(ua)
 
-  // Only add the #view params for non-iOS Safari (it can sometimes mis-handle hash params)
-  const viewerHash = (!isiOS && !isSafari) ? '#view=FitH&pagemode=none' : ''
-  const src = normalized + (normalized.includes('#') ? '' : viewerHash)
+  // Build the runtime src + a unique key so React fully remounts the embed each time
+  const { src, openHref, instanceKey } = useMemo(() => {
+    const now = Date.now()
+
+    // Split existing hash if present
+    const [base, hashPart] = normalized.split('#')
+
+    // Add a very small cache-buster so browsers re-fetch when you return to the tab
+    const bust = cacheBust ? (base.includes('?') ? `&r=${now}` : `?r=${now}`) : ''
+
+    // Non-Safari gets viewer params; Safari/iOS tends to behave better without them
+    const viewerHash =
+      !isiOS && !isSafari
+        ? (hashPart ? `#${hashPart}` : '#view=FitH&pagemode=none')
+        : (hashPart ? `#${hashPart}` : '')
+
+    return {
+      src: `${base}${bust}${viewerHash}`,
+      openHref: normalized,              // keep the clean URL for open/download
+      instanceKey: `${now}-${normalized}` // force remount on each mount
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [normalized, cacheBust, isiOS, isSafari])
 
   return (
     <div className={`rounded-[28px] border border-black/10 overflow-hidden bg-white ${className}`}>
-      {/* Primary embed */}
-      {isiOS || isSafari ? (
-        // Safari-friendly path
-        <object
-          data={normalized}
+      {/* Primary embed — use <embed> on Safari/iOS; <iframe> elsewhere */}
+      {(isiOS || isSafari) ? (
+        <embed
+          key={instanceKey}
+          src={src}
           type="application/pdf"
           className="w-full"
           style={{ minHeight: '70vh' }}
-        >
-          {/* Fallback content for very strict devices */}
-          <div className="p-4 text-sm text-zinc-700">
-            This browser can’t display the PDF inline.
-            <a className="ml-2 text-emerald-700 underline" href={normalized}>Open in new tab</a>
-          </div>
-        </object>
+        />
       ) : (
         <iframe
+          key={instanceKey}
           title={title}
           src={src}
           className="w-full h-full"
@@ -51,8 +72,12 @@ export default function PdfEmbed({ url, className = '', title = 'PDF viewer' }) 
 
       {/* Actions bar (always available) */}
       <div className="flex items-center gap-4 p-3 border-t bg-white text-sm">
-        <a href={normalized} className="text-emerald-700 hover:underline">Open in new tab</a>
-        <a href={normalized} download className="text-emerald-700 hover:underline">Download</a>
+        <a href={openHref} className="text-emerald-700 hover:underline" target="_blank" rel="noreferrer">
+          Open in new tab
+        </a>
+        <a href={openHref} download className="text-emerald-700 hover:underline">
+          Download
+        </a>
       </div>
     </div>
   )
