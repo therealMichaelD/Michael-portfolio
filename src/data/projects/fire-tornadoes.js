@@ -14,50 +14,8 @@ const fireTornadoes = {
     blocks: {
       // ✅ High-level overview (no step-by-step or hazardous detail)
       overviewText:
-        'A controlled visualization exploring how vertical buoyant plumes can be induced to rotate, forming a visible vortex. The focus is on safe demonstration, instrumentation, and measurement—not on replication directions. All tests were performed under appropriate supervision, fire-safe surfaces, and extinguishing readiness.',
+        'This project explores the physics of fire whirls (often called fire tornados) by recreating the phenomenon in a controlled lab setting. Using two offset acrylic half-cylinders around a flame source, we generated rotating convection currents that transform an ordinary flame into a spinning vortex of fire. Through particle tracking and motion analysis, we measured angular and linear velocities, finding that angular velocity decreases with increasing radius, suggesting constant linear velocity within the vortex. We also studied how varying cylinder offsets affect airflow and flame behavior, discovering a linear relationship between gap size and flow rate. While results aligned partially with theoretical scaling, environmental factors like wind, temperature, and fuel consistency limited accuracy. Overall, the experiment provided key insights into convective heat transfer, vorticity, and the dynamics of fire tornados.',
   
-      // ✅ Problem (full width under Skills & Tools)
-      problem:
-        'Create a visible, short-duration vortex column for educational visualization while maintaining strict safety constraints and measurement repeatability.',
-  
-      // ✅ Approach (full width)
-      approach:
-        'Use a controlled vertical thermal plume with gentle, symmetric inlet swirl and transparent shielding to visualize vorticity. Measure rotation qualitatively with video analysis and track flow with safe tracers. Emphasis on safety, containment, and short-duration trials.',
-  
-      // ✅ Key Work (bulleted)
-      keyWork: [
-        'Designed a symmetric swirl-inducing shroud; recorded qualitative vortex formation.',
-        'Instrumented runs with video analysis; annotated rotation rate and column stability.',
-        'Evaluated containment and shielding effectiveness; documented safety checklist.',
-      ],
-  
-      // ✅ Results (bulleted)
-      results: [
-        'Consistent, visible vortex column under controlled conditions.',
-        'Repeatable visualization suitable for brief demonstrations.',
-        'Clear safety envelope and shutdown criteria documented.',
-      ],
-  
-      // Skills & Tools (KeyValue)
-      skillsTools: [
-        { k: 'Skills', v: 'Experimental design, qualitative flow visualization, video analysis, safety protocols' },
-        { k: 'Tools', v: 'Camera tracking, protective shielding, timing & logging' },
-      ],
-  
-      // Optional bill of materials (keep high-level & non-hazardous)
-      bom: [
-        'Transparent shielding & enclosure materials',
-        'Nonflammable base and containment surfaces',
-        'Video capture & analysis tools',
-        'Safety equipment (extinguisher, gloves, eye protection)',
-      ],
-  
-      // Optional links (leave or remove)
-      links: [
-        // { label: 'Writeup', href: '#' },
-        // { label: 'Dataset', href: '#' },
-      ],
-
       youtubeId: 'https://youtu.be/zdbautSN5kc',
   
       // Optional: add a PDF to enable the PDF tab on projects

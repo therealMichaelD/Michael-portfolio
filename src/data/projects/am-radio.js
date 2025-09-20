@@ -63,11 +63,7 @@ const amRadio = {
         'Gain range ~10–100 across stages, adjustable with potentiometer.',
         'Headphone drive verified for 32–64 Ω configurations.',
       ],
-      benchmarks: [
-        { k: 'Carrier', v: '≈ 1.0 MHz' },
-        { k: 'Mod depth', v: '≈ 40%' },
-        { k: 'Input level', v: '~5 mV (typ.), ±10× variation' },
-      ],
+      
       timeline: [
         'Phase I — Analysis, RC choices, envelope sim, transfer function, initial gain budget.',
         'Phase II — LC filter build, full-chain prototype, headphone driver, on-air test.',
