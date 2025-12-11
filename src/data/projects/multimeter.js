@@ -8,6 +8,7 @@ const multimeter = {
 
     gallery: [
       { src: '/ArduinoOscilloscopeGUI.png', caption: 'Processing GUI' },
+
       // { src: '/am-radio/envelope-scope.png', caption: 'Envelope detector scope capture' },
     ],
 
