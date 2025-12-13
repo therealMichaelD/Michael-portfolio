@@ -1,7 +1,6 @@
 // src/components/layout/Nav.jsx
 import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import { PROFILE } from '../../data/content'
 
 const NavLinks = ({ onNavigate }) => (
   <>
@@ -9,7 +8,6 @@ const NavLinks = ({ onNavigate }) => (
     <NavLink to="/products" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Products</NavLink>
     <NavLink to="/projects" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Projects</NavLink>
     <NavLink to="/readings" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Readings</NavLink>
-    <NavLink to="/contact" onClick={onNavigate} className={({isActive})=>`hover:text-emerald-700 ${isActive?'text-emerald-700 underline decoration-emerald-500 underline-offset-4':''}`}>Contact</NavLink>
   </>
 )
 
@@ -38,9 +36,6 @@ const MobileMenu = ({ open, setOpen }) => {
         </div>
         <nav className="mt-3 grid gap-2 text-base">
           <NavLinks onNavigate={()=>setOpen(false)} />
-          <a href={PROFILE.resumeUrl} className="mt-2 inline-flex items-center justify-center rounded-full border border-emerald-300 px-4 py-2.5 hover:border-emerald-500 text-emerald-700">
-            Resume
-          </a>
         </nav>
       </div>
     </div>
@@ -57,7 +52,6 @@ const Nav = () => {
         <NavLink to="/" className="font-semibold tracking-tight text-emerald-700">Michael Dang</NavLink>
         <div className="hidden sm:flex items-center gap-6 text-sm">
           <NavLinks />
-          <a href={PROFILE.resumeUrl} className="rounded-full border border-emerald-300 px-3 py-1.5 hover:border-emerald-500 text-emerald-700">Resume</a>
         </div>
         <button className="sm:hidden rounded-full border border-emerald-300 px-3 py-2 text-sm hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500" onClick={()=>setOpen(v=>!v)} aria-label="Open menu" aria-expanded={open} aria-controls="mobile-menu">
           Menu
