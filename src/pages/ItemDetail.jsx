@@ -299,51 +299,59 @@ export const ItemDetail = ({ type }) => {
                 </SectionCard>
               )}
 
-              {/* PRODUCT-SPECIFIC SECTIONS — unchanged, just full-width now */}
+              {/* PRODUCT-SPECIFIC SECTIONS */}
               {isProducts && (
                 <>
-                  {B.problemAudience?.length > 0 && (
-                    <SectionCard title="Problem & Audience">
-                      <KeyValue items={B.problemAudience} />
-                    </SectionCard>
-                  )}
-
-                  {B.features?.length > 0 && (
-                    <SectionCard title="Key Features">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {B.features.map((f, i) => (
-                          <li key={i}>{f}</li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-
-                  {B.howItWorks?.length > 0 && (
-                    <SectionCard title="How it Works">
-                      <KeyValue items={B.howItWorks} />
-                    </SectionCard>
-                  )}
-
-                  {B.kpis?.length > 0 && (
-                    <div className="grid sm:grid-cols-3 gap-3">
-                      {B.kpis.map((s, i) => (
-                        <Stat key={i} {...s} />
-                      ))}
+                  {(B.problemAudience?.length > 0 || B.features?.length > 0) && (
+                    <div className="grid gap-5 lg:grid-cols-2">
+                      {B.problemAudience?.length > 0 && (
+                        <ProjectSurface eyebrow="Context" title="Problem & Audience">
+                          <KeyValue items={B.problemAudience} />
+                        </ProjectSurface>
+                      )}
+                      {B.features?.length > 0 && (
+                        <ProjectSurface title="Key Features">
+                          <ul className="list-disc pl-5 space-y-1">
+                            {B.features.map((f, i) => (
+                              <li key={i}>{f}</li>
+                            ))}
+                          </ul>
+                        </ProjectSurface>
+                      )}
                     </div>
                   )}
 
-                  {B.adoptionMetrics?.length > 0 && (
-                    <SectionCard title="Adoption & Metrics">
-                      <dl className="grid grid-cols-2 gap-3">
-                        {B.adoptionMetrics.map((m, i) => (
-                          <Stat key={i} {...m} />
-                        ))}
-                      </dl>
-                    </SectionCard>
+                  {B.howItWorks?.length > 0 && (
+                    <ProjectSurface title="How it Works">
+                      <KeyValue items={B.howItWorks} />
+                    </ProjectSurface>
+                  )}
+
+                  {(B.kpis?.length > 0 || B.adoptionMetrics?.length > 0) && (
+                    <div className="grid gap-5 lg:grid-cols-2">
+                      {B.kpis?.length > 0 && (
+                        <ProjectSurface title="KPIs & Success Metrics">
+                          <div className="grid sm:grid-cols-3 gap-3">
+                            {B.kpis.map((s, i) => (
+                              <Stat key={i} {...s} />
+                            ))}
+                          </div>
+                        </ProjectSurface>
+                      )}
+                      {B.adoptionMetrics?.length > 0 && (
+                        <ProjectSurface title="Adoption & Usage">
+                          <div className="grid grid-cols-2 gap-3">
+                            {B.adoptionMetrics.map((m, i) => (
+                              <Stat key={i} {...m} />
+                            ))}
+                          </div>
+                        </ProjectSurface>
+                      )}
+                    </div>
                   )}
 
                   {B.reviews?.length > 0 && (
-                    <SectionCard title="User Reviews">
+                    <ProjectSurface eyebrow="Signal" title="User Reviews">
                       <div className="grid sm:grid-cols-2 gap-3">
                         {B.reviews.map((r, i) => (
                           <ReviewCard
@@ -353,164 +361,228 @@ export const ItemDetail = ({ type }) => {
                           />
                         ))}
                       </div>
-                    </SectionCard>
+                    </ProjectSurface>
                   )}
 
                   {B.changelog?.length > 0 && (
-                    <SectionCard title="Changelog">
+                    <ProjectSurface title="Changelog">
                       <ul className="text-sm space-y-1">
                         {B.changelog.map((c, i) => (
                           <li key={i}>• {c}</li>
                         ))}
                       </ul>
-                    </SectionCard>
+                    </ProjectSurface>
                   )}
                 </>
               )}
 
-              {/* PROJECTS (unchanged) */}
-              {isProjects && (
-                <>
-                  {B.skillsTools?.length > 0 && (
-                    <SectionCard title="Skills & Tools">
-                      <KeyValue items={B.skillsTools} />
-                    </SectionCard>
-                  )}
+              {/* PROJECTS */}
+              {isProjects && (() => {
+                const surfaces = []
 
-                  {B.problem && (
-                    <SectionCard title="Problem">
-                      <p className="whitespace-pre-line">{B.problem}</p>
-                    </SectionCard>
-                  )}
-
-                  {B.approach && (
-                    <SectionCard title="Approach">
-                      <p className="whitespace-pre-line">{B.approach}</p>
-                    </SectionCard>
-                  )}
-
-                  {B.keyWork?.length > 0 && (
-                    <SectionCard title="Key Work">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {B.keyWork.map((n, i) => (
-                          <li key={i}>{n}</li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-
-                  {B.architectureNotes?.length > 0 && (
-                    <SectionCard title="Architecture Notes">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {B.architectureNotes.map((n, i) => (
-                          <li key={i}>{n}</li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-
-                  {B.performance?.length > 0 && (
-                    <SectionCard title="Performance">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {B.performance.map((n, i) => (
-                          <li key={i}>{n}</li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-
-                  {B.results?.length > 0 && (
-                    <SectionCard title="Results">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {B.results.map((n, i) => (
-                          <li key={i}>{n}</li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-
-                  {B.benchmarks?.length > 0 && (
-                    <SectionCard title="Benchmarks">
-                      <KeyValue items={B.benchmarks} />
-                    </SectionCard>
-                  )}
-
-                  {B.timeline?.length > 0 && (
-                    <SectionCard title="Build Timeline">
-                      <ol className="list-decimal pl-5 space-y-1">
-                        {B.timeline.map((t, i) => (
-                          <li key={i}>{t}</li>
-                        ))}
-                      </ol>
-                    </SectionCard>
-                  )}
-
-                  {B.bom?.length > 0 && (
-                    <SectionCard title="Bill of Materials (BOM)">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {B.bom.map((b, i) => (
-                          <li key={i}>{b}</li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-
-                  {B.risks?.length > 0 && (
-                    <SectionCard title="Next Steps">
-                      <ul className="list-disc pl-5 space-y-1">
-                        {B.risks.map((r, i) => (
-                          <li key={i}>{r}</li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-
-                  {B.collaborators?.length > 0 && (
-                    <SectionCard title="Collaborators">
-                      <ul className="grid sm:grid-cols-2 gap-3">
-                        {B.collaborators.map((c, i) => (
-                          <li
-                            key={`${c.name}-${i}`}
-                            className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white p-3"
-                          >
-                            {c.avatar ? (
-                              <img
-                                src={c.avatar}
-                                alt={c.name}
-                                className="w-10 h-10 rounded-full object-cover"
-                                loading="lazy"
-                              />
-                            ) : (
-                              <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-700 text-sm font-medium">
-                                {(c.name || '?').slice(0, 1)}
-                              </div>
-                            )}
-                            <div className="min-w-0">
-                              <div className="font-medium text-black truncate">
-                                {c.href ? (
-                                  <a
-                                    href={c.href}
-                                    className="text-zinc-700 hover:underline"
-                                  >
-                                    {c.name}
-                                  </a>
-                                ) : (
-                                  c.name
-                                )}
-                              </div>
-                              {c.role && (
-                                <div className="text-sm text-zinc-600 truncate">
-                                  {c.role}
+                if (B.skillsTools?.length > 0) {
+                  surfaces.push({
+                    key: 'skills',
+                    node: (
+                      <ProjectSurface title="Skills & Tools">
+                        <KeyValue items={B.skillsTools} />
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.architectureNotes?.length > 0) {
+                  surfaces.push({
+                    key: 'architecture',
+                    node: (
+                      <ProjectSurface title="Architecture Notes">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {B.architectureNotes.map((n, i) => (
+                            <li key={i}>{n}</li>
+                          ))}
+                        </ul>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.problem) {
+                  surfaces.push({
+                    key: 'problem',
+                    node: (
+                      <ProjectSurface eyebrow="Challenge" title="Problem">
+                        <p className="whitespace-pre-line">{B.problem}</p>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.approach) {
+                  surfaces.push({
+                    key: 'approach',
+                    node: (
+                      <ProjectSurface eyebrow="Solution" title="Approach">
+                        <p className="whitespace-pre-line">{B.approach}</p>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.keyWork?.length > 0) {
+                  surfaces.push({
+                    key: 'keywork',
+                    node: (
+                      <ProjectSurface title="Key Work">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {B.keyWork.map((n, i) => (
+                            <li key={i}>{n}</li>
+                          ))}
+                        </ul>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.performance?.length > 0) {
+                  surfaces.push({
+                    key: 'performance',
+                    node: (
+                      <ProjectSurface title="Performance Checks">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {B.performance.map((n, i) => (
+                            <li key={i}>{n}</li>
+                          ))}
+                        </ul>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.results?.length > 0) {
+                  surfaces.push({
+                    key: 'results',
+                    node: (
+                      <ProjectSurface eyebrow="Impact" title="Results">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {B.results.map((n, i) => (
+                            <li key={i}>{n}</li>
+                          ))}
+                        </ul>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.benchmarks?.length > 0) {
+                  surfaces.push({
+                    key: 'benchmarks',
+                    node: (
+                      <ProjectSurface title="Benchmarks">
+                        <KeyValue items={B.benchmarks} />
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.timeline?.length > 0) {
+                  surfaces.push({
+                    key: 'timeline',
+                    node: (
+                      <ProjectSurface title="Build Timeline">
+                        <ol className="list-decimal pl-5 space-y-1">
+                          {B.timeline.map((t, i) => (
+                            <li key={i}>{t}</li>
+                          ))}
+                        </ol>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.bom?.length > 0) {
+                  surfaces.push({
+                    key: 'bom',
+                    node: (
+                      <ProjectSurface title="Bill of Materials (BOM)">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {B.bom.map((b, i) => (
+                            <li key={i}>{b}</li>
+                          ))}
+                        </ul>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.risks?.length > 0) {
+                  surfaces.push({
+                    key: 'risks',
+                    node: (
+                      <ProjectSurface title="Next Steps">
+                        <ul className="list-disc pl-5 space-y-1">
+                          {B.risks.map((r, i) => (
+                            <li key={i}>{r}</li>
+                          ))}
+                        </ul>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+                if (B.collaborators?.length > 0) {
+                  surfaces.push({
+                    key: 'collaborators',
+                    node: (
+                      <ProjectSurface title="Collaborators">
+                        <ul className="grid sm:grid-cols-2 gap-3">
+                          {B.collaborators.map((c, i) => (
+                            <li
+                              key={`${c.name}-${i}`}
+                              className="flex items-center gap-3 rounded-2xl border border-black/10 bg-white p-3"
+                            >
+                              {c.avatar ? (
+                                <img
+                                  src={c.avatar}
+                                  alt={c.name}
+                                  className="w-10 h-10 rounded-full object-cover"
+                                  loading="lazy"
+                                />
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-700 text-sm font-medium">
+                                  {(c.name || '?').slice(0, 1)}
                                 </div>
                               )}
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </SectionCard>
-                  )}
-                </>
-              )}
+                              <div className="min-w-0">
+                                <div className="font-medium text-black truncate">
+                                  {c.href ? (
+                                    <a
+                                      href={c.href}
+                                      className="text-zinc-700 hover:underline"
+                                    >
+                                      {c.name}
+                                    </a>
+                                  ) : (
+                                    c.name
+                                  )}
+                                </div>
+                                {c.role && (
+                                  <div className="text-sm text-zinc-600 truncate">
+                                    {c.role}
+                                  </div>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </ProjectSurface>
+                    ),
+                  })
+                }
+
+                if (!surfaces.length) return null
+                const rows = []
+                for (let i = 0; i < surfaces.length; i += 2) {
+                  rows.push(surfaces.slice(i, i + 2))
+                }
+                return rows.map((row, idx) => (
+                  <div key={`project-row-${idx}`} className="grid gap-5 lg:grid-cols-2">
+                    {row.map((surface) => (
+                      <div key={surface.key} className={`${row.length === 1 ? 'lg:col-span-2' : ''} h-full`}>
+                        {surface.node}
+                      </div>
+                    ))}
+                  </div>
+                ))
+              })()}
 
               {/* READINGS (unchanged) */}
               {isReadings && (
@@ -582,5 +654,26 @@ export const ItemDetail = ({ type }) => {
 export const ProductDetail = () => <ItemDetail type="products" />
 export const ProjectDetail = () => <ItemDetail type="projects" />
 export const ReadingDetail = () => <ItemDetail type="readings" />
+
+const ProjectSurface = ({ title, children, variant = 'light', eyebrow }) => {
+  const isDark = variant === 'dark'
+  return (
+    <div
+      className={`rounded-[32px] border ${
+        isDark ? 'bg-zinc-900 text-white border-black/60' : 'bg-white/80 text-zinc-800 border-black/10'
+      } p-6 sm:p-8 shadow-[0_20px_60px_rgba(15,23,42,0.12)] h-full flex flex-col`}
+    >
+      {eyebrow && (
+        <p className={`text-xs uppercase tracking-[0.3em] ${isDark ? 'text-white/70' : 'text-zinc-500'}`}>
+          {eyebrow}
+        </p>
+      )}
+      <h4 className={`text-2xl font-semibold ${isDark ? 'text-white' : 'text-zinc-900'}`}>{title}</h4>
+      <div className={`mt-4 space-y-3 text-sm sm:text-base ${isDark ? 'text-white/80' : 'text-zinc-700'} grow`}>
+        {children}
+      </div>
+    </div>
+  )
+}
 
 export default ItemDetail
