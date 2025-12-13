@@ -1,20 +1,18 @@
 // src/pages/ItemDetail.jsx
-import React, { useState } from 'react' 
+import React, { useState } from 'react'
 import PdfEmbed from '../components/common/PdfEmbed'
 import PptxEmbed from '../components/common/PptxEmbed'
-import VideoEmbed from '../components/common/VideoEmbed' // ✅ NEW
-import RepoPreview from '../components/common/RepoPreview' // ✅ NEW
+import VideoEmbed from '../components/common/VideoEmbed'
+import RepoPreview from '../components/common/RepoPreview'
 import { Link, useParams } from 'react-router-dom'
 import { PRODUCTS, PROJECTS, READINGS } from '../data/content'
 import { Container, SectionHeading, AccentBar, KeyValue, Stat } from '../components/ui/Primitives'
-import ImageTile from '../components/common/ImageTile'
 import Gallery from '../components/common/Gallery'
 import SectionCard from '../components/common/SectionCard'
 import ReviewCard from '../components/common/ReviewCard'
 import Stars from '../components/common/Stars'
-import Carousel from '../components/common/Carousel' // ✅ NEW
+import Carousel from '../components/common/Carousel'
 
-// Map route type -> dataset
 const datasetByType = {
   products: PRODUCTS,
   projects: PROJECTS,
@@ -30,8 +28,10 @@ export const ItemDetail = ({ type }) => {
   const { id } = useParams()
   const item = findItem(type, id)
   const B = item?.blocks || {}
+
   const isReadings = type === 'readings'
   const isProjects = type === 'projects'
+  const isProducts = type === 'products'
 
   if (!item) {
     return (
@@ -39,9 +39,14 @@ export const ItemDetail = ({ type }) => {
         <section className="pt-10 sm:pt-16">
           <Container>
             <SectionHeading>Not found</SectionHeading>
-            <p className="mt-3 text-zinc-700">We couldn’t find that entry. Try the list page.</p>
+            <p className="mt-3 text-zinc-700">
+              We couldn’t find that entry. Try the list page.
+            </p>
             <div className="mt-5">
-              <Link to={`/${type}`} className="inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500">
+              <Link
+                to={`/${type}`}
+                className="inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+              >
                 ← Back to {type}
               </Link>
             </div>
@@ -51,15 +56,13 @@ export const ItemDetail = ({ type }) => {
     )
   }
 
-  // Build a de-duplicated images array for the project carousel (hero + gallery)
-  const projectCarouselImages = isProjects
-    ? [
-        { src: item.heroImage, caption: item.title || 'Hero' },
-        ...(item.gallery || []),
-      ]
-        .filter(Boolean)
-        .filter((im, idx, arr) => im?.src && arr.findIndex(x => x.src === im.src) === idx)
-    : []
+  // Build de-duplicated images for project/product carousel
+  const carouselImages = [
+    item.heroImage ? { src: item.heroImage, caption: item.title || 'Hero' } : null,
+    ...(item.gallery || []),
+  ]
+    .filter(Boolean)
+    .filter((im, idx, arr) => im?.src && arr.findIndex((x) => x.src === im.src) === idx)
 
   return (
     <main className="bg-white text-black">
@@ -67,59 +70,69 @@ export const ItemDetail = ({ type }) => {
         <Container>
           <div className="flex items-center justify-between gap-4">
             <SectionHeading>{item.title}</SectionHeading>
-            <Link to={`/${type}`} className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500">← Back to {type}</Link>
+            <Link
+              to={`/${type}`}
+              className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+            >
+              ← Back to {type}
+            </Link>
           </div>
+
           <p className="mt-2 text-zinc-700">{item.subtitle}</p>
-          <div className="mt-4"><AccentBar /></div>
+          <div className="mt-4">
+            <AccentBar />
+          </div>
 
-          {/* GRID:
-             - Projects: single column (full-width sections)
-             - Readings: single column
-             - Products: 2-column (content + sidebar) */}
-          <div
-            className={`mt-6 grid ${
-              (isReadings || isProjects) ? 'grid-cols-1' : 'md:grid-cols-[1.2fr_.8fr]'
-            } gap-6 xl:gap-8 items-start`}
-          >
-
-            {isProjects && (() => {
-              // ✅ Only count real gallery images (ignore heroImage)
-              const galleryImages = (item.gallery || []).filter(im => im?.src)
+          {/* Unified layout for ALL types (projects, readings, products) */}
+          <div className={`mt-6 grid grid-cols-1 gap-6 xl:gap-8 items-start`}>
+            {/* ====== UNIVERSAL MEDIA VIEWER (Projects + Products) ====== */}
+            {(() => {
+              const galleryImages = (item.gallery || []).filter((im) => im?.src)
               const hasGallery = galleryImages.length > 0
               const hasPdf = !!B.pdfUrl
-              const hasPpt = !!B.pptUrl   // ✅ NEW
-              const hasVideo = !!B.youtubeId // ✅ NEW
-              const hasRepo = !!B.repo       // ✅ NEW
+              const hasPpt = !!B.pptUrl
+              const hasVideo = !!B.youtubeId
+              const hasRepo = !!B.repo
 
-              // Default tab: Gallery > PDF > PPT > Video > Repo (if only one exists, start with that)
               const [tab, setTab] = useState(
-                hasGallery ? 'gallery'
-                  : (hasPdf ? 'pdf'
-                  : (hasPpt ? 'ppt'
-                  : (hasVideo ? 'video'
-                  : (hasRepo ? 'repo' : 'gallery'))))
+                hasGallery
+                  ? 'gallery'
+                  : hasPdf
+                  ? 'pdf'
+                  : hasPpt
+                  ? 'ppt'
+                  : hasVideo
+                  ? 'video'
+                  : hasRepo
+                  ? 'repo'
+                  : 'gallery'
               )
 
-              // Nothing to show
-              if (!hasPdf && !hasGallery && !hasPpt && !hasVideo && !hasRepo) return null // ✅ includes hasRepo
+              if (!hasGallery && !hasPdf && !hasPpt && !hasVideo && !hasRepo)
+                return null
 
-              // Build the carousel images only when we actually have gallery images
-              const carouselImages = hasGallery
+              const imagesForCarousel = hasGallery
                 ? [
-                    item.heroImage ? { src: item.heroImage, caption: item.title || 'Hero' } : null,
+                    item.heroImage
+                      ? { src: item.heroImage, caption: item.title || 'Hero' }
+                      : null,
                     ...galleryImages,
                   ].filter(Boolean)
                 : []
 
               return (
                 <div className="w-full rounded-[28px] border border-black/10 overflow-hidden bg-white">
-                  {/* Tabs header */}
+                  {/* Tabs */}
                   <div className="flex items-center justify-between gap-3 p-2 sm:p-3 border-b">
                     <div className="inline-flex rounded-full border border-emerald-300 overflow-hidden">
                       {hasGallery && (
                         <button
                           onClick={() => setTab('gallery')}
-                          className={`px-3 py-1.5 text-sm ${tab === 'gallery' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                          className={`px-3 py-1.5 text-sm ${
+                            tab === 'gallery'
+                              ? 'bg-emerald-600 text-white'
+                              : 'text-emerald-700 hover:bg-emerald-50'
+                          }`}
                         >
                           Gallery
                         </button>
@@ -127,7 +140,11 @@ export const ItemDetail = ({ type }) => {
                       {hasPdf && (
                         <button
                           onClick={() => setTab('pdf')}
-                          className={`px-3 py-1.5 text-sm ${tab === 'pdf' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                          className={`px-3 py-1.5 text-sm ${
+                            tab === 'pdf'
+                              ? 'bg-emerald-600 text-white'
+                              : 'text-emerald-700 hover:bg-emerald-50'
+                          }`}
                         >
                           PDF
                         </button>
@@ -135,7 +152,11 @@ export const ItemDetail = ({ type }) => {
                       {hasPpt && (
                         <button
                           onClick={() => setTab('ppt')}
-                          className={`px-3 py-1.5 text-sm ${tab === 'ppt' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                          className={`px-3 py-1.5 text-sm ${
+                            tab === 'ppt'
+                              ? 'bg-emerald-600 text-white'
+                              : 'text-emerald-700 hover:bg-emerald-50'
+                          }`}
                         >
                           PPT
                         </button>
@@ -143,22 +164,29 @@ export const ItemDetail = ({ type }) => {
                       {hasVideo && (
                         <button
                           onClick={() => setTab('video')}
-                          className={`px-3 py-1.5 text-sm ${tab === 'video' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                          className={`px-3 py-1.5 text-sm ${
+                            tab === 'video'
+                              ? 'bg-emerald-600 text-white'
+                              : 'text-emerald-700 hover:bg-emerald-50'
+                          }`}
                         >
                           Video
                         </button>
                       )}
-                      {hasRepo && ( // ✅ NEW
+                      {hasRepo && (
                         <button
                           onClick={() => setTab('repo')}
-                          className={`px-3 py-1.5 text-sm ${tab === 'repo' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
+                          className={`px-3 py-1.5 text-sm ${
+                            tab === 'repo'
+                              ? 'bg-emerald-600 text-white'
+                              : 'text-emerald-700 hover:bg-emerald-50'
+                          }`}
                         >
                           Repo
                         </button>
                       )}
                     </div>
 
-                    {/* Download shortcuts */}
                     <div className="hidden sm:flex items-center gap-2">
                       {hasPdf && (
                         <a
@@ -181,11 +209,11 @@ export const ItemDetail = ({ type }) => {
                     </div>
                   </div>
 
-                  {/* Viewer body */}
+                  {/* Viewer */}
                   <div className="p-3">
                     {tab === 'gallery' && hasGallery && (
                       <Carousel
-                        images={carouselImages}
+                        images={imagesForCarousel}
                         viewportClass="h-[56vh] sm:h-[64vh] max-h-[780px]"
                         fit="scale-down"
                         padClass="p-3 sm:p-4"
@@ -196,18 +224,29 @@ export const ItemDetail = ({ type }) => {
                     )}
 
                     {tab === 'pdf' && hasPdf && (
-                      <PdfEmbed url={B.pdfUrl} className="h-[78vh]" title={`${item.title} — PDF`} />
+                      <PdfEmbed
+                        url={B.pdfUrl}
+                        className="h-[78vh]"
+                        title={`${item.title} — PDF`}
+                      />
                     )}
 
                     {tab === 'ppt' && hasPpt && (
-                      <PptxEmbed url={B.pptUrl} className="h-[78vh]" title={`${item.title} — PPTX`} />
+                      <PptxEmbed
+                        url={B.pptUrl}
+                        className="h-[78vh]"
+                        title={`${item.title} — PPTX`}
+                      />
                     )}
 
                     {tab === 'video' && hasVideo && (
-                      <VideoEmbed id={B.youtubeId} title={`${item.title} — Video`} />
+                      <VideoEmbed
+                        id={B.youtubeId}
+                        title={`${item.title} — Video`}
+                      />
                     )}
 
-                    {tab === 'repo' && hasRepo && ( // ✅ NEW
+                    {tab === 'repo' && hasRepo && (
                       <RepoPreview ownerRepo={B.repo} />
                     )}
                   </div>
@@ -215,265 +254,218 @@ export const ItemDetail = ({ type }) => {
               )
             })()}
 
-            {/* MAIN column (projects/readings are single-column; products are the left column) */}
+            {/* MAIN STACK (Unified for Projects + Products + Readings) */}
             <div className="space-y-4 sm:space-y-5">
-              {/* 🖼️ hero / media:
-                  - Projects: images handled by full-width Carousel above.
-                  - Non-projects: show PDF <-> Gallery toggle when pdfUrl exists; otherwise the original gallery.
-              */}
-              {!isProjects && (() => {
-                // Prepare gallery images (keep your Readings filtering/portrait tweaks)
-                const galleryImages = isReadings
-                  ? (item.gallery || []).filter(
-                      im => (im.caption || '').toLowerCase() !== 'favorite passage'
-                    )
-                  : (item.gallery || [])
-
-                const hasPdf = !!B.pdfUrl
-                const hasGallery = galleryImages.length > 0
-
-                // Default to PDF when present, else Gallery
-                const [tab, setTab] = useState(hasPdf ? 'pdf' : 'gallery')
-
-                if (!hasPdf) {
-                  // No PDF → render the gallery exactly like before
-                  return isReadings ? (
-                    <Gallery
-                      images={galleryImages}
-                      className="max-w-[420px]"
-                      columnsClass="grid-cols-3 md:grid-cols-4"
-                      imageAspectClass="aspect-[3/4]"
-                      fit="contain"
-                    />
-                  ) : (
-                    <Gallery images={galleryImages} />
-                  )
-                }
-
-                // PDF present → show tabs to switch between PDF and Gallery
-                return (
-                  <div className="rounded-[28px] border border-black/10 overflow-hidden bg-white">
-                    {/* Tabs header */}
-                    <div className="flex items-center justify-between gap-3 p-2 sm:p-3 border-b">
-                      <div className="inline-flex rounded-full border border-emerald-300 overflow-hidden">
-                        <button
-                          onClick={() => setTab('pdf')}
-                          className={`px-3 py-1.5 text-sm ${tab === 'pdf' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
-                        >
-                          PDF
-                        </button>
-                        {hasGallery && (
-                          <button
-                            onClick={() => setTab('gallery')}
-                            className={`px-3 py-1.5 text-sm ${tab === 'gallery' ? 'bg-emerald-600 text-white' : 'text-emerald-700 hover:bg-emerald-50'}`}
-                          >
-                            Gallery
-                          </button>
-                        )}
-                      </div>
-
-                      {/* Optional: Download */}
-                      {B.pdfUrl && (
-                        <a
-                          href={B.pdfUrl}
-                          className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
-                          download
-                        >
-                          Download PDF
-                        </a>
-                      )}
-                    </div>
-
-                    {/* Viewer body */}
-                    <div className="p-0">
-                      {tab === 'pdf' ? (
-                        <PdfEmbed url={B.pdfUrl} className="h-[78vh]" title={`${item.title} — PDF`} />
-                      ) : isReadings ? (
-                        <div className="p-3">
-                          <Gallery
-                            images={galleryImages}
-                            className="max-w-[420px]"
-                            columnsClass="grid-cols-3 md:grid-cols-4"
-                            imageAspectClass="aspect-[3/4]"
-                            fit="contain"
-                          />
-                        </div>
-                      ) : (
-                        <div className="p-3">
-                          <Gallery images={galleryImages} />
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )
-              })()}
-
               {/* Overview */}
               {(B.overviewText || item.tags?.length) && (
-                <SectionCard title={type === 'products' ? 'Overview' : type === 'projects' ? 'Overview' : 'Book Overview'} tone="accent">
+                <SectionCard
+                  title={
+                    isProducts
+                      ? 'Overview'
+                      : isProjects
+                      ? 'Overview'
+                      : 'Book Overview'
+                  }
+                  tone="accent"
+                >
                   {B.overviewText && <p>{B.overviewText}</p>}
-                  {item.tags?.length ? (
+                  {item.tags?.length > 0 && (
                     <div className="flex flex-wrap gap-2 pt-1">
-                      {item.tags.map((t)=> <span key={t} className="inline-flex items-center rounded-full border border-emerald-300/70 bg-emerald-50 px-2.5 py-1 text-xs text-emerald-800">{t}</span>)}
+                      {item.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="inline-flex items-center rounded-full border border-emerald-300/70 bg-emerald-50 px-2.5 py-1 text-xs text-emerald-800"
+                        >
+                          {t}
+                        </span>
+                      ))}
                     </div>
-                  ) : null}
+                  )}
                 </SectionCard>
               )}
 
-              {/* Projects → move Links right below Technical Overview */}
-              {isProjects && B.links?.length && (
+              {/* LINK SECTION (common for products + projects) */}
+              {B.links?.length > 0 && (
                 <SectionCard title="Links">
                   <ul className="text-sm text-emerald-800 space-y-1">
                     {B.links.map((lnk, i) => (
                       <li key={i}>
-                        <a className="hover:underline" href={lnk.href}>{lnk.label}</a>
+                        <a className="hover:underline" href={lnk.href}>
+                          {lnk.label}
+                        </a>
                       </li>
                     ))}
                   </ul>
                 </SectionCard>
               )}
 
-              {/* PRODUCTS (unchanged) */}
-              {type === 'products' && (
+              {/* PRODUCT-SPECIFIC SECTIONS — unchanged, just full-width now */}
+              {isProducts && (
                 <>
-                  {B.problemAudience?.length && (
+                  {B.problemAudience?.length > 0 && (
                     <SectionCard title="Problem & Audience">
                       <KeyValue items={B.problemAudience} />
                     </SectionCard>
                   )}
-                  {B.features?.length && (
+
+                  {B.features?.length > 0 && (
                     <SectionCard title="Key Features">
-                      <ul className="list-disc pl-5 space-y-1">{B.features.map((f,i)=><li key={i}>{f}</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.features.map((f, i) => (
+                          <li key={i}>{f}</li>
+                        ))}
+                      </ul>
                     </SectionCard>
                   )}
-                  {B.howItWorks?.length && (
+
+                  {B.howItWorks?.length > 0 && (
                     <SectionCard title="How it Works">
                       <KeyValue items={B.howItWorks} />
                     </SectionCard>
                   )}
-                  {B.kpis?.length && (
+
+                  {B.kpis?.length > 0 && (
                     <div className="grid sm:grid-cols-3 gap-3">
-                      {B.kpis.map((s,i)=><Stat key={i} {...s} />)}
+                      {B.kpis.map((s, i) => (
+                        <Stat key={i} {...s} />
+                      ))}
                     </div>
                   )}
-                  {B.adoptionMetrics?.length && (
+
+                  {B.adoptionMetrics?.length > 0 && (
                     <SectionCard title="Adoption & Metrics">
                       <dl className="grid grid-cols-2 gap-3">
-                        {B.adoptionMetrics.map((m,i)=><Stat key={i} {...m} />)}
+                        {B.adoptionMetrics.map((m, i) => (
+                          <Stat key={i} {...m} />
+                        ))}
                       </dl>
                     </SectionCard>
                   )}
-                  {B.reviews?.length && (
+
+                  {B.reviews?.length > 0 && (
                     <SectionCard title="User Reviews">
                       <div className="grid sm:grid-cols-2 gap-3">
-                        {B.reviews.map((r,i)=><ReviewCard key={i} quote={r.quote} author={r.author} />)}
+                        {B.reviews.map((r, i) => (
+                          <ReviewCard
+                            key={i}
+                            quote={r.quote}
+                            author={r.author}
+                          />
+                        ))}
                       </div>
                     </SectionCard>
                   )}
-                  {B.changelog?.length && (
+
+                  {B.changelog?.length > 0 && (
                     <SectionCard title="Changelog">
-                      <ul className="text-sm space-y-1">{B.changelog.map((c,i)=><li key={i}>• {c}</li>)}</ul>
+                      <ul className="text-sm space-y-1">
+                        {B.changelog.map((c, i) => (
+                          <li key={i}>• {c}</li>
+                        ))}
+                      </ul>
                     </SectionCard>
                   )}
                 </>
               )}
 
-              {/* PROJECTS */}
-              {type === 'projects' && (
+              {/* PROJECTS (unchanged) */}
+              {isProjects && (
                 <>
-                  {/* Skills & Tools (unchanged) */}
-                  {B.skillsTools?.length && (
+                  {B.skillsTools?.length > 0 && (
                     <SectionCard title="Skills & Tools">
                       <KeyValue items={B.skillsTools} />
                     </SectionCard>
                   )}
 
-                  {/* Problem (full width, directly below Skills & Tools) */}
                   {B.problem && (
                     <SectionCard title="Problem">
                       <p className="whitespace-pre-line">{B.problem}</p>
                     </SectionCard>
                   )}
 
-                  {/* Approach (full width) */}
                   {B.approach && (
                     <SectionCard title="Approach">
                       <p className="whitespace-pre-line">{B.approach}</p>
                     </SectionCard>
                   )}
 
-                  {/* Key Work (bulleted) */}
-                  {B.keyWork?.length && (
+                  {B.keyWork?.length > 0 && (
                     <SectionCard title="Key Work">
                       <ul className="list-disc pl-5 space-y-1">
-                        {B.keyWork.map((n, i) => <li key={i}>{n}</li>)}
+                        {B.keyWork.map((n, i) => (
+                          <li key={i}>{n}</li>
+                        ))}
                       </ul>
                     </SectionCard>
                   )}
 
-                  {/* Architecture Notes (unchanged) */}
-                  {B.architectureNotes?.length && (
+                  {B.architectureNotes?.length > 0 && (
                     <SectionCard title="Architecture Notes">
                       <ul className="list-disc pl-5 space-y-1">
-                        {B.architectureNotes.map((n, i) => <li key={i}>{n}</li>)}
+                        {B.architectureNotes.map((n, i) => (
+                          <li key={i}>{n}</li>
+                        ))}
                       </ul>
                     </SectionCard>
                   )}
 
-                  {/* Performance (unchanged) */}
-                  {B.performance?.length && (
+                  {B.performance?.length > 0 && (
                     <SectionCard title="Performance">
                       <ul className="list-disc pl-5 space-y-1">
-                        {B.performance.map((n, i) => <li key={i}>{n}</li>)}
+                        {B.performance.map((n, i) => (
+                          <li key={i}>{n}</li>
+                        ))}
                       </ul>
                     </SectionCard>
                   )}
 
-                  {/* Results */}
-                  {B.results?.length && (
+                  {B.results?.length > 0 && (
                     <SectionCard title="Results">
                       <ul className="list-disc pl-5 space-y-1">
-                        {B.results.map((n, i) => <li key={i}>{n}</li>)}
+                        {B.results.map((n, i) => (
+                          <li key={i}>{n}</li>
+                        ))}
                       </ul>
                     </SectionCard>
                   )}
 
-                  {/* Benchmarks (unchanged) */}
-                  {B.benchmarks?.length && (
+                  {B.benchmarks?.length > 0 && (
                     <SectionCard title="Benchmarks">
                       <KeyValue items={B.benchmarks} />
                     </SectionCard>
                   )}
 
-                  {/* Build Timeline (unchanged) */}
-                  {B.timeline?.length && (
+                  {B.timeline?.length > 0 && (
                     <SectionCard title="Build Timeline">
                       <ol className="list-decimal pl-5 space-y-1">
-                        {B.timeline.map((t, i) => <li key={i}>{t}</li>)}
+                        {B.timeline.map((t, i) => (
+                          <li key={i}>{t}</li>
+                        ))}
                       </ol>
                     </SectionCard>
                   )}
 
-                  {/* Bill of Materials (unchanged) */}
-                  {B.bom?.length && (
+                  {B.bom?.length > 0 && (
                     <SectionCard title="Bill of Materials (BOM)">
                       <ul className="list-disc pl-5 space-y-1">
-                        {B.bom.map((b, i) => <li key={i}>{b}</li>)}
+                        {B.bom.map((b, i) => (
+                          <li key={i}>{b}</li>
+                        ))}
                       </ul>
                     </SectionCard>
                   )}
 
-                  {/* Next Steps (unchanged) */}
-                  {B.risks?.length && (
+                  {B.risks?.length > 0 && (
                     <SectionCard title="Next Steps">
                       <ul className="list-disc pl-5 space-y-1">
-                        {B.risks.map((r, i) => <li key={i}>{r}</li>)}
+                        {B.risks.map((r, i) => (
+                          <li key={i}>{r}</li>
+                        ))}
                       </ul>
                     </SectionCard>
                   )}
 
-                  {/* ✅ Collaborators (bottom of projects) */}
-                  {Array.isArray(B.collaborators) && B.collaborators.length > 0 && (
+                  {B.collaborators?.length > 0 && (
                     <SectionCard title="Collaborators">
                       <ul className="grid sm:grid-cols-2 gap-3">
                         {B.collaborators.map((c, i) => (
@@ -487,18 +479,19 @@ export const ItemDetail = ({ type }) => {
                                 alt={c.name}
                                 className="w-10 h-10 rounded-full object-cover"
                                 loading="lazy"
-                                decoding="async"
                               />
                             ) : (
                               <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-medium">
-                                {(c.name || '?').slice(0,1)}
+                                {(c.name || '?').slice(0, 1)}
                               </div>
                             )}
-
                             <div className="min-w-0">
                               <div className="font-medium text-black truncate">
                                 {c.href ? (
-                                  <a href={c.href} className="text-emerald-700 hover:underline">
+                                  <a
+                                    href={c.href}
+                                    className="text-emerald-700 hover:underline"
+                                  >
                                     {c.name}
                                   </a>
                                 ) : (
@@ -519,69 +512,66 @@ export const ItemDetail = ({ type }) => {
                 </>
               )}
 
-              {/* READINGS */}
-              {type === 'readings' && (
+              {/* READINGS (unchanged) */}
+              {isReadings && (
                 <>
                   {(B.review || B.overviewText) && (
                     <SectionCard title="My Review" tone="accent">
                       <p>{B.review || B.overviewText}</p>
                     </SectionCard>
                   )}
-                  {B.quotes?.length && (
+
+                  {B.quotes?.length > 0 && (
                     <SectionCard title="Interesting Quotes">
-                      <ul className="list-disc pl-5 space-y-1">{B.quotes.map((q,i)=><li key={i}>“{q}”</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.quotes.map((q, i) => (
+                          <li key={i}>“{q}”</li>
+                        ))}
+                      </ul>
                     </SectionCard>
                   )}
-                  {B.keyIdeas?.length && (
+
+                  {B.keyIdeas?.length > 0 && (
                     <SectionCard title="Key Ideas">
-                      <ul className="list-disc pl-5 space-y-1">{B.keyIdeas.map((it,i)=><li key={i}>{it}</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.keyIdeas.map((it, i) => (
+                          <li key={i}>{it}</li>
+                        ))}
+                      </ul>
                     </SectionCard>
                   )}
-                  {B.who?.length && (
+
+                  {B.who?.length > 0 && (
                     <SectionCard title="Who Should Read">
-                      <ul className="list-disc pl-5 space-y-1">{B.who.map((it,i)=><li key={i}>{it}</li>)}</ul>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {B.who.map((it, i) => (
+                          <li key={i}>{it}</li>
+                        ))}
+                      </ul>
                     </SectionCard>
                   )}
+
                   {typeof B.rating === 'number' && (
                     <SectionCard title="Overall Rating">
-                      <div className="flex items-center gap-2"><Stars value={B.rating} /><span className="text-sm text-zinc-700">{B.rating}/5</span></div>
+                      <div className="flex items-center gap-2">
+                        <Stars value={B.rating} />
+                        <span className="text-sm text-zinc-700">
+                          {B.rating}/5
+                        </span>
+                      </div>
                     </SectionCard>
                   )}
                 </>
               )}
+
+              {/* Mobile Back Link */}
+              <Link
+                to={`/${type}`}
+                className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+              >
+                ← Back to {type}
+              </Link>
             </div>
-
-            {/* RIGHT column — render ONLY for products (projects/readings use full-width main) */}
-            {(!isReadings && !isProjects) && (
-              <div className="space-y-4 sm:space-y-5">
-                {/* Links: for products only */}
-                {B.links?.length && (
-                  <SectionCard title="Links">
-                    <ul className="text-sm text-emerald-800 space-y-1">
-                      {B.links.map((lnk,i)=><li key={i}><a className="hover:underline" href={lnk.href}>{lnk.label}</a></li>)}
-                    </ul>
-                  </SectionCard>
-                )}
-
-                {/* Product-only sidebar cards */}
-                {type === 'products' && B.atAGlance?.length && (
-                  <SectionCard title="At a Glance"><KeyValue items={B.atAGlance} /></SectionCard>
-                )}
-
-                {/* Environment appears in main stack for projects, not here */}
-                {type === 'projects' && B.environment?.length && (
-                  <SectionCard title="Environment"><KeyValue items={B.environment} /></SectionCard>
-                )}
-
-                {/* Mobile back link for products when sidebar is present */}
-                <Link
-                  to={`/${type}`}
-                  className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
-                >
-                  ← Back to {type}
-                </Link>
-              </div>
-            )}
           </div>
         </Container>
       </section>
@@ -589,9 +579,8 @@ export const ItemDetail = ({ type }) => {
   )
 }
 
-// Wrapper components for routes
 export const ProductDetail = () => <ItemDetail type="products" />
-export const ProjectDetail  = () => <ItemDetail type="projects" />
-export const ReadingDetail  = () => <ItemDetail type="readings" />
+export const ProjectDetail = () => <ItemDetail type="projects" />
+export const ReadingDetail = () => <ItemDetail type="readings" />
 
 export default ItemDetail
