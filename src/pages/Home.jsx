@@ -5,7 +5,7 @@ import { Container, SectionHeading, AccentBar } from '../components/ui/Primitive
 import ImageTile from '../components/common/ImageTile'
 
 const Home = () => {
-  const storyGalleries = PROFILE.storyGalleries || {}
+  const storyGalleries = PROFILE.storyGalleries || {} // 👉 Add image paths in src/data/profile.js under PROFILE.storyGalleries
 
   const buildGallery = (...sources) => {
     const collected = []
@@ -25,19 +25,19 @@ const Home = () => {
   const storySections = [
     {
       id: 'intro',
-      eyebrow: "Hi, I'm Michael Dang",
+      eyebrow: "",
       title: 'Passionate about technology and business management',
       copy:
         'I thrive at the intersection of deep engineering and strategic decision making, building systems, leading teams, and translating complex ideas into products that feel inevitable.',
-      gallery: buildGallery(storyGalleries.intro, PROFILE.aboutPhoto, PROFILE.headshot),
+      gallery: buildGallery(storyGalleries.intro, PROFILE.aboutPhoto, PROFILE.headshot), // add/remove paths via PROFILE.storyGalleries.intro
     },
     {
       id: 'education',
-      eyebrow: 'Dartmouth College',
+      eyebrow: '',
       title: 'MEM + BE in Electrical Engineering',
       copy:
         'My dual path at Dartmouth blends a Master of Engineering Management with a Bachelor of Engineering, giving me both the technical rigor and business intuition to lead modern product teams.',
-      gallery: buildGallery(storyGalleries.education, PROFILE.aboutPhoto),
+      gallery: buildGallery(storyGalleries.education, PROFILE.aboutPhoto), // tweak PROFILE.storyGalleries.education array
     },
   ]
 
@@ -46,7 +46,7 @@ const Home = () => {
     'Long runs + anything outdoors',
     'Reading & Podcasts',
   ]
-  const hobbyGallery = buildGallery(storyGalleries.hobbies, storyGalleries.location, PROFILE.headshot)
+  const hobbyGallery = buildGallery(storyGalleries.hobbies, storyGalleries.location, PROFILE.headshot) // update PROFILE.storyGalleries.hobbies
 
   return (
     <main id="main" className="bg-white text-black">
@@ -74,7 +74,7 @@ const Home = () => {
         <Container>
           <SectionHeading>About me</SectionHeading>
           <p className="mt-2 text-zinc-700 text-sm sm:text-base">
-            {PROFILE.subhead || 'Layering engineering leadership, strategy, and curiosity.'}
+            {PROFILE.subhead || ''}
           </p>
           <div className="mt-4">
             <AccentBar />
@@ -107,7 +107,7 @@ const Home = () => {
           <div className="mt-12 rounded-[36px] border border-black/10 bg-gradient-to-br from-white via-zinc-50 to-white p-8 sm:p-12">
             <div className="grid md:grid-cols-[1.1fr_.9fr] gap-8 items-center">
               <div>
-                <p className="text-sm uppercase tracking-[0.3em] text-zinc-500">Chapter 04</p>
+                <p className="text-sm uppercase tracking-[0.3em] text-zinc-500"></p>
                 <h3 className="text-3xl sm:text-4xl font-semibold text-zinc-900">Hobbies</h3>
                 <p className="mt-4 text-base sm:text-lg text-zinc-700">
                   Life outside of the lab keeps me energized and grounded.
