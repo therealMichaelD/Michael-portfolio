@@ -6,6 +6,10 @@ import intelligentInvestor from './intelligentInvestor'
 import randomWalk from './randomWalk'
 import elonMusk from './elonMusk'
 import shoeDog from './shoeDog'
+import braveNewWorld from './braveNewWorld'
+import sapiens from './sapiens'
+import homoDeus from './homoDeus'
+import briefHistoryOfTime from './briefHistoryOfTime'
 
 export const READINGS = [
   jobs,
@@ -16,4 +20,8 @@ export const READINGS = [
   randomWalk,
   elonMusk,
   shoeDog,
+  braveNewWorld,
+  sapiens,
+  homoDeus,
+  briefHistoryOfTime,
 ]

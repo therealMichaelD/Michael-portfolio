@@ -21,7 +21,7 @@ const Readings = () => (
               key={reading.id}
               src={reading.heroImage}
               alt={reading.title}
-              className="aspect-[2/3]"
+              className="aspect-[2/3] transition-transform duration-500 hover:-translate-y-2 hover:scale-[1.03] hover:shadow-2xl"
               fit="contain"
             />
           ))}
