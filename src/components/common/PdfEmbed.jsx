@@ -72,10 +72,10 @@ export default function PdfEmbed({
 
       {/* Actions bar (always available) */}
       <div className="flex items-center gap-4 p-3 border-t bg-white text-sm">
-        <a href={openHref} className="text-emerald-700 hover:underline" target="_blank" rel="noreferrer">
+        <a href={openHref} className="text-zinc-700 hover:underline" target="_blank" rel="noreferrer">
           Open in new tab
         </a>
-        <a href={openHref} download className="text-emerald-700 hover:underline">
+        <a href={openHref} download className="text-zinc-700 hover:underline">
           Download
         </a>
       </div>

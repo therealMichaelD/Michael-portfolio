@@ -45,7 +45,7 @@ export default function PptxEmbed({ url, className = '', title = 'PowerPoint vie
           <div className="mt-3 flex flex-wrap gap-2">
             <a
               href={absUrl}
-              className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+              className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
               target="_blank"
               rel="noreferrer"
             >
@@ -54,7 +54,7 @@ export default function PptxEmbed({ url, className = '', title = 'PowerPoint vie
             <a
               href={absUrl}
               download
-              className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+              className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
             >
               Download PPTX
             </a>
@@ -62,7 +62,7 @@ export default function PptxEmbed({ url, className = '', title = 'PowerPoint vie
               href={gviewSrc}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+              className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
             >
               Try Google Viewer
             </a>
@@ -74,7 +74,7 @@ export default function PptxEmbed({ url, className = '', title = 'PowerPoint vie
       <div className="flex items-center gap-3 p-3 border-t bg-zinc-50">
         <a
           href={absUrl}
-          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+          className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
           target="_blank"
           rel="noreferrer"
         >
@@ -83,7 +83,7 @@ export default function PptxEmbed({ url, className = '', title = 'PowerPoint vie
         <a
           href={absUrl}
           download
-          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+          className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
         >
           Download
         </a>
@@ -91,7 +91,7 @@ export default function PptxEmbed({ url, className = '', title = 'PowerPoint vie
           href={gviewSrc}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+          className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
         >
           Google Viewer
         </a>

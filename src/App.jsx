@@ -6,7 +6,6 @@ import Nav from './components/layout/Nav'
 import Footer from './components/layout/Footer'
 
 import Home from './pages/Home'
-import About from './pages/About'
 import Products from './pages/Products'
 import Projects from './pages/Projects'
 import Readings from './pages/Readings'
@@ -20,8 +19,6 @@ const App = () => {
         <Nav />
         <Routes>
           <Route path="/" element={<Home />} />
-
-          <Route path="/about" element={<About />} />
 
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetail />} />

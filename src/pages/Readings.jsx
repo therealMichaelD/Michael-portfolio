@@ -10,7 +10,7 @@ const Readings = () => (
       <Container>
         <SectionHeading>Readings</SectionHeading>
         <p className="mt-2 text-zinc-700 text-sm sm:text-base">
-          Books I've Read Related To My Insterests
+          Books I've Read In Free Time
         </p>
         <div className="mt-4">
           <AccentBar />

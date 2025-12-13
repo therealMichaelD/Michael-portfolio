@@ -12,10 +12,10 @@ const Footer = () => (
         <p>Built with React + Tailwind. Deployed on Vercel.</p>
       </div>
       <div className="flex flex-wrap items-center gap-3 sm:justify-end">
-        <a href={`mailto:${PROFILE.email}`} className="hover:text-emerald-700 inline-flex items-center gap-2"><Mail className="w-4 h-4"/>Email</a>
-        <a href={PROFILE.github} className="hover:text-emerald-700 inline-flex items-center gap-2"><Github className="w-4 h-4"/>GitHub</a>
-        <a href={PROFILE.linkedin} className="hover:text-emerald-700 inline-flex items-center gap-2"><Linkedin className="w-4 h-4"/>LinkedIn</a>
-        <a href={PROFILE.resumeUrl} className="hover:text-emerald-700 inline-flex items-center gap-2"><FileDown className="w-4 h-4"/>Resume</a>
+        <a href={`mailto:${PROFILE.email}`} className="hover:text-zinc-900 inline-flex items-center gap-2"><Mail className="w-4 h-4"/>Email</a>
+        <a href={PROFILE.github} className="hover:text-zinc-900 inline-flex items-center gap-2"><Github className="w-4 h-4"/>GitHub</a>
+        <a href={PROFILE.linkedin} className="hover:text-zinc-900 inline-flex items-center gap-2"><Linkedin className="w-4 h-4"/>LinkedIn</a>
+        <a href={PROFILE.resumeUrl} className="hover:text-zinc-900 inline-flex items-center gap-2"><FileDown className="w-4 h-4"/>Resume</a>
       </div>
     </Container>
   </footer>

@@ -74,7 +74,7 @@ export default function RepoPreview({ ownerRepo }) {
   if (status === 'error') {
     return (
       <div className="rounded-2xl border border-black/10 p-4 bg-white">
-        <div className="text-sm text-zinc-600">Couldn’t load repository preview. <a className="text-emerald-700 underline" href={`https://github.com/${ownerRepo}`}>Open on GitHub</a></div>
+        <div className="text-sm text-zinc-600">Couldn’t load repository preview. <a className="text-zinc-700 underline" href={`https://github.com/${ownerRepo}`}>Open on GitHub</a></div>
       </div>
     )
   }
@@ -91,7 +91,7 @@ export default function RepoPreview({ ownerRepo }) {
         </div>
         <a
           href={`https://github.com/${ownerRepo}`}
-          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+          className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
           target="_blank" rel="noreferrer"
         >
           View on GitHub
@@ -107,7 +107,7 @@ export default function RepoPreview({ ownerRepo }) {
               <li key={f.path} className="flex items-center justify-between gap-2 rounded-lg border border-black/5 px-3 py-2">
                 <span className="truncate">{f.name}</span>
                 <a
-                  className="text-emerald-700 hover:underline shrink-0"
+                  className="text-zinc-700 hover:underline shrink-0"
                   href={f.html_url}
                   target="_blank" rel="noreferrer"
                 >
@@ -123,7 +123,7 @@ export default function RepoPreview({ ownerRepo }) {
       {readme && (
         <div className="p-4 border-t">
           <div className="text-sm font-medium mb-2">README</div>
-          <pre className="text-xs whitespace-pre-wrap text-zinc-700 bg-emerald-50/40 rounded-lg p-3 max-h-64 overflow-auto">
+          <pre className="text-xs whitespace-pre-wrap text-zinc-700 bg-zinc-50 rounded-lg p-3 max-h-64 overflow-auto">
             {readme}
           </pre>
         </div>

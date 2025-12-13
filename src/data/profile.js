@@ -9,4 +9,10 @@ export const PROFILE = {
     resumeUrl: '/ResumePortfolio2.pdf',
     headshot: '/HomePagePhoto.jpg',       // 🖼️ ADD/CHANGE IMAGE HERE (Home hero)
     aboutPhoto: '/PortfolioHeadshot.jpg', // 🖼️ ADD/CHANGE IMAGE HERE (About photo)
+    storyGalleries: {
+      intro: ['/PortfolioHeadshot.jpg', '/HomePagePhoto.jpg'], // ✅ add more paths for the intro gallery
+      education: ['/PortfolioHeadshot.jpg', '/HomePagePhoto.jpg'],
+      location: ['/HomePagePhoto.jpg', '/PortfolioHeadshot.jpg'],
+      hobbies: ['/HomePagePhoto.jpg', '/PortfolioHeadshot.jpg'],
+    },
   }

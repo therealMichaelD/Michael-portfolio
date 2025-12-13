@@ -82,14 +82,14 @@ export default function Carousel({
             <button
               onClick={prev}
               aria-label="Previous"
-              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full border border-black/10 bg-white/80 backdrop-blur px-2 py-2 hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full border border-black/10 bg-white/80 backdrop-blur px-2 py-2 hover:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-600"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={next}
               aria-label="Next"
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full border border-black/10 bg-white/80 backdrop-blur px-2 py-2 hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full border border-black/10 bg-white/80 backdrop-blur px-2 py-2 hover:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-600"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -110,7 +110,7 @@ export default function Carousel({
               key={i}
               onClick={() => setIndex(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`h-2 w-2 rounded-full ${i === index ? 'bg-emerald-600' : 'bg-emerald-200 hover:bg-emerald-300'}`}
+              className={`h-2 w-2 rounded-full ${i === index ? 'bg-zinc-900' : 'bg-zinc-300 hover:bg-zinc-400'}`}
             />
           ))}
         </div>

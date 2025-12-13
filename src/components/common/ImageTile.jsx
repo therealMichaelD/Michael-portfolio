@@ -4,7 +4,7 @@ import React from 'react'
 const ImageTile = ({ src, alt='', className='', fit='cover' }) => {
   const fitClass = fit === 'contain' ? 'object-contain' : 'object-cover' // allow full cover when needed
   return (
-    <div className={`rounded-[28px] overflow-hidden ${className} bg-gradient-to-br from-emerald-50 via-zinc-100 to-zinc-200`}>
+    <div className={`rounded-[28px] overflow-hidden ${className} bg-gradient-to-br from-zinc-50 via-zinc-100 to-zinc-200`}>
       <img
         src={src}
         alt={alt}

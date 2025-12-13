@@ -7,7 +7,7 @@ const Stars = ({ value = 4 }) => {
   return (
     <div className="flex items-center gap-1">
       {[...Array(5)].map((_, i) => (
-        <Star key={i} className={`w-4 h-4 ${i < full ? 'fill-emerald-500 text-emerald-500' : 'text-zinc-300'}`} />
+        <Star key={i} className={`w-4 h-4 ${i < full ? 'fill-zinc-900 text-zinc-900' : 'text-zinc-300'}`} />
       ))}
     </div>
   )

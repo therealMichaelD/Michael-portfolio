@@ -4,7 +4,7 @@ import React from 'react'
 const SectionCard = ({ title, children, tone='neutral' }) => {
   const tones = {
     neutral: 'border-black/10 bg-white',
-    accent: 'border-emerald-200 bg-emerald-50/40',
+    accent: 'border-black/10 bg-zinc-50',
   }
   return (
     <div className={`rounded-2xl p-4 sm:p-5 ${tones[tone]} border`}>

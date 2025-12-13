@@ -45,7 +45,7 @@ export const ItemDetail = ({ type }) => {
             <div className="mt-5">
               <Link
                 to={`/${type}`}
-                className="inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+                className="inline-flex items-center rounded-full border border-black/10 px-4 py-2 text-zinc-700 hover:border-black/40"
               >
                 ← Back to {type}
               </Link>
@@ -72,7 +72,7 @@ export const ItemDetail = ({ type }) => {
             <SectionHeading>{item.title}</SectionHeading>
             <Link
               to={`/${type}`}
-              className="hidden sm:inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+              className="hidden sm:inline-flex items-center rounded-full border border-black/10 px-4 py-2 text-zinc-700 hover:border-black/40"
             >
               ← Back to {type}
             </Link>
@@ -124,14 +124,14 @@ export const ItemDetail = ({ type }) => {
                 <div className="w-full rounded-[28px] border border-black/10 overflow-hidden bg-white">
                   {/* Tabs */}
                   <div className="flex items-center justify-between gap-3 p-2 sm:p-3 border-b">
-                    <div className="inline-flex rounded-full border border-emerald-300 overflow-hidden">
+                    <div className="inline-flex rounded-full border border-black/10 overflow-hidden">
                       {hasGallery && (
                         <button
                           onClick={() => setTab('gallery')}
                           className={`px-3 py-1.5 text-sm ${
                             tab === 'gallery'
-                              ? 'bg-emerald-600 text-white'
-                              : 'text-emerald-700 hover:bg-emerald-50'
+                              ? 'bg-zinc-900 text-white'
+                              : 'text-zinc-700 hover:bg-zinc-100'
                           }`}
                         >
                           Gallery
@@ -142,8 +142,8 @@ export const ItemDetail = ({ type }) => {
                           onClick={() => setTab('pdf')}
                           className={`px-3 py-1.5 text-sm ${
                             tab === 'pdf'
-                              ? 'bg-emerald-600 text-white'
-                              : 'text-emerald-700 hover:bg-emerald-50'
+                              ? 'bg-zinc-900 text-white'
+                              : 'text-zinc-700 hover:bg-zinc-100'
                           }`}
                         >
                           PDF
@@ -154,8 +154,8 @@ export const ItemDetail = ({ type }) => {
                           onClick={() => setTab('ppt')}
                           className={`px-3 py-1.5 text-sm ${
                             tab === 'ppt'
-                              ? 'bg-emerald-600 text-white'
-                              : 'text-emerald-700 hover:bg-emerald-50'
+                              ? 'bg-zinc-900 text-white'
+                              : 'text-zinc-700 hover:bg-zinc-100'
                           }`}
                         >
                           PPT
@@ -166,8 +166,8 @@ export const ItemDetail = ({ type }) => {
                           onClick={() => setTab('video')}
                           className={`px-3 py-1.5 text-sm ${
                             tab === 'video'
-                              ? 'bg-emerald-600 text-white'
-                              : 'text-emerald-700 hover:bg-emerald-50'
+                              ? 'bg-zinc-900 text-white'
+                              : 'text-zinc-700 hover:bg-zinc-100'
                           }`}
                         >
                           Video
@@ -178,8 +178,8 @@ export const ItemDetail = ({ type }) => {
                           onClick={() => setTab('repo')}
                           className={`px-3 py-1.5 text-sm ${
                             tab === 'repo'
-                              ? 'bg-emerald-600 text-white'
-                              : 'text-emerald-700 hover:bg-emerald-50'
+                              ? 'bg-zinc-900 text-white'
+                              : 'text-zinc-700 hover:bg-zinc-100'
                           }`}
                         >
                           Repo
@@ -191,7 +191,7 @@ export const ItemDetail = ({ type }) => {
                       {hasPdf && (
                         <a
                           href={B.pdfUrl}
-                          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+                          className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
                           download
                         >
                           Download PDF
@@ -200,7 +200,7 @@ export const ItemDetail = ({ type }) => {
                       {hasPpt && (
                         <a
                           href={B.pptUrl}
-                          className="inline-flex items-center rounded-full border border-emerald-300 px-3 py-1.5 text-emerald-700 hover:border-emerald-500"
+                          className="inline-flex items-center rounded-full border border-black/10 px-3 py-1.5 text-zinc-700 hover:border-black/40"
                           download
                         >
                           Download PPTX
@@ -274,7 +274,7 @@ export const ItemDetail = ({ type }) => {
                       {item.tags.map((t) => (
                         <span
                           key={t}
-                          className="inline-flex items-center rounded-full border border-emerald-300/70 bg-emerald-50 px-2.5 py-1 text-xs text-emerald-800"
+                          className="inline-flex items-center rounded-full border border-black/10 bg-zinc-50 px-2.5 py-1 text-xs text-zinc-800"
                         >
                           {t}
                         </span>
@@ -287,7 +287,7 @@ export const ItemDetail = ({ type }) => {
               {/* LINK SECTION (common for products + projects) */}
               {B.links?.length > 0 && (
                 <SectionCard title="Links">
-                  <ul className="text-sm text-emerald-800 space-y-1">
+                  <ul className="text-sm text-zinc-800 space-y-1">
                     {B.links.map((lnk, i) => (
                       <li key={i}>
                         <a className="hover:underline" href={lnk.href}>
@@ -481,7 +481,7 @@ export const ItemDetail = ({ type }) => {
                                 loading="lazy"
                               />
                             ) : (
-                              <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-sm font-medium">
+                              <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-700 text-sm font-medium">
                                 {(c.name || '?').slice(0, 1)}
                               </div>
                             )}
@@ -490,7 +490,7 @@ export const ItemDetail = ({ type }) => {
                                 {c.href ? (
                                   <a
                                     href={c.href}
-                                    className="text-emerald-700 hover:underline"
+                                    className="text-zinc-700 hover:underline"
                                   >
                                     {c.name}
                                   </a>
@@ -567,7 +567,7 @@ export const ItemDetail = ({ type }) => {
               {/* Mobile Back Link */}
               <Link
                 to={`/${type}`}
-                className="sm:hidden inline-flex items-center rounded-full border border-emerald-300 px-4 py-2 text-emerald-700 hover:border-emerald-500"
+                className="sm:hidden inline-flex items-center rounded-full border border-black/10 px-4 py-2 text-zinc-700 hover:border-black/40"
               >
                 ← Back to {type}
               </Link>
