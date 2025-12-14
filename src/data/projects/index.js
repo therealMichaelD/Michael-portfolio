@@ -7,7 +7,6 @@ import finalThesis from './final-thesis'
 import fireTornadoes from './fire-tornadoes'
 import amRadio from './am-radio'
 import threeDPrintedPolymers from './3d-printed-polymers'
-import unipapr from './unipapr'
 import transistorAmRadio from './transistor-am-radio' 
 
 
@@ -21,5 +20,4 @@ export const PROJECTS = [
   amRadio,
   threeDPrintedPolymers,
   transistorAmRadio, 
-  unipapr
-]
+] 

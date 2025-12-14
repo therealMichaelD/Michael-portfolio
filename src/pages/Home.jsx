@@ -17,8 +17,9 @@ const Home = () => {
         collected.push(source)
       }
     })
-    if (collected.length) return collected
-    const fallback = [PROFILE.aboutPhoto, PROFILE.headshot].filter(Boolean)
+    const sanitized = collected.filter((img) => img && img !== PROFILE.headshot)
+    if (sanitized.length) return sanitized
+    const fallback = [PROFILE.aboutPhoto].filter(Boolean)
     return fallback.length ? fallback : []
   }
 
@@ -43,8 +44,9 @@ const Home = () => {
 
   const hobbies = [
     'Supporting my Toronto sports teams',
-    'Long runs + anything outdoors',
+    'Long runs',
     'Reading & Podcasts',
+    'Fishing + anything outdoors'
   ]
   const hobbyGallery = buildGallery(storyGalleries.hobbies, storyGalleries.location, PROFILE.headshot) // update PROFILE.storyGalleries.hobbies
 

@@ -24,6 +24,24 @@ function findItem(type, id) {
   return list.find((x) => x.id === id)
 }
 
+// Shared renderer to keep the grid layout consistent between projects and products
+const renderSurfaceRows = (surfaces, keyPrefix = 'surface-row') => {
+  if (!surfaces.length) return null
+  const rows = []
+  for (let i = 0; i < surfaces.length; i += 2) {
+    rows.push(surfaces.slice(i, i + 2))
+  }
+  return rows.map((row, idx) => (
+    <div key={`${keyPrefix}-${idx}`} className="grid gap-5 lg:grid-cols-2">
+      {row.map((surface) => (
+        <div key={surface.key} className={`${row.length === 1 ? 'lg:col-span-2' : ''} h-full`}>
+          {surface.node}
+        </div>
+      ))}
+    </div>
+  ))
+}
+
 export const ItemDetail = ({ type }) => {
   const { id } = useParams()
   const item = findItem(type, id)
@@ -284,8 +302,8 @@ export const ItemDetail = ({ type }) => {
                 </SectionCard>
               )}
 
-              {/* LINK SECTION (common for products + projects) */}
-              {B.links?.length > 0 && (
+              {/* LINK SECTION (products only) */}
+              {isProducts && B.links?.length > 0 && (
                 <SectionCard title="Links">
                   <ul className="text-sm text-zinc-800 space-y-1">
                     {B.links.map((lnk, i) => (
@@ -376,8 +394,8 @@ export const ItemDetail = ({ type }) => {
                 </>
               )}
 
-              {/* PROJECTS */}
-              {isProjects && (() => {
+              {/* PROJECT / PRODUCT SHARED SURFACES */}
+              {(isProjects || isProducts) && (() => {
                 const surfaces = []
 
                 if (B.skillsTools?.length > 0) {
@@ -490,7 +508,7 @@ export const ItemDetail = ({ type }) => {
                     ),
                   })
                 }
-                if (B.bom?.length > 0) {
+                if (isProjects && B.bom?.length > 0) {
                   surfaces.push({
                     key: 'bom',
                     node: (
@@ -568,20 +586,7 @@ export const ItemDetail = ({ type }) => {
                   })
                 }
 
-                if (!surfaces.length) return null
-                const rows = []
-                for (let i = 0; i < surfaces.length; i += 2) {
-                  rows.push(surfaces.slice(i, i + 2))
-                }
-                return rows.map((row, idx) => (
-                  <div key={`project-row-${idx}`} className="grid gap-5 lg:grid-cols-2">
-                    {row.map((surface) => (
-                      <div key={surface.key} className={`${row.length === 1 ? 'lg:col-span-2' : ''} h-full`}>
-                        {surface.node}
-                      </div>
-                    ))}
-                  </div>
-                ))
+                return renderSurfaceRows(surfaces, isProjects ? 'project-row' : 'product-row')
               })()}
 
               {/* READINGS (unchanged) */}

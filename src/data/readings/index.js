@@ -10,6 +10,10 @@ import braveNewWorld from './braveNewWorld'
 import sapiens from './sapiens'
 import homoDeus from './homoDeus'
 import briefHistoryOfTime from './briefHistoryOfTime'
+import poorCharliesAlmanack from './poorCharliesAlmanack'
+import onlyTheParanoidSurvive from './onlyTheParanoidSurvive'
+import billionairesRow from './billionairesRow'
+import astrophysicsForPeople from './astrophysicsForPeople'
 
 export const READINGS = [
   jobs,
@@ -24,4 +28,8 @@ export const READINGS = [
   sapiens,
   homoDeus,
   briefHistoryOfTime,
+  poorCharliesAlmanack,
+  onlyTheParanoidSurvive,
+  billionairesRow,
+  astrophysicsForPeople,
 ]
