@@ -4,7 +4,7 @@ const billionairesRow = {
   subtitle: 'Katherine Clarke',
   href: '/readings/billionaires-row',
   tags: ['Business', 'Cities'],
-  heroImage: '/BillionairesRow.svg',
+  heroImage: '/BillionaireRow.jpg',
   blocks: {
     overviewText: ' ',
     review: ' ',

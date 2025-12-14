@@ -4,7 +4,7 @@ const poorCharliesAlmanack = {
   subtitle: 'Charlie Munger',
   href: '/readings/poor-charlies-almanack',
   tags: ['Investing', 'Memoir'],
-  heroImage: '/PoorCharliesAlmanack.svg',
+  heroImage: '/PoorCharlie.jpg',
   blocks: {
     overviewText: ' ',
     review: ' ',

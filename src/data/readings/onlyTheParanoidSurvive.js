@@ -4,7 +4,7 @@ const onlyTheParanoidSurvive = {
   subtitle: 'Andrew S. Grove',
   href: '/readings/only-the-paranoid-survive',
   tags: ['Strategy', 'Leadership'],
-  heroImage: '/OnlyTheParanoidSurvive.svg',
+  heroImage: '/OnlyParanoid.jpg',
   blocks: {
     overviewText: ' ',
     review: ' ',

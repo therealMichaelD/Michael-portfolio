@@ -4,7 +4,7 @@ const astrophysicsForPeople = {
   subtitle: 'Neil deGrasse Tyson',
   href: '/readings/astrophysics-for-people-in-a-hurry',
   tags: ['Science'],
-  heroImage: '/AstrophysicsForPeople.svg',
+  heroImage: '/AstroHurry.png',
   blocks: {
     overviewText: ' ',
     review: ' ',
