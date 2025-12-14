@@ -3,129 +3,199 @@ const studyBeer = {
   id: 'studybeer',
   title: 'StudyBeer',
   subtitle:
-    'A gamified productivity + beverage tracker: finish the work, then enjoy the reward—responsibly.',
+    'A task-first productivity app that turns completed work into earned real-world rewards.',
+
   href: '/products/studybeer',
-  tags: ['Productivity', 'Habits', 'Gamification', 'iOS/Android', 'Web'],
+  tags: ['Product Management', 'Productivity', 'Behavior Design', 'React Native', 'Supabase'],
 
   // Images you place in /public/studybeer/
   heroImage: '/studybeer/hero.jpg',
   gallery: [
-    { src: '/studybeer/dashboard.jpg',       caption: 'Home dashboard' },
-    { src: '/studybeer/session-timer.jpg',   caption: 'Session timer' },
-    { src: '/studybeer/rewards.jpg',         caption: 'Rewards & limits' },
-    { src: '/studybeer/social.jpg',          caption: 'Friend accountability' },
+    { src: '/studybeer/dashboard.jpg', caption: 'Home: active session & progress' },
+    { src: '/studybeer/tasks.jpg', caption: 'Task checklist driving reward progress' },
+    { src: '/studybeer/rewards.jpg', caption: 'Reward selection (beer, pizza, coffee, etc.)' },
+    { src: '/studybeer/profile.jpg', caption: 'Profile: session history & reward stats' },
   ],
 
   blocks: {
-    // Shown in “Overview”
+    /* =========================
+       OVERVIEW
+    ========================= */
     overviewText:
-      'StudyBeer turns your to-do list into a game: complete focused work sessions to unlock small, responsible rewards. It blends a clean study timer, streaks, and accountability with a simple reward ledger—so the “fun part” comes after the work is done.',
+      'StudyBeer reframes productivity as a clear contract with yourself: finish a defined set of tasks, then earn a real, self-chosen reward. Instead of abstract points or endless to-do lists, the app enforces a simple loop — work first, reward later — designed to reduce procrastination and increase follow-through.',
 
-    // Right-sidebar card for products
+    /* =========================
+       AT A GLANCE
+    ========================= */
     atAGlance: [
-      { k: 'Role',        v: 'PM + Full-stack' },
-      { k: 'Status',      v: 'MVP / Private alpha' },
-      { k: 'Platforms',   v: 'Web (React) • iOS/Android (React Native/Expo)' },
-      { k: 'Stack',       v: 'React/Expo, Supabase, Postgres, Vercel' },
+      { k: 'Role', v: 'Product Manager + Full-stack Engineer' },
+      { k: 'Status', v: 'Shipped MVP / Active iteration' },
+      { k: 'Platforms', v: 'iOS • Android (Expo / React Native)' },
+      { k: 'Stack', v: 'React Native, Expo Router, Supabase, Postgres' },
     ],
 
+    /* =========================
+       PROBLEM & AUDIENCE
+    ========================= */
     problemAudience: [
-      { k: 'Problem',  v: 'Hard to sustain deep-work routines; rewards come first, focus comes later.' },
-      { k: 'Audience', v: 'Students & young professionals who respond to streaks, XP, and clear limits.' },
+      {
+        k: 'Problem',
+        v: 'People often reward themselves before completing meaningful work, breaking focus and reinforcing procrastination.',
+      },
+      {
+        k: 'Audience',
+        v: 'Students and young professionals who want accountability without rigid productivity systems.',
+      },
     ],
 
+    /* =========================
+       CORE FEATURES
+    ========================= */
     features: [
-      'Focus sessions (Pomodoro + long-focus modes) with streaks & XP',
-      'Task lists with “completion thresholds” to unlock rewards',
-      'Reward rules & caps (per day/week) with hydration nudges',
-      'Social accountability: share streaks, invite friends, lock-in study slots',
-      'Analytics: time on task, weekly trendlines, consistency score',
+      'Session-based task lists with a single, clear completion goal',
+      'User-selected rewards (beer, pizza, coffee, dessert, night out)',
+      'Animated reward progress that fills as tasks are completed',
+      'Automatic session reset once a reward is earned',
+      'Profile dashboard with lifetime stats and reward breakdowns',
+      'Session history with timestamps and earned rewards',
     ],
 
+    /* =========================
+       HOW IT WORKS
+    ========================= */
     howItWorks: [
-      { k: 'Timer → XP',     v: 'Each finished focus session grants XP; missed breaks reset streak buffers.' },
-      { k: 'Lists → Rewards',v: 'Hit a list threshold (e.g., 5 tasks) to unlock 1 reward credit.' },
-      { k: 'Limits',         v: 'Daily/weekly caps and cooldowns prevent over-consumption; hydration prompts.' },
-      { k: 'Sync',           v: 'Supabase auth + Postgres; real-time session sync across devices.' },
+      {
+        k: 'Choose a reward',
+        v: 'Before starting, users select one reward they want to earn for the session.',
+      },
+      {
+        k: 'Define the work',
+        v: 'Users list the tasks that must be completed before the reward is unlocked.',
+      },
+      {
+        k: 'Progress visually',
+        v: 'Each completed task advances a visual progress animation toward the reward.',
+      },
+      {
+        k: 'Earn & reset',
+        v: 'Once all tasks are done, the reward is logged and the session resets.',
+      },
     ],
 
+    /* =========================
+       SKILLS & TOOLS
+    ========================= */
     skillsTools: [
-      { k: 'Skills',    v: 'Product strategy, habit loops, gamification, UX writing, experimentation' },
-      { k: 'Tools',     v: 'Figma, React/Expo, Supabase, Postgres, Vercel, Mixpanel/GA' },
-      { k: 'Methods',   v: 'Cohort retention, A/B tests on reward rules, funnel + session analytics' },
+      {
+        k: 'Product skills',
+        v: 'Problem framing, behavioral loops, scope control, UX decision-making',
+      },
+      {
+        k: 'Engineering',
+        v: 'React Native, Expo, Supabase auth, Postgres schema design',
+      },
+      {
+        k: 'Methods',
+        v: 'Iterative MVP development, user-driven feature pruning, system constraints',
+      },
     ],
 
+    /* =========================
+       ARCHITECTURE NOTES
+    ========================= */
     architectureNotes: [
-      'Supabase auth with RLS-protected tables for sessions, rewards, and streak history.',
-      'Shared data model for tasks and reward credits so limits/cooldowns can be enforced server-side.',
-      'Expo app + React web reuse a shared component layer for timer, rewards, and analytics views.',
-      'Real-time sync channels keep active sessions and streak states consistent across devices.',
+      'Supabase authentication with row-level security for user data isolation.',
+      'Postgres tables for tasks, reward settings, drink counters, and session history.',
+      'Session-scoped data model to support future drill-downs (e.g., task-level history).',
+      'Expo Router used for tab-based navigation and state refresh on focus.',
     ],
 
+    /* =========================
+       KEY PRODUCT WORK
+    ========================= */
     keyWork: [
-      'Mapped the habit loop (cue → focus session → reward) and tuned XP thresholds to feel motivating but safe.',
-      'Designed reward rules and cooldowns to keep consumption responsible; hydration nudges built into breaks.',
-      'Shipped accountability features (friend invites, streak sharing) to increase follow-through.',
-      'Instrumented funnels for session starts/completions and retention cohorts to measure stickiness.',
-      'Prototyped monetization via premium analytics + custom reward rules without cluttering the core loop.',
+      'Identified that abstract rewards (points, streaks) failed to change behavior; pivoted to real, self-chosen rewards.',
+      'Designed a task-first flow to avoid productivity theater and endless planning.',
+      'Intentionally limited each session to one reward to create a clear win condition.',
+      'Built session logging and reward stats to reinforce long-term accountability.',
+      'Handled backend schema migrations and recovery after breaking changes.',
     ],
 
+    /* =========================
+       PROBLEM STATEMENT (LONG)
+    ========================= */
     problem:
-      'Students and young professionals often reward themselves before meaningful work is finished, making it hard to sustain deep-work habits. Existing timers rarely pair focus with responsible, capped rewards or social accountability.',
+      'Most productivity tools optimize for tracking activity rather than enforcing completion. Without a hard boundary between work and reward, users negotiate with themselves and often break their own rules.',
 
+    /* =========================
+       APPROACH
+    ========================= */
     approach:
-      'Tie rewards to completed work sessions, not intentions. Add caps and cooldowns to keep things responsible, layer in social accountability, and instrument the product to measure retention and session quality. Keep the core loop simple so the product stays calm, not noisy.',
+      'StudyBeer enforces a simple behavioral rule: no reward without completion. By making the reward explicit and visible from the start, the product removes ambiguity and reduces decision fatigue during work sessions.',
 
+    /* =========================
+       PERFORMANCE & RELIABILITY
+    ========================= */
     performance: [
-      'Reward ledger enforces caps and cooldowns server-side to prevent “double spending.”',
-      'Timer state syncs in near-real-time across devices to avoid dangling sessions or duplicate rewards.',
-      'Session data validated with server timestamps to protect streak integrity.',
+      'Server-validated reward logging to prevent duplicate or partial sessions.',
+      'Session state refresh on tab focus to ensure accurate progress display.',
+      'Explicit error handling for failed inserts and auth edge cases.',
     ],
 
+    /* =========================
+       RESULTS & LEARNINGS
+    ========================= */
     results: [
-      'Early testers reported fewer “reward-first” lapses once thresholds and cooldowns were enabled.',
-      'Accountability features (friend invites/streak sharing) increased session completion rates.',
-      'Clear hydration nudges and caps reduced over-consumption risk compared to ungated rewards.',
+      'Users reported finishing tasks they previously postponed before going out.',
+      'Single-reward sessions reduced scope creep and improved completion rates.',
+      'Visual progress feedback proved more motivating than numeric counters alone.',
     ],
 
+    /* =========================
+       BENCHMARKS
+    ========================= */
     benchmarks: [
-      { k: 'Session reliability (target)', v: '99% session start/stop success' },
-      { k: 'Sync latency (target)',        v: '<500ms perceived updates' },
-      { k: 'Reward caps',                  v: 'Configurable daily/weekly limits' },
-      { k: 'Platforms',                    v: 'Web + React Native (shared logic)' },
+      { k: 'Session completion', v: 'Binary (all tasks done or no reward)' },
+      { k: 'Reward types', v: 'Expandable via configuration, not code changes' },
+      { k: 'Data integrity', v: 'Server-timestamped sessions' },
     ],
 
+    /* =========================
+       TIMELINE
+    ========================= */
     timeline: [
-      'Problem framing + habit loop design.',
-      'Prototype timer, XP, and reward ledger on web.',
-      'Add caps/cooldowns + hydration nudges; wire analytics for funnels/cohorts.',
-      'Ship social accountability (invites, streak sharing).',
-      'Refine mobile parity and optimize onboarding for focus-first habits.',
+      'Problem discovery and early concept validation.',
+      'Initial timer-based MVP → pivot to task-based sessions.',
+      'Reward system redesign with animated progress.',
+      'Backend stabilization and session history logging.',
+      'Profile analytics and long-term stats.',
     ],
 
+    /* =========================
+       RISKS & TRADEOFFS
+    ========================= */
     risks: [
-      'Reward abuse edge cases — guard against backdated sessions or rapid start/stop exploits.',
-      'Motivation decay — keep reminders light and make streak recovery forgiving but meaningful.',
-      'Privacy/trust — transparent data use for analytics and social features.',
+      'Over-gamification could reduce intrinsic motivation if expanded too far.',
+      'Reward framing must stay responsible and user-controlled.',
+      'Schema changes require careful migration planning.',
     ],
 
+    /* =========================
+       KPIs (PRODUCT THINKING)
+    ========================= */
     kpis: [
-      { label: 'Day-7 retention (target)', value: '35%+' },
-      { label: 'Weekly focus time',        value: '6–10 hrs median' },
-      { label: 'Tasks to reward ratio',    value: 'Configurable (e.g., 5:1)' },
+      { label: 'Session completion rate', value: 'Primary success metric' },
+      { label: 'Tasks per session', value: 'Signal of realistic goal-setting' },
+      { label: 'Repeat usage', value: 'Indicates habit formation' },
     ],
 
-    collaborators: [
-      { name: 'Michael Dang', role: 'PM + full-stack' },
-    ],
-
-    // Optional docs; add the file to /public/docs if you want the PDF tab to appear for products
-    // pdfUrl: '/docs/StudyBeer-OnePager.pdf',
+    liveAppUrl: 'https://studybeer.vercel.app/auth',
 
     links: [
-      // { href: 'https://github.com/yourname/studybeer', label: 'Repository' },
-      // { href: 'https://studybeer.app', label: 'Live site' },
+      { href: 'https://studybeer.vercel.app/auth', label: 'Web app (mobile layout)' },
+      { href: 'https://github.com/therealMichaelD/StudyBeer', label: 'Repository' },
     ],
+    repo: 'therealMichaelD/StudyBeer',
   },
 }
 

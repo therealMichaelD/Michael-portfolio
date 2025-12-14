@@ -4,6 +4,7 @@ import PdfEmbed from '../components/common/PdfEmbed'
 import PptxEmbed from '../components/common/PptxEmbed'
 import VideoEmbed from '../components/common/VideoEmbed'
 import RepoPreview from '../components/common/RepoPreview'
+import AppWindowEmbed from '../components/common/AppWindowEmbed'
 import { Link, useParams } from 'react-router-dom'
 import { PRODUCTS, PROJECTS, READINGS } from '../data/content'
 import { Container, SectionHeading, AccentBar, KeyValue, Stat } from '../components/ui/Primitives'
@@ -107,13 +108,16 @@ export const ItemDetail = ({ type }) => {
             {(() => {
               const galleryImages = (item.gallery || []).filter((im) => im?.src)
               const hasGallery = galleryImages.length > 0
+              const hasLiveApp = !!B.liveAppUrl
               const hasPdf = !!B.pdfUrl
               const hasPpt = !!B.pptUrl
               const hasVideo = !!B.youtubeId
               const hasRepo = !!B.repo
 
               const [tab, setTab] = useState(
-                hasGallery
+                hasLiveApp
+                  ? 'app'
+                  : hasGallery
                   ? 'gallery'
                   : hasPdf
                   ? 'pdf'
@@ -126,7 +130,7 @@ export const ItemDetail = ({ type }) => {
                   : 'gallery'
               )
 
-              if (!hasGallery && !hasPdf && !hasPpt && !hasVideo && !hasRepo)
+              if (!hasLiveApp && !hasGallery && !hasPdf && !hasPpt && !hasVideo && !hasRepo)
                 return null
 
               const imagesForCarousel = hasGallery
@@ -143,6 +147,18 @@ export const ItemDetail = ({ type }) => {
                   {/* Tabs */}
                   <div className="flex items-center justify-between gap-3 p-2 sm:p-3 border-b">
                     <div className="inline-flex rounded-full border border-black/10 overflow-hidden">
+                      {hasLiveApp && (
+                        <button
+                          onClick={() => setTab('app')}
+                          className={`px-3 py-1.5 text-sm ${
+                            tab === 'app'
+                              ? 'bg-zinc-900 text-white'
+                              : 'text-zinc-700 hover:bg-zinc-100'
+                          }`}
+                        >
+                          Live App
+                        </button>
+                      )}
                       {hasGallery && (
                         <button
                           onClick={() => setTab('gallery')}
@@ -229,6 +245,13 @@ export const ItemDetail = ({ type }) => {
 
                   {/* Viewer */}
                   <div className="p-3">
+                    {tab === 'app' && hasLiveApp && (
+                      <AppWindowEmbed
+                        url={B.liveAppUrl}
+                        title={`${item.title} — Live app`}
+                      />
+                    )}
+
                     {tab === 'gallery' && hasGallery && (
                       <Carousel
                         images={imagesForCarousel}
