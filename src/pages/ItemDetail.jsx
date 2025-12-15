@@ -46,7 +46,6 @@ const renderSurfaceRows = (surfaces, keyPrefix = 'surface-row') => {
 export const ItemDetail = ({ type }) => {
   const { id } = useParams()
   const item = findItem(type, id)
-  const B = item?.blocks || {}
 
   const isReadings = type === 'readings'
   const isProjects = type === 'projects'
@@ -74,6 +73,31 @@ export const ItemDetail = ({ type }) => {
       </main>
     )
   }
+
+  if (item.disabled) {
+    return (
+      <main className="bg-white text-black">
+        <section className="pt-10 sm:pt-16">
+          <Container>
+            <SectionHeading>{item.title}</SectionHeading>
+            <p className="mt-3 text-zinc-700">
+              This entry is coming soon. Check back later once the build is ready.
+            </p>
+            <div className="mt-5">
+              <Link
+                to={`/${type}`}
+                className="inline-flex items-center rounded-full border border-black/10 px-4 py-2 text-zinc-700 hover:border-black/40"
+              >
+                ← Back to {type}
+              </Link>
+            </div>
+          </Container>
+        </section>
+      </main>
+    )
+  }
+
+  const B = item.blocks || {}
 
   // Build de-duplicated images for project/product carousel
   const carouselImages = [

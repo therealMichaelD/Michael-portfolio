@@ -1,8 +1,6 @@
-import unipaprOne from './unipapr-one' 
+import sheetforge from './sheetforge'
+import unipaprOne from './unipapr-one'
 import studyBeer from './studybeer'
 
-// PRODUCTS — unchanged (empty for now)
-export const PRODUCTS = [
-    unipaprOne,
-    studyBeer
-]
+// Products shown on /products
+export const PRODUCTS = [unipaprOne, studyBeer, sheetforge,]

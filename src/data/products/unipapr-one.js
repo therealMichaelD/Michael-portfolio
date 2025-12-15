@@ -7,7 +7,7 @@ const unipaprOne = {
   tags: ['PAPR', 'Welding', 'Electronics', '3D Printing', 'Fluid Dynamics'],
 
   // Update these to match actual files in /public/unipapr/...
-  heroImage: '/unipapr/hero.jpg',
+  heroImage: '/UnipaprHero.png',
   gallery: [
     { src: '/unipapr/blower-assembly.jpg', caption: 'Blower module' },
     { src: '/unipapr/helmet-ductwork.jpg', caption: 'Helmet ductwork (V3 fit)' },
