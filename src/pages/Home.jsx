@@ -74,7 +74,7 @@ const Home = () => {
 
       <section className="pb-16">
         <Container>
-          <SectionHeading>About me</SectionHeading>
+          <SectionHeading></SectionHeading>
           <p className="mt-2 text-zinc-700 text-sm sm:text-base">
             {PROFILE.subhead || ''}
           </p>

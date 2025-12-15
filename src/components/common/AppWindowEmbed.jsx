@@ -8,7 +8,7 @@ export default function AppWindowEmbed({ url, title = 'Live app', className = ''
 
   return (
     <div className={outerClass}>
-      <div className="relative w-full max-w-[430px] aspect-[9/19.5]">
+      <div className="relative w-full max-w-[400px] aspect-[9/18]">
         <div className="absolute inset-0 rounded-[32px] border border-black/10 bg-gradient-to-b from-white to-zinc-50 shadow-[0_24px_80px_rgba(15,23,42,0.16)]">
           <div className="absolute inset-[10px] rounded-[26px] overflow-hidden bg-white">
             <iframe

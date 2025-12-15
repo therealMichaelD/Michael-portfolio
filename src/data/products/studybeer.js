@@ -9,13 +9,7 @@ const studyBeer = {
   tags: ['Product Management', 'Productivity', 'Behavior Design', 'React Native', 'Supabase'],
 
   // Images you place in /public/studybeer/
-  heroImage: '/studybeer/hero.jpg',
-  gallery: [
-    { src: '/studybeer/dashboard.jpg', caption: 'Home: active session & progress' },
-    { src: '/studybeer/tasks.jpg', caption: 'Task checklist driving reward progress' },
-    { src: '/studybeer/rewards.jpg', caption: 'Reward selection (beer, pizza, coffee, etc.)' },
-    { src: '/studybeer/profile.jpg', caption: 'Profile: session history & reward stats' },
-  ],
+  heroImage: '/StudybeerLogo.png',
 
   blocks: {
     /* =========================
@@ -191,11 +185,7 @@ const studyBeer = {
 
     liveAppUrl: 'https://studybeer.vercel.app/auth',
 
-    links: [
-      { href: 'https://studybeer.vercel.app/auth', label: 'Web app (mobile layout)' },
-      { href: 'https://github.com/therealMichaelD/StudyBeer', label: 'Repository' },
-    ],
-    repo: 'therealMichaelD/StudyBeer',
+    repo: 'therealMichaelD/studybeer',
   },
 }
 
