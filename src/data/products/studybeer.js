@@ -9,7 +9,7 @@ const studyBeer = {
   tags: ['Product Management', 'Productivity', 'Behavior Design', 'React Native', 'Supabase'],
 
   // Images you place in /public/studybeer/
-  heroImage: '/StudybeerLogo.png',
+  heroImage: '/StudybeerHero.png',
 
   blocks: {
     /* =========================
