@@ -9,10 +9,13 @@ const unipaprOne = {
   // Update these to match actual files in /public/unipapr/...
   heroImage: '/UnipaprHero.png',
   gallery: [
-    { src: '/unipapr/blower-assembly.jpg', caption: 'Blower module' },
-    { src: '/unipapr/helmet-ductwork.jpg', caption: 'Helmet ductwork (V3 fit)' },
-    { src: '/unipapr/filters-battery.jpg', caption: '3M filters + M18 battery' },
-    { src: '/unipapr/test-lab.jpg', caption: 'Bench test + flow checks' },
+    { src: '/Unipapr1.png', caption: 'In-Use Schematic' },
+    { src: '/Unipapr2.png', caption: 'Helmet Assembly Schematic' },
+    { src: '/Unipapr3.png', caption: 'Blower Assembly Schematic' },
+    { src: '/Unipapr4.png', caption: 'Blower Assembly Schematic 2' },
+    { src: '/Unipapr5.png', caption: 'Helmet Vent Solidworks' },
+    { src: '/Unipapr6.png', caption: 'Blower Assembly Solidworks' },
+    { src: '/Unipapr7.png', caption: 'Progression of Blower Assembly' },
   ],
 
   blocks: {
