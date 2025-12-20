@@ -7,8 +7,9 @@ const unipaprOne = {
   tags: ['PAPR', 'Welding', 'Electronics', '3D Printing', 'Fluid Dynamics'],
 
   // Update these to match actual files in /public/unipapr/...
-  heroImage: '/UnipaprHero.png',
+  heroImage: '/UnipaprLogo.png',
   gallery: [
+    { src: '/UnipaprHero.png', caption: 'Welding with UniPAPR' },
     { src: '/Unipapr1.png', caption: 'In-Use Schematic' },
     { src: '/Unipapr2.png', caption: 'Helmet Assembly Schematic' },
     { src: '/Unipapr3.png', caption: 'Blower Assembly Schematic' },
@@ -106,11 +107,6 @@ const unipaprOne = {
       'Overconfidence risk — clear guidance on capabilities & maintenance needs.',
       'Dirty filters reduce flow — add maintenance indicators & instructions.',
       'Noise/weight — continue optimization and enclosure damping.',
-    ],
-
-    kpis: [
-      { label: 'Field Test: smell', value: 'Not noticeable vs. helmet alone' },
-      { label: 'Proto revs', value: 'V1–V5' },
     ],
 
     collaborators: [

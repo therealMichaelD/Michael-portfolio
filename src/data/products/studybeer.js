@@ -9,14 +9,14 @@ const studyBeer = {
   tags: ['Product Management', 'Productivity', 'Behavior Design', 'React Native', 'Supabase'],
 
   // Images you place in /public/studybeer/
-  heroImage: '/StudybeerHero.png',
+  heroImage: '/StudyBeerLogo.png',
 
   blocks: {
     /* =========================
        OVERVIEW
     ========================= */
     overviewText:
-      'StudyBeer reframes productivity as a clear contract with yourself: finish a defined set of tasks, then earn a real, self-chosen reward. Instead of abstract points or endless to-do lists, the app enforces a simple loop — work first, reward later — designed to reduce procrastination and increase follow-through.',
+      'StudyBeer reframes productivity as a clear contract with yourself: finish a defined set of tasks, then earn a real, self-chosen reward. Instead of abstract points or endless to-do lists, the app enforces a simple loop designed to reduce procrastination and increase follow-through.',
 
     /* =========================
        AT A GLANCE
@@ -34,7 +34,7 @@ const studyBeer = {
     problemAudience: [
       {
         k: 'Problem',
-        v: 'People often reward themselves before completing meaningful work, breaking focus and reinforcing procrastination.',
+        v: 'Most productivity tools optimize for tracking activity rather than enforcing completion. Without a hard boundary between work and reward, users negotiate with themselves and often break their own rules.',
       },
       {
         k: 'Audience',
@@ -114,27 +114,7 @@ const studyBeer = {
       'Built session logging and reward stats to reinforce long-term accountability.',
       'Handled backend schema migrations and recovery after breaking changes.',
     ],
-
-    /* =========================
-       PROBLEM STATEMENT (LONG)
-    ========================= */
-    problem:
-      'Most productivity tools optimize for tracking activity rather than enforcing completion. Without a hard boundary between work and reward, users negotiate with themselves and often break their own rules.',
-
-    /* =========================
-       APPROACH
-    ========================= */
-    approach:
-      'StudyBeer enforces a simple behavioral rule: no reward without completion. By making the reward explicit and visible from the start, the product removes ambiguity and reduces decision fatigue during work sessions.',
-
-    /* =========================
-       PERFORMANCE & RELIABILITY
-    ========================= */
-    performance: [
-      'Server-validated reward logging to prevent duplicate or partial sessions.',
-      'Session state refresh on tab focus to ensure accurate progress display.',
-      'Explicit error handling for failed inserts and auth edge cases.',
-    ],
+  
 
     /* =========================
        RESULTS & LEARNINGS
@@ -146,15 +126,6 @@ const studyBeer = {
     ],
 
     /* =========================
-       BENCHMARKS
-    ========================= */
-    benchmarks: [
-      { k: 'Session completion', v: 'Binary (all tasks done or no reward)' },
-      { k: 'Reward types', v: 'Expandable via configuration, not code changes' },
-      { k: 'Data integrity', v: 'Server-timestamped sessions' },
-    ],
-
-    /* =========================
        TIMELINE
     ========================= */
     timeline: [
@@ -163,24 +134,6 @@ const studyBeer = {
       'Reward system redesign with animated progress.',
       'Backend stabilization and session history logging.',
       'Profile analytics and long-term stats.',
-    ],
-
-    /* =========================
-       RISKS & TRADEOFFS
-    ========================= */
-    risks: [
-      'Over-gamification could reduce intrinsic motivation if expanded too far.',
-      'Reward framing must stay responsible and user-controlled.',
-      'Schema changes require careful migration planning.',
-    ],
-
-    /* =========================
-       KPIs (PRODUCT THINKING)
-    ========================= */
-    kpis: [
-      { label: 'Session completion rate', value: 'Primary success metric' },
-      { label: 'Tasks per session', value: 'Signal of realistic goal-setting' },
-      { label: 'Repeat usage', value: 'Indicates habit formation' },
     ],
 
     liveAppUrl: 'https://studybeer.vercel.app/auth',
