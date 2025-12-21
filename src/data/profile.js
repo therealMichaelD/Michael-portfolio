@@ -6,7 +6,6 @@ export const PROFILE = {
     email: 'Michael.Dang3000@gmail.com',
     github: 'https://github.com/therealMichaelD',
     linkedin: 'https://www.linkedin.com/in/michaeldang1/',
-    resumeUrl: '/ResumePortfolio2.pdf',
     headshot: '/HomePagePhoto.jpg',       // 🖼️ ADD/CHANGE IMAGE HERE (Home hero)
     storyGalleries: {
       intro: ['/PortfolioHeadshot.jpg', '/GraduationPic.jpeg', 'OwlCafe.JPG'], // ✅ add more paths for the intro gallery

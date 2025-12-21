@@ -18,7 +18,6 @@ const Contact = () => (
               <CTAButton href={`mailto:${PROFILE.email}`}>Email Michael</CTAButton>
               <GhostButton href={PROFILE.github}>GitHub</GhostButton>
               <GhostButton href={PROFILE.linkedin}>LinkedIn</GhostButton>
-              <GhostButton href={PROFILE.resumeUrl}>Resume</GhostButton>
             </div>
           </div>
         </div>

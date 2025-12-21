@@ -1,6 +1,6 @@
 // src/components/layout/Footer.jsx
 import React from 'react'
-import { Mail, Github, Linkedin, FileDown } from 'lucide-react'
+import { Mail, Github, Linkedin } from 'lucide-react'
 import { PROFILE } from '../../data/content'
 import { Container } from '../ui/Primitives'
 
@@ -15,7 +15,6 @@ const Footer = () => (
         <a href={`mailto:${PROFILE.email}`} className="hover:text-zinc-900 inline-flex items-center gap-2"><Mail className="w-4 h-4"/>Email</a>
         <a href={PROFILE.github} className="hover:text-zinc-900 inline-flex items-center gap-2"><Github className="w-4 h-4"/>GitHub</a>
         <a href={PROFILE.linkedin} className="hover:text-zinc-900 inline-flex items-center gap-2"><Linkedin className="w-4 h-4"/>LinkedIn</a>
-        <a href={PROFILE.resumeUrl} className="hover:text-zinc-900 inline-flex items-center gap-2"><FileDown className="w-4 h-4"/>Resume</a>
       </div>
     </Container>
   </footer>
